@@ -36,8 +36,8 @@ public class OrderBookServiceImpl implements OrderBookService {
             orderBook.setInstrumentId(instrumentId);
         } else {
             orderBook = orderBookHolder.get();
-            if (orderBook.getOrderBookStatus() != null && orderBook.getOrderBookStatus().equalsIgnoreCase(command)) {
-                return orderBook.getOrderBookStatus();
+            if (orderBook.getOrderBookStatus() == null) {
+                return OrderBookConstants.INSTRUMENT_ID_NOT_FOUND;
             }
         }
         orderBook.setInstrumentId(instrumentId);
@@ -104,12 +104,11 @@ public class OrderBookServiceImpl implements OrderBookService {
                 execution.setExecutionPrice(executionRequest.getPrice());
                 List<OrderDetails> unExecutedOrders = orderDetailsList;
                 List<OrderDetails> validOrders = helper.getValidOrders(orderDetailsList, execution);
-                orderDetailsRepository.saveAll(unExecutedOrders);
-                List<OrderDetails> executedOrders = helper.getExecutedOrderDetails(validOrders, execution);
+                validOrders = helper.getExecutedOrderDetails(validOrders, execution);
                 executedOrderResponse = new ExecutedOrderResponse();
-                executedOrderResponse.setOrderDetails(executedOrders);
+                executedOrderResponse.setOrderDetails(validOrders);
                 List<OrderDetails> allOrders = new ArrayList<>(unExecutedOrders);
-                allOrders.addAll(executedOrders);
+                allOrders.addAll(validOrders);
                 orderDetailsRepository.saveAll(allOrders);
             }
         }

@@ -54,14 +54,15 @@ public class OrderBookServiceImplTests {
         orderBook.setInstrumentId(1);
         orderBook.setOrderBookStatus(OrderBookConstants.OPENED);
         when(orderBookRepository.findById(anyInt())).thenReturn(Optional.of(orderBook));
-        Assertions.assertThat(orderBookService.changeOrderBookStatus(1, OrderBookConstants.OPEN)).isEqualTo(OrderBookConstants.OPENED);
+        Assertions.assertThat(orderBookService.changeOrderBookStatus(1, OrderBookConstants.OPEN)).isEqualTo(OrderBookConstants.OPEN);
     }
 
     @Test
     public void testOpenOrderBookWhenInstrumentIdDoesNotExistsThenReturnNotFound() {
         OrderBook orderBook = new OrderBook();
         orderBook.setInstrumentId(111);
-        orderBook.setOrderBookStatus(OrderBookConstants.OPENED);
+        orderBook.setOrderBookStatus(null);
+        when(orderBookRepository.findById(111)).thenReturn(Optional.of(orderBook));
         String orderBookStatus = orderBookService.changeOrderBookStatus(111, OrderBookConstants.OPEN);
         Assertions.assertThat(orderBookStatus).isEqualTo(OrderBookConstants.INSTRUMENT_ID_NOT_FOUND);
     }
@@ -72,14 +73,15 @@ public class OrderBookServiceImplTests {
         orderBook.setInstrumentId(1);
         orderBook.setOrderBookStatus(OrderBookConstants.CLOSED);
         when(orderBookRepository.findById(anyInt())).thenReturn(Optional.of(orderBook));
-        Assertions.assertThat(orderBookService.changeOrderBookStatus(1, OrderBookConstants.CLOSE)).isEqualTo(OrderBookConstants.CLOSED);
+        Assertions.assertThat(orderBookService.changeOrderBookStatus(1, OrderBookConstants.CLOSE)).isEqualTo(OrderBookConstants.CLOSE);
     }
 
     @Test
     public void testCloseOrderBookWhenInstrumentIdDoesNotExistsThenReturnNotFound() {
         OrderBook orderBook = new OrderBook();
         orderBook.setInstrumentId(111);
-        orderBook.setOrderBookStatus(OrderBookConstants.CLOSED);
+        orderBook.setOrderBookStatus(null);
+        when(orderBookRepository.findById(111)).thenReturn(Optional.of(orderBook));
         String orderBookStatus = orderBookService.changeOrderBookStatus(111, OrderBookConstants.CLOSE);
         Assertions.assertThat(orderBookStatus).isEqualTo(OrderBookConstants.INSTRUMENT_ID_NOT_FOUND);
     }
@@ -117,6 +119,8 @@ public class OrderBookServiceImplTests {
         orderBook.setInstrumentId(1);
         orderBook.setOrderBookStatus(OrderBookConstants.OPENED);
         when(orderBookRepository.findById(anyInt())).thenReturn(Optional.of(orderBook));
+        List<OrderDetails> orderDetailsList = getTestOrderDetails();
+        when(orderDetailsRepository.findAllOrderDetailsByOrderInstrumentId(anyInt())).thenReturn(orderDetailsList);
 
         InstrumentRequest execution = new InstrumentRequest();
         execution.setPrice(30);
