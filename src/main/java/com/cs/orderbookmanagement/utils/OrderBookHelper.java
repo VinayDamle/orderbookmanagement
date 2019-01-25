@@ -40,6 +40,32 @@ public class OrderBookHelper {
         double distributionFactor = execution.getQuantity() / totalDemandedQty;
         for (OrderDetails validOrderDetail : validOrderDetails) {
             validOrderDetail.setAllocatedQuantity((int) (validOrderDetail.getOrder().getQuantity() * distributionFactor));
+            if (validOrderDetail.getAllocatedQuantity() > 0) {
+                /*
+                 ASSUMPTION - 1
+                 The execution price for allocated quantity would be the price it was quotebmmmmmmmmnnnnnnbbbbbbvvvvvvvvvvvccccccccxx`d while adding order
+                  */
+                validOrderDetail.setExecutionPrice(validOrderDetail.getOrder().getPrice());
+                /*
+                ASSUMPTION - 2
+                The execution price for allocated quantity would be calculated as below
+                price for 1 unit -> execution.getExecutionPrice() / execution.getQuantity() = X
+                Execution price for all the allocated quantity -> allocated quantity * X = Y
+                validOrderDetail.setExecutionPrice(Y);
+
+                program
+                validOrderDetail.setExecutionPrice(validOrderDetail.getAllocatedQuantity() * (execution.getExecutionPrice() / execution.getQuantity()));
+                 */
+
+                /*
+                ASSUMPTION - 3
+                The execution price for allocated quantity would be the execution price
+                used while executing order irrespective of quantity
+
+                program
+                validOrderDetail.setExecutionPrice(execution.getExecutionPrice());
+                 */
+            }
         }
         List<OrderDetails> executedOrderDetails = new ArrayList<>(validOrderDetails);
         return executedOrderDetails;

@@ -37,10 +37,10 @@ public class OrderBookHelperTests {
         Execution execution = new Execution();
         execution.setQuantity(30);
         execution.setExecutionPrice(100.0);
-        helper.getValidOrders(orderDetailsList, execution);
-        assertThat(orderDetailsList.get(0).getOrderStatus()).isEqualTo(OrderBookConstants.VALID);
-        assertThat(orderDetailsList.get(1).getOrderStatus()).isEqualTo(OrderBookConstants.VALID);
-        assertThat(orderDetailsList.get(2).getOrderStatus()).isEqualTo(OrderBookConstants.VALID);
+        List<OrderDetails> validOrderDetailsList = helper.getValidOrders(orderDetailsList, execution);
+        assertThat(validOrderDetailsList.get(0).getOrderStatus()).isEqualTo(OrderBookConstants.VALID);
+        assertThat(validOrderDetailsList.get(1).getOrderStatus()).isEqualTo(OrderBookConstants.VALID);
+        assertThat(validOrderDetailsList.get(2).getOrderStatus()).isEqualTo(OrderBookConstants.VALID);
     }
 
     @Test

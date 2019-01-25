@@ -5,10 +5,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
 @SpringBootApplication
-public class OrderbookmanagementApplication extends SpringBootServletInitializer {
+public class OrderBookManagementApplication extends SpringBootServletInitializer {
 
     public static void main(String[] args) {
-        SpringApplication.run(OrderbookmanagementApplication.class, args);
+        SpringApplication.run(OrderBookManagementApplication.class, args);
     }
 
 }

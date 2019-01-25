@@ -32,17 +32,18 @@ public class OrderBookController {
         Error error = null;
         HttpStatus openOrCloseOrderBookHttpStatus = HttpStatus.OK;
         OrderBookStatusResponse orderBookStatusResponse = new OrderBookStatusResponse();
-        String orderBookStatus = orderBookService.changeOrderBookStatus(instrumentId, orderBookStatusCommandRequest.getOrderBookStatusCommand());
-        orderBookStatusResponse.setOrderBookStatus(orderBookStatus);
-        if (orderBookStatus == null) {
+        String command = orderBookStatusCommandRequest.getOrderBookStatusCommand();
+        if (command == null || !((command.equalsIgnoreCase(OrderBookConstants.OPEN) || command.equalsIgnoreCase(OrderBookConstants.CLOSE)))) {
             openOrCloseOrderBookHttpStatus = HttpStatus.BAD_REQUEST;
-            error = new Error(OrderBookConstants.OBMS_INVL_CMD, OrderBookConstants.INVALID_COMMAND);
-            orderBookStatusResponse.setError(new Error(OrderBookConstants.OBMS_INVL_CMD, OrderBookConstants.INVALID_COMMAND));
+            error = new Error(OrderBookConstants.OBMS_0002, OrderBookConstants.INVALID_COMMAND);
+            orderBookStatusResponse.setError(new Error(OrderBookConstants.OBMS_0002, OrderBookConstants.INVALID_COMMAND));
             orderBookStatusResponse.setOrderBookStatus(null);
         } else {
+            String orderBookStatus = orderBookService.changeOrderBookStatus(instrumentId, orderBookStatusCommandRequest.getOrderBookStatusCommand());
+            orderBookStatusResponse.setOrderBookStatus(orderBookStatus);
             if (orderBookStatus.equalsIgnoreCase(OrderBookConstants.INSTRUMENT_ID_NOT_FOUND)) {
                 openOrCloseOrderBookHttpStatus = HttpStatus.NOT_FOUND;
-                error = new Error(OrderBookConstants.OBMS_INVL_INST_ID, orderBookStatus);
+                error = new Error(OrderBookConstants.OBMS_0001, orderBookStatus);
                 orderBookStatusResponse.setError(error);
                 orderBookStatusResponse.setOrderBookStatus(null);
             }
@@ -60,9 +61,16 @@ public class OrderBookController {
         //log.info("The incoming request for instrumentId " + instrumentId + " is " + mapper.serialize(order));
         OrderDetails orderDetails = null;
         HttpStatus addOrderHttpStatus = HttpStatus.OK;
-        orderDetails = orderBookService.addOrderToOrderBook(order, instrumentId);
-        if (orderDetails.getError() != null) {
-            addOrderHttpStatus = HttpStatus.NOT_FOUND;
+        if (instrumentId != order.getInstrumentId()) {
+            orderDetails = new OrderDetails();
+            addOrderHttpStatus = HttpStatus.BAD_REQUEST;
+            orderDetails.setOrder(null);
+            orderDetails.setError(new Error(OrderBookConstants.OBMS_0004, OrderBookConstants.UNEQUAL_INST_ID));
+        } else {
+            orderDetails = orderBookService.addOrderToOrderBook(order, instrumentId);
+            if (orderDetails.getError() != null) {
+                addOrderHttpStatus = HttpStatus.NOT_FOUND;
+            }
         }
         //log.info("Service response is " + mapper.serialize(orderDetails));
         ResponseEntity<OrderDetails> entity = new ResponseEntity<OrderDetails>(orderDetails, addOrderHttpStatus);
@@ -73,7 +81,7 @@ public class OrderBookController {
     /*@ApiResponses(value = {@ApiResponse(code = 200, message = "Successfully executed the orders."),
             @ApiResponse(code = 500, message = "Internal server error.")})*/
     public ResponseEntity<ExecutedOrderResponse> addExecutionAndExecuteOrder(
-            @PathVariable int instrumentId, @RequestBody InstrumentRequest executionRequest) throws Exception {
+            @PathVariable int instrumentId, @RequestBody ExecutionRequest executionRequest) throws Exception {
         //log.info("The incoming request for instrumentId " + instrumentId + " is " + mapper.serialize(executionRequest));
         ExecutedOrderResponse executedOrderResponse = null;
         HttpStatus addExecutionAndExecuteOrderHttpStatus = HttpStatus.OK;

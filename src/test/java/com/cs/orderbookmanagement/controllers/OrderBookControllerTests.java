@@ -49,7 +49,7 @@ public class OrderBookControllerTests {
     private OrderBookService service;
 
     @MockBean
-    private InstrumentRequest executionRequest;
+    private ExecutionRequest executionRequest;
 
     private String orderBookRequestJsonPayload;
 
@@ -74,7 +74,7 @@ public class OrderBookControllerTests {
     @Test
     public void testOpenOrderBook() throws Exception {
         instrumentId = 1;
-        when(service.changeOrderBookStatus(anyInt(), anyString())).thenReturn(OrderBookConstants.OPENED);
+        when(service.changeOrderBookStatus(anyInt(), anyString())).thenReturn(OrderBookConstants.OPEN);
         openOrderBookRequestJsonPayload = getOpenOrderBookRequestJsonPayload();
         requestBuilder = MockMvcRequestBuilders.post(OrderBookConstants.ORDERBOOKMGMNT + OrderBookConstants.STATUS + instrumentId).
                 content(openOrderBookRequestJsonPayload).characterEncoding(OrderBookConstants.UTF_8).contentType(MediaType.APPLICATION_JSON).
@@ -85,7 +85,7 @@ public class OrderBookControllerTests {
                 andReturn();
         context = JsonPath.parse(response.getResponse().getContentAsString());
         Assertions.assertThat(context.read("$.orderBookStatus").toString()).isNotNull();
-        Assertions.assertThat(context.read("$.orderBookStatus").toString()).isEqualTo(OrderBookConstants.OPENED);
+        Assertions.assertThat(context.read("$.orderBookStatus").toString()).isEqualTo(OrderBookConstants.OPEN);
     }
 
     @Test
@@ -109,7 +109,7 @@ public class OrderBookControllerTests {
     @Test
     public void testCloseOrderBook() throws Exception {
         instrumentId = 1;
-        when(service.changeOrderBookStatus(anyInt(), anyString())).thenReturn(OrderBookConstants.CLOSED);
+        when(service.changeOrderBookStatus(anyInt(), anyString())).thenReturn(OrderBookConstants.CLOSE);
         closeOrderBookRequestJsonPayload = getCloseOrderBookRequestJsonPayload();
         requestBuilder = MockMvcRequestBuilders.post(OrderBookConstants.ORDERBOOKMGMNT + OrderBookConstants.STATUS + instrumentId).
                 content(closeOrderBookRequestJsonPayload).characterEncoding(OrderBookConstants.UTF_8).contentType(MediaType.APPLICATION_JSON).
@@ -120,7 +120,7 @@ public class OrderBookControllerTests {
                 andReturn();
         context = JsonPath.parse(response.getResponse().getContentAsString());
         Assertions.assertThat(context.read("$.orderBookStatus").toString()).isNotNull();
-        Assertions.assertThat(context.read("$.orderBookStatus").toString()).isEqualTo(OrderBookConstants.CLOSED);
+        Assertions.assertThat(context.read("$.orderBookStatus").toString()).isEqualTo(OrderBookConstants.CLOSE);
     }
 
     @Test
@@ -166,20 +166,20 @@ public class OrderBookControllerTests {
     @Test
     public void testAddOrderForAnInvalidInstrumentIdThenReturnInstrumentIdNotFound() throws Exception {
         instrumentId = 10;
-        OrderDetails orderDetails = new OrderDetails(new Error(OrderBookConstants.OBMS_INVL_INST_ID, OrderBookConstants.INSTRUMENT_ID_NOT_FOUND));
+        OrderDetails orderDetails = new OrderDetails(new Error(OrderBookConstants.OBMS_0001, OrderBookConstants.INSTRUMENT_ID_NOT_FOUND));
         when(service.addOrderToOrderBook(any(Order.class), anyInt())).thenReturn(orderDetails);
         orderBookRequestJsonPayload = getOrderBookRequestJsonPayload();
         requestBuilder = MockMvcRequestBuilders.post(OrderBookConstants.ORDERBOOKMGMNT + ORDER + instrumentId).
                 content(orderBookRequestJsonPayload).characterEncoding(OrderBookConstants.UTF_8).contentType(MediaType.APPLICATION_JSON).
                 accept(MediaType.APPLICATION_JSON);
         response = mockMvc.perform(requestBuilder).
-                andExpect(status().isNotFound()).
+                andExpect(status().isBadRequest()).
                 andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8)).
                 andReturn();
         context = JsonPath.parse(response.getResponse().getContentAsString());
         Assertions.assertThat(context.read("$.error").toString()).isNotNull();
         Assertions.assertThat(context.read("$.error.errorMessage").toString()).isNotNull();
-        Assertions.assertThat(context.read("$.error.errorMessage").toString()).isEqualTo(OrderBookConstants.INSTRUMENT_ID_NOT_FOUND);
+        Assertions.assertThat(context.read("$.error.errorMessage").toString()).isEqualTo(OrderBookConstants.UNEQUAL_INST_ID);
     }
 
     @Test
@@ -194,7 +194,7 @@ public class OrderBookControllerTests {
         ExecutedOrderResponse executedOrderResponse = new ExecutedOrderResponse();
         executedOrderResponse.setOrderDetails(orderDetailsList);
         when(executionRequest.getPrice()).thenReturn(100.0);
-        when(service.addExecutionAndProcessOrder(any(InstrumentRequest.class), anyInt())).thenReturn(executedOrderResponse);
+        when(service.addExecutionAndProcessOrder(any(ExecutionRequest.class), anyInt())).thenReturn(executedOrderResponse);
         orderBookExecutionRequestJsonPayload = getOrderBookExecutionRequestJsonPayload();
         requestBuilder = MockMvcRequestBuilders.post(OrderBookConstants.ORDERBOOKMGMNT + EXECUTE + instrumentId).
                 content(orderBookExecutionRequestJsonPayload).characterEncoding(OrderBookConstants.UTF_8).contentType(MediaType.APPLICATION_JSON).
@@ -214,10 +214,10 @@ public class OrderBookControllerTests {
     public void testAddExecutionAndExecuteOrderForAnInvalidInstrumentIdThenReturnInstrumentIdNotFound() throws Exception {
         instrumentId = 10;
         ExecutedOrderResponse executedOrderResponse = new ExecutedOrderResponse();
-        executedOrderResponse.setError(new Error(OrderBookConstants.OBMS_INVL_INST_ID, OrderBookConstants.INSTRUMENT_ID_NOT_FOUND));
+        executedOrderResponse.setError(new Error(OrderBookConstants.OBMS_0001, OrderBookConstants.INSTRUMENT_ID_NOT_FOUND));
 
         when(executionRequest.getPrice()).thenReturn(100.0);
-        when(service.addExecutionAndProcessOrder(any(InstrumentRequest.class), anyInt())).thenReturn(executedOrderResponse);
+        when(service.addExecutionAndProcessOrder(any(ExecutionRequest.class), anyInt())).thenReturn(executedOrderResponse);
         orderBookExecutionRequestJsonPayload = getOrderBookExecutionRequestJsonPayload();
         requestBuilder = MockMvcRequestBuilders.post(OrderBookConstants.ORDERBOOKMGMNT + EXECUTE + instrumentId).
                 content(orderBookExecutionRequestJsonPayload).characterEncoding(OrderBookConstants.UTF_8).contentType(MediaType.APPLICATION_JSON).

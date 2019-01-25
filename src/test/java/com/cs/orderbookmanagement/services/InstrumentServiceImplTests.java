@@ -1,7 +1,7 @@
 package com.cs.orderbookmanagement.services;
 
 import com.cs.orderbookmanagement.models.Execution;
-import com.cs.orderbookmanagement.models.InstrumentRequest;
+import com.cs.orderbookmanagement.models.ExecutionRequest;
 import com.cs.orderbookmanagement.models.InstrumentResponse;
 import com.cs.orderbookmanagement.repository.InstrumentRepository;
 import com.cs.orderbookmanagement.utils.OrderBookHelper;
@@ -44,13 +44,13 @@ public class InstrumentServiceImplTests {
     public void testAddInstrument() {
         Execution execution = new Execution();
         execution.setInstrumentId(1);
-        InstrumentRequest instrumentRequest = new InstrumentRequest();
-        instrumentRequest.setPrice(50);
-        instrumentRequest.setQuantity(30);
-        instrumentRequest.setInstrumentDesc("");
-        instrumentRequest.setInstrumentName("");
+        ExecutionRequest executionRequest = new ExecutionRequest();
+        executionRequest.setPrice(50);
+        executionRequest.setQuantity(30);
+        executionRequest.setInstrumentDesc("");
+        executionRequest.setInstrumentName("");
         when(instrumentRepository.save(any(Execution.class))).thenReturn(execution);
-        InstrumentResponse addedInstrument = instrumentService.addInstrument(instrumentRequest);
+        InstrumentResponse addedInstrument = instrumentService.addInstrument(executionRequest);
         Assertions.assertThat(addedInstrument).isNotNull();
         Assertions.assertThat(addedInstrument.getError()).isNull();
         Assertions.assertThat(addedInstrument.getInstrumentId()).isEqualTo(1);

@@ -15,7 +15,7 @@ import java.util.List;
 public class OrderBook {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int instrumentId;
 
     private String orderBookStatus;

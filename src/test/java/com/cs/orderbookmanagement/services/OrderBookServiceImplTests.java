@@ -52,7 +52,7 @@ public class OrderBookServiceImplTests {
     public void testOpenOrderBook() {
         OrderBook orderBook = new OrderBook();
         orderBook.setInstrumentId(1);
-        orderBook.setOrderBookStatus(OrderBookConstants.OPENED);
+        orderBook.setOrderBookStatus(OrderBookConstants.OPEN);
         when(orderBookRepository.findById(anyInt())).thenReturn(Optional.of(orderBook));
         Assertions.assertThat(orderBookService.changeOrderBookStatus(1, OrderBookConstants.OPEN)).isEqualTo(OrderBookConstants.OPEN);
     }
@@ -71,7 +71,7 @@ public class OrderBookServiceImplTests {
     public void testCloseOrderBook() {
         OrderBook orderBook = new OrderBook();
         orderBook.setInstrumentId(1);
-        orderBook.setOrderBookStatus(OrderBookConstants.CLOSED);
+        orderBook.setOrderBookStatus(OrderBookConstants.CLOSE);
         when(orderBookRepository.findById(anyInt())).thenReturn(Optional.of(orderBook));
         Assertions.assertThat(orderBookService.changeOrderBookStatus(1, OrderBookConstants.CLOSE)).isEqualTo(OrderBookConstants.CLOSE);
     }
@@ -90,7 +90,7 @@ public class OrderBookServiceImplTests {
     public void testAddOrder() {
         OrderBook orderBook = new OrderBook();
         orderBook.setInstrumentId(1);
-        orderBook.setOrderBookStatus(OrderBookConstants.OPENED);
+        orderBook.setOrderBookStatus(OrderBookConstants.OPEN);
         when(orderBookRepository.findById(anyInt())).thenReturn(Optional.of(orderBook));
 
         OrderDetails orderDetails = new OrderDetails();
@@ -117,12 +117,12 @@ public class OrderBookServiceImplTests {
     public void testAddExecution() {
         OrderBook orderBook = new OrderBook();
         orderBook.setInstrumentId(1);
-        orderBook.setOrderBookStatus(OrderBookConstants.OPENED);
+        orderBook.setOrderBookStatus(OrderBookConstants.OPEN);
         when(orderBookRepository.findById(anyInt())).thenReturn(Optional.of(orderBook));
         List<OrderDetails> orderDetailsList = getTestOrderDetails();
         when(orderDetailsRepository.findAllOrderDetailsByOrderInstrumentId(anyInt())).thenReturn(orderDetailsList);
 
-        InstrumentRequest execution = new InstrumentRequest();
+        ExecutionRequest execution = new ExecutionRequest();
         execution.setPrice(30);
         execution.setPrice(100.0);
         List<OrderDetails> validOrders = getTestOrderDetails();
@@ -137,7 +137,7 @@ public class OrderBookServiceImplTests {
 
     @Test
     public void testAddExecutionForAnInvalidInstrumentIdThenReturnInstrumentIdNotFound() {
-        InstrumentRequest execution = new InstrumentRequest();
+        ExecutionRequest execution = new ExecutionRequest();
         execution.setPrice(30);
         execution.setPrice(100.0);
         List<OrderDetails> validOrders = getTestOrderDetails();

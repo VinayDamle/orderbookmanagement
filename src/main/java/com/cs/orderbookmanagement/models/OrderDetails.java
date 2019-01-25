@@ -18,7 +18,7 @@ public class OrderDetails {
     private Error error;
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int orderId;
 
     @Embedded

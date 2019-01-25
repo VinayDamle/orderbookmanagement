@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
 @Getter
 @Setter
 @JsonIgnoreProperties
-public class InstrumentRequest {
+public class ExecutionRequest {
 
     @NotNull
     private int quantity;
