@@ -2,61 +2,118 @@ package com.cs.orderbookmanagement.services;
 
 import com.cs.orderbookmanagement.models.Error;
 import com.cs.orderbookmanagement.models.*;
+import com.cs.orderbookmanagement.repository.OrderBookRepository;
+import com.cs.orderbookmanagement.repository.OrderDetailsRepository;
+import com.cs.orderbookmanagement.utils.OrderBookConstants;
 import com.cs.orderbookmanagement.utils.OrderBookHelper;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
+@Slf4j
 @Service
 public class OrderBookServiceImpl implements OrderBookService {
 
+    @Autowired
+    private OrderBookHelper helper;
+
+    @Autowired
+    private OrderBookRepository orderBookRepository;
+
+    @Autowired
+    private OrderDetailsRepository orderDetailsRepository;
+
     @Override
     public String changeOrderBookStatus(int instrumentId, String command) {
-        if (instrumentId == 10) {
-            return OrderBookService.INSTRUMENT_ID_NOT_FOUND;
+        OrderBook orderBook = null;
+        Optional<OrderBook> orderBookHolder = orderBookRepository.findById(instrumentId);
+        if (!orderBookHolder.isPresent()) {
+            orderBook = new OrderBook();
+            orderBook.setInstrumentId(instrumentId);
         } else {
-            if (command != null) {
-                return OrderBookService.OPEN.equalsIgnoreCase(command) ? OrderBookService.OPENED : OrderBookService.CLOSED;
+            orderBook = orderBookHolder.get();
+            if (orderBook.getOrderBookStatus() != null && orderBook.getOrderBookStatus().equalsIgnoreCase(command)) {
+                return orderBook.getOrderBookStatus();
             }
         }
-        return null;
-    }
-
-    @Override
-    public OrderDetails addOrder(Order order, int instrumentId) {
-        OrderDetails orderDetails = null;
-        if (instrumentId == 10) {
-            orderDetails = new OrderDetails(0, 0, null, null, 0, null,
-                    new Error(OrderBookService.OBMS_INVL_001, OrderBookService.INSTRUMENT_ID_NOT_FOUND));
+        orderBook.setInstrumentId(instrumentId);
+        String currentOrderBookStatus = null;
+        if (!OrderBookConstants.OPEN.equalsIgnoreCase(command)) {
+            currentOrderBookStatus = OrderBookConstants.CLOSE;
         } else {
-            orderDetails = new OrderDetails(1, order.getInstrumentId(),
-                    new Order(order.getQuantity(), order.getEntryDate(), order.getInstrumentId(), order.getPrice()),
-                    null, 0, order.getPrice() != 0 ? OrderBookService.LIMIT_ORDER : OrderBookService.MARKET_ORDER, null);
+            currentOrderBookStatus = OrderBookConstants.OPEN;
         }
-        return orderDetails;
+        orderBook.setOrderBookStatus(currentOrderBookStatus);
+        orderBookRepository.save(orderBook);
+        return currentOrderBookStatus;
     }
 
     @Override
-    public ExecutedOrderResponse addExecutionAndProcessOrder(ExecutionRequest executionRequest, int instrumentId) {
-        ExecutedOrderResponse executedOrderResponse = null;
-        if (instrumentId == 10) {
-            executedOrderResponse = new ExecutedOrderResponse(
-                    new Error(OrderBookService.OBMS_INVL_001, OrderBookService.INSTRUMENT_ID_NOT_FOUND), null);
+    public OrderDetails addOrderToOrderBook(Order order, int instrumentId) {
+        OrderDetails addedOrder = null;
+        Optional<OrderBook> orderBookHolder = orderBookRepository.findById(instrumentId);
+        if (orderBookHolder.isPresent()) {
+            if (orderBookHolder.get().getOrderBookStatus() != null &&
+                    orderBookHolder.get().getOrderBookStatus().equalsIgnoreCase(OrderBookConstants.CLOSE)) {
+                addedOrder = new OrderDetails(new Error("OBMS_0006", OrderBookConstants.OBMS_ORD_BOOK_CLOSED_INSTID + " " + instrumentId));
+            } else {
+                OrderDao orderDao = new OrderDao();
+                orderDao.setPrice(order.getPrice());
+                orderDao.setQuantity(order.getQuantity());
+                orderDao.setEntryDate(order.getEntryDate());
+                orderDao.setInstrumentId(order.getInstrumentId());
+                String orderType = OrderBookConstants.LIMIT_ORDER;
+                if (order.getPrice() == 0) {
+                    orderType = OrderBookConstants.MARKET_ORDER;
+                }
+                OrderDetails orderDetailsToSave = new OrderDetails(1, order.getInstrumentId(),
+                        orderDao, null, 0, orderType, 0.0);
+                addedOrder = orderDetailsRepository.save(orderDetailsToSave);
+            }
         } else {
-            Order order = new Order(10, "10-10-2019", instrumentId, 100);
-            OrderDetails orderDetails = new OrderDetails(1, instrumentId,
-                    order, "Valid", executionRequest.getQuantity(),
-                    executionRequest.getExecutionPrice() != 0 ? OrderBookService.LIMIT_ORDER : OrderBookService.MARKET_ORDER, null);
-            List<OrderDetails> orderDetailsList = new ArrayList<>();
-            orderDetailsList.add(orderDetails);
-            OrderBookHelper.filterValidOrders(orderDetailsList, executionRequest);
-            OrderBookHelper.distributeExecutionLinearly(orderDetailsList, executionRequest);
-            executedOrderResponse = new ExecutedOrderResponse(null, orderDetails);
+            addedOrder = new OrderDetails(new Error("OBMS_0001", OrderBookConstants.INSTRUMENT_ID_NOT_FOUND));
+        }
+        return addedOrder;
+    }
+
+    @Override
+    public ExecutedOrderResponse addExecutionAndProcessOrder(InstrumentRequest executionRequest, int instrumentId) {
+        ExecutedOrderResponse executedOrderResponse = null;
+        Optional<OrderBook> orderBookHolder = orderBookRepository.findById(instrumentId);
+        if (!orderBookHolder.isPresent()) {
+            executedOrderResponse = new ExecutedOrderResponse();
+            executedOrderResponse.setError(new Error("OBMS_0001", OrderBookConstants.INSTRUMENT_ID_NOT_FOUND));
+        } else {
+            if (orderBookHolder.get().getOrderBookStatus() != null &&
+                    orderBookHolder.get().getOrderBookStatus().equalsIgnoreCase(OrderBookConstants.CLOSE)) {
+                executedOrderResponse = new ExecutedOrderResponse();
+                executedOrderResponse.setError(new Error("OBMS_0006", OrderBookConstants.OBMS_ORD_BOOK_CLOSED_INSTID + " " + instrumentId));
+            } else {
+                List<OrderDetails> orderDetailsList = orderDetailsRepository.findAllOrderDetailsByOrderInstrumentId(instrumentId);
+                if (orderDetailsList.isEmpty()) {
+                    executedOrderResponse = new ExecutedOrderResponse();
+                    executedOrderResponse.setError(new Error("OBMS_0001", OrderBookConstants.INSTRUMENT_ID_NOT_FOUND));
+                    return executedOrderResponse;
+                }
+                Execution execution = new Execution();
+                execution.setQuantity(executionRequest.getQuantity());
+                execution.setExecutionPrice(executionRequest.getPrice());
+                List<OrderDetails> unExecutedOrders = orderDetailsList;
+                List<OrderDetails> validOrders = helper.getValidOrders(orderDetailsList, execution);
+                orderDetailsRepository.saveAll(unExecutedOrders);
+                List<OrderDetails> executedOrders = helper.getExecutedOrderDetails(validOrders, execution);
+                executedOrderResponse = new ExecutedOrderResponse();
+                executedOrderResponse.setOrderDetails(executedOrders);
+                List<OrderDetails> allOrders = new ArrayList<>(unExecutedOrders);
+                allOrders.addAll(executedOrders);
+                orderDetailsRepository.saveAll(allOrders);
+            }
         }
         return executedOrderResponse;
     }
-
-
 
 }

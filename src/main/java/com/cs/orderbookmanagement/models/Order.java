@@ -5,11 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Embeddable;
-
 @Getter
 @Setter
-@Embeddable
 @JsonIgnoreProperties
 final public class Order {
 

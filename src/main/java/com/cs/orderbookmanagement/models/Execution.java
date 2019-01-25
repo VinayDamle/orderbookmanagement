@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 @Getter
@@ -18,7 +19,12 @@ public class Execution {
 
     private int quantity;
 
+    private String instrumentName;
+
+    private String instrumentDesc;
+
     @Id
+    @GeneratedValue
     @JsonInclude(JsonInclude.Include.NON_NULL)
     protected int instrumentId;
 

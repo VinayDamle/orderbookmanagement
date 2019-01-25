@@ -3,18 +3,13 @@ package com.cs.orderbookmanagement.models;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Transient;
+import javax.persistence.*;
 
 @Getter
 @Setter
 @Entity
-@NoArgsConstructor
 @JsonIgnoreProperties
 public class OrderDetails {
 
@@ -22,11 +17,12 @@ public class OrderDetails {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Error error;
 
-    @Embedded
-    private Order order;
-
     @Id
+    @GeneratedValue
     private int orderId;
+
+    @Embedded
+    private OrderDao order;
 
     private String orderType;
 
@@ -36,12 +32,23 @@ public class OrderDetails {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private int allocatedQuantity;
 
-    public OrderDetails(int orderId, int instrumentId, Order order, String orderStatus, int allocatedQuantity, String orderType, Error error) {
-        this.error = error;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private double executionPrice;
+
+    public OrderDetails() {
+    }
+
+    public OrderDetails(int orderId, int instrumentId, OrderDao order, String orderStatus, int allocatedQuantity, String orderType, double executionPrice) {
         this.order = order;
         this.orderId = orderId;
+        this.orderType = orderType;
         this.orderStatus = orderStatus;
+        this.executionPrice = executionPrice;
         this.allocatedQuantity = allocatedQuantity;
+    }
+
+    public OrderDetails(Error error) {
+        this.error = error;
     }
 
     @Override
@@ -52,6 +59,7 @@ public class OrderDetails {
                 ", order=" + order +
                 ", error=" + error +
                 ", orderStatus='" + orderStatus + '\'' +
+                ", executionPrice=" + executionPrice +
                 ", allocatedQuantity=" + allocatedQuantity +
                 '}';
     }

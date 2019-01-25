@@ -3,10 +3,12 @@ package com.cs.orderbookmanagement.models;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@NoArgsConstructor
 @JsonIgnoreProperties
 public class InstrumentResponse {
 
@@ -25,7 +27,7 @@ public class InstrumentResponse {
     public String toString() {
         return "InstrumentResponse{" +
                 "error=" + error +
-                ", instrumentId='" + instrumentId + '\'' +
+                ", instrumentId='" + instrumentId +
                 '}';
     }
 }

@@ -4,11 +4,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import java.util.HashSet;
-import java.util.Set;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -17,20 +15,21 @@ import java.util.Set;
 public class OrderBook {
 
     @Id
+    @GeneratedValue
     private int instrumentId;
 
     private String orderBookStatus;
 
-    @OneToMany(mappedBy = "instrumentId")
-    private Set<Execution> executions = new HashSet<>();
+    @OneToOne
+    private Execution execution;
 
-    @OneToMany(mappedBy = "order.instrumentId")
-    private Set<OrderDetails> orderDetails = new HashSet<>();
+    @OneToMany
+    private List<OrderDetails> orderDetails = new ArrayList<>();
 
-    public OrderBook(int instrumentId, String orderBookStatus, Set<Execution> executions, Set<OrderDetails> orderDetails) {
+    public OrderBook(int instrumentId, String orderBookStatus, Execution execution, List<OrderDetails> orderDetails) {
         this.instrumentId = instrumentId;
         this.orderBookStatus = orderBookStatus;
-        this.executions = executions;
+        this.execution = execution;
         this.orderDetails = orderDetails;
     }
 
@@ -39,7 +38,7 @@ public class OrderBook {
         return "OrderBook{" +
                 "instrumentId=" + instrumentId +
                 ", orderBookStatus='" + orderBookStatus + '\'' +
-                ", executions=" + executions +
+                ", execution=" + execution +
                 ", orderDetails=" + orderDetails +
                 '}';
     }
