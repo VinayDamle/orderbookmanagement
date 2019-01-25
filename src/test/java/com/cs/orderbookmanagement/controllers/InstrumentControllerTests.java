@@ -1,6 +1,6 @@
 package com.cs.orderbookmanagement.controllers;
 
-import com.cs.orderbookmanagement.models.InstrumentRequest;
+import com.cs.orderbookmanagement.models.ExecutionRequest;
 import com.cs.orderbookmanagement.models.InstrumentResponse;
 import com.cs.orderbookmanagement.services.InstrumentService;
 import com.cs.orderbookmanagement.utils.OrderBookConstants;
@@ -58,7 +58,7 @@ public class InstrumentControllerTests {
         int instrumentId = 1;
         InstrumentResponse instrumentResponse = new InstrumentResponse();
         instrumentResponse.setInstrumentId(instrumentId);
-        when(instrumentService.addInstrument(any(InstrumentRequest.class))).thenReturn(instrumentResponse);
+        when(instrumentService.addInstrument(any(ExecutionRequest.class))).thenReturn(instrumentResponse);
         instrumentRequestJsonPayload = "{\"instrumentName\": \"Pen\", \"instrumentDesc\": \"Pen\"}";
         requestBuilder = MockMvcRequestBuilders.post("/instrument/").
                 content(instrumentRequestJsonPayload).characterEncoding(OrderBookConstants.UTF_8).contentType(MediaType.APPLICATION_JSON).

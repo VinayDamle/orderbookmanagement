@@ -29,7 +29,7 @@ public class OrderBookServiceImpl implements OrderBookService {
 
     @Override
     public String changeOrderBookStatus(int instrumentId, String command) {
-        OrderBook orderBook = null;
+        OrderBook orderBook;
         Optional<OrderBook> orderBookHolder = orderBookRepository.findById(instrumentId);
         if (!orderBookHolder.isPresent()) {
             orderBook = new OrderBook();
@@ -41,7 +41,7 @@ public class OrderBookServiceImpl implements OrderBookService {
             }
         }
         orderBook.setInstrumentId(instrumentId);
-        String currentOrderBookStatus = null;
+        String currentOrderBookStatus;
         if (!OrderBookConstants.OPEN.equalsIgnoreCase(command)) {
             currentOrderBookStatus = OrderBookConstants.CLOSE;
         } else {
@@ -53,8 +53,8 @@ public class OrderBookServiceImpl implements OrderBookService {
     }
 
     @Override
-    public OrderDetails addOrderToOrderBook(Order order, int instrumentId) {
-        OrderDetails addedOrder = null;
+    public OrderDetails addOrder(Order order, int instrumentId) {
+        OrderDetails addedOrder;
         Optional<OrderBook> orderBookHolder = orderBookRepository.findById(instrumentId);
         if (orderBookHolder.isPresent()) {
             if (orderBookHolder.get().getOrderBookStatus() != null &&
@@ -70,7 +70,7 @@ public class OrderBookServiceImpl implements OrderBookService {
                 if (order.getPrice() == 0) {
                     orderType = OrderBookConstants.MARKET_ORDER;
                 }
-                OrderDetails orderDetailsToSave = new OrderDetails(1, order.getInstrumentId(),
+                OrderDetails orderDetailsToSave = new OrderDetails(order.getInstrumentId(),
                         orderDao, null, 0, orderType, 0.0);
                 addedOrder = orderDetailsRepository.save(orderDetailsToSave);
             }
@@ -82,7 +82,7 @@ public class OrderBookServiceImpl implements OrderBookService {
 
     @Override
     public ExecutedOrderResponse addExecutionAndProcessOrder(ExecutionRequest executionRequest, int instrumentId) {
-        ExecutedOrderResponse executedOrderResponse = null;
+        ExecutedOrderResponse executedOrderResponse;
         Optional<OrderBook> orderBookHolder = orderBookRepository.findById(instrumentId);
         if (!orderBookHolder.isPresent()) {
             executedOrderResponse = new ExecutedOrderResponse();

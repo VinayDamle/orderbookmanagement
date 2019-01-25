@@ -50,8 +50,7 @@ public class OrderBookController {
         }
         orderBookStatusResponse.setError(error);
         //log.info("Service response is " + mapper.serialize(orderBookStatusResponse));
-        ResponseEntity<OrderBookStatusResponse> entity = new ResponseEntity<OrderBookStatusResponse>(orderBookStatusResponse, openOrCloseOrderBookHttpStatus);
-        return entity;
+        return new ResponseEntity<OrderBookStatusResponse>(orderBookStatusResponse, openOrCloseOrderBookHttpStatus);
     }
 
     @PostMapping(value = "/order/{instrumentId}", produces = {"application/json"}, consumes = {"application/json"})
@@ -59,7 +58,7 @@ public class OrderBookController {
             @ApiResponse(code = 500, message = "Internal server error.")})*/
     public ResponseEntity<OrderDetails> addOrder(@PathVariable int instrumentId, @RequestBody Order order) throws Exception {
         //log.info("The incoming request for instrumentId " + instrumentId + " is " + mapper.serialize(order));
-        OrderDetails orderDetails = null;
+        OrderDetails orderDetails;
         HttpStatus addOrderHttpStatus = HttpStatus.OK;
         if (instrumentId != order.getInstrumentId()) {
             orderDetails = new OrderDetails();
@@ -67,14 +66,13 @@ public class OrderBookController {
             orderDetails.setOrder(null);
             orderDetails.setError(new Error(OrderBookConstants.OBMS_0004, OrderBookConstants.UNEQUAL_INST_ID));
         } else {
-            orderDetails = orderBookService.addOrderToOrderBook(order, instrumentId);
+            orderDetails = orderBookService.addOrder(order, instrumentId);
             if (orderDetails.getError() != null) {
                 addOrderHttpStatus = HttpStatus.NOT_FOUND;
             }
         }
         //log.info("Service response is " + mapper.serialize(orderDetails));
-        ResponseEntity<OrderDetails> entity = new ResponseEntity<OrderDetails>(orderDetails, addOrderHttpStatus);
-        return entity;
+        return new ResponseEntity<OrderDetails>(orderDetails, addOrderHttpStatus);
     }
 
     @PostMapping(value = "/execute/{instrumentId}", produces = {"application/json"}, consumes = {"application/json"})
@@ -83,15 +81,14 @@ public class OrderBookController {
     public ResponseEntity<ExecutedOrderResponse> addExecutionAndExecuteOrder(
             @PathVariable int instrumentId, @RequestBody ExecutionRequest executionRequest) throws Exception {
         //log.info("The incoming request for instrumentId " + instrumentId + " is " + mapper.serialize(executionRequest));
-        ExecutedOrderResponse executedOrderResponse = null;
+        ExecutedOrderResponse executedOrderResponse;
         HttpStatus addExecutionAndExecuteOrderHttpStatus = HttpStatus.OK;
         executedOrderResponse = orderBookService.addExecutionAndProcessOrder(executionRequest, instrumentId);
         if (executedOrderResponse.getError() != null) {
             addExecutionAndExecuteOrderHttpStatus = HttpStatus.NOT_FOUND;
         }
         //log.info("Service response is " + mapper.serialize(executedOrderResponse));
-        ResponseEntity<ExecutedOrderResponse> entity = new ResponseEntity<>(executedOrderResponse, addExecutionAndExecuteOrderHttpStatus);
-        return entity;
+        return new ResponseEntity<>(executedOrderResponse, addExecutionAndExecuteOrderHttpStatus);
     }
 
 }

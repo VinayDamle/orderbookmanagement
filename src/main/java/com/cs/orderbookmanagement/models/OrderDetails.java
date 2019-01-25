@@ -38,9 +38,8 @@ public class OrderDetails {
     public OrderDetails() {
     }
 
-    public OrderDetails(int orderId, int instrumentId, OrderDao order, String orderStatus, int allocatedQuantity, String orderType, double executionPrice) {
+    public OrderDetails(int instrumentId, OrderDao order, String orderStatus, int allocatedQuantity, String orderType, double executionPrice) {
         this.order = order;
-        this.orderId = orderId;
         this.orderType = orderType;
         this.orderStatus = orderStatus;
         this.executionPrice = executionPrice;

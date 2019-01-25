@@ -4,9 +4,9 @@ import com.cs.orderbookmanagement.models.*;
 
 public interface OrderBookService {
 
-    public OrderDetails addOrderToOrderBook(Order order, int instrumentId);
+    OrderDetails addOrder(Order order, int instrumentId);
 
-    public String changeOrderBookStatus(int instrumentId, String command);
+    String changeOrderBookStatus(int instrumentId, String command);
 
-    public ExecutedOrderResponse addExecutionAndProcessOrder(ExecutionRequest execution, int instrumentId);
+    ExecutedOrderResponse addExecutionAndProcessOrder(ExecutionRequest execution, int instrumentId);
 }

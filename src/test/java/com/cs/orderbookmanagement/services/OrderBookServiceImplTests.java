@@ -96,7 +96,7 @@ public class OrderBookServiceImplTests {
         OrderDetails orderDetails = new OrderDetails();
         orderDetails.setOrderId(1);
         when(orderDetailsRepository.save(any(OrderDetails.class))).thenReturn(orderDetails);
-        OrderDetails addedRrderDetails = orderBookService.addOrderToOrderBook(new Order(10, "10/10/2019", 1, 100), 1);
+        OrderDetails addedRrderDetails = orderBookService.addOrder(new Order(10, "10/10/2019", 1, 100), 1);
         Assertions.assertThat(addedRrderDetails).isNotNull();
         Assertions.assertThat(addedRrderDetails.getError()).isNull();
         Assertions.assertThat(addedRrderDetails.getOrderId()).isEqualTo(1);
@@ -106,7 +106,7 @@ public class OrderBookServiceImplTests {
     public void testAddOrderForAnInvalidInstrumentIdThenReturnInstrumentIdNotFound() {
         OrderDetails orderDetails = new OrderDetails();
         orderDetails.setOrderId(1);
-        OrderDetails addedRrderDetails = orderBookService.addOrderToOrderBook(new Order(10, "10/10/2019", 1, 100), 1);
+        OrderDetails addedRrderDetails = orderBookService.addOrder(new Order(10, "10/10/2019", 1, 100), 1);
         Assertions.assertThat(addedRrderDetails).isNotNull();
         Assertions.assertThat(addedRrderDetails.getError()).isNotNull();
         Assertions.assertThat(addedRrderDetails.getError().getErrorMessage()).isEqualTo(OrderBookConstants.INSTRUMENT_ID_NOT_FOUND);
