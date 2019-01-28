@@ -21,13 +21,13 @@ public class OrderBookController {
     @Autowired
     private OrderBookService orderBookService;
 
-    @PostMapping(value = "/status/{instrumentId}", produces = {"application/json"}, consumes = {"application/json"})
+    @PostMapping(value = "/{instrumentId}/status", produces = {"application/json"}, consumes = {"application/json"})
     /*@ApiResponses(value = {@ApiResponse(code = 200, message = "Successfully opened/closed the order book."),
             @ApiResponse(code = 400, message = "Authorization error"),
             @ApiResponse(code = 500, message = "Internal server error")})*/
     public ResponseEntity<OrderBookStatusResponse> openOrCloseOrderBook(
             @PathVariable int instrumentId,
-            @RequestBody OrderBookStatusCommandRequest orderBookStatusCommandRequest) throws Exception {
+            @RequestBody OrderBookStatusCommandRequest orderBookStatusCommandRequest) {
         //log.info("The incoming request for instrumentId " + instrumentId + " is " + mapper.serialize(orderBookStatusCommandRequest));
         Error error = null;
         HttpStatus openOrCloseOrderBookHttpStatus = HttpStatus.OK;
@@ -50,13 +50,13 @@ public class OrderBookController {
         }
         orderBookStatusResponse.setError(error);
         //log.info("Service response is " + mapper.serialize(orderBookStatusResponse));
-        return new ResponseEntity<OrderBookStatusResponse>(orderBookStatusResponse, openOrCloseOrderBookHttpStatus);
+        return new ResponseEntity<>(orderBookStatusResponse, openOrCloseOrderBookHttpStatus);
     }
 
-    @PostMapping(value = "/order/{instrumentId}", produces = {"application/json"}, consumes = {"application/json"})
+    @PostMapping(value = "/{instrumentId}/order", produces = {"application/json"}, consumes = {"application/json"})
     /*@ApiResponses(value = {@ApiResponse(code = 200, message = "Successfully added the orders to the order book."),
             @ApiResponse(code = 500, message = "Internal server error.")})*/
-    public ResponseEntity<OrderDetails> addOrder(@PathVariable int instrumentId, @RequestBody Order order) throws Exception {
+    public ResponseEntity<OrderDetails> addOrder(@PathVariable int instrumentId, @RequestBody Order order) {
         //log.info("The incoming request for instrumentId " + instrumentId + " is " + mapper.serialize(order));
         OrderDetails orderDetails;
         HttpStatus addOrderHttpStatus = HttpStatus.OK;
@@ -72,14 +72,14 @@ public class OrderBookController {
             }
         }
         //log.info("Service response is " + mapper.serialize(orderDetails));
-        return new ResponseEntity<OrderDetails>(orderDetails, addOrderHttpStatus);
+        return new ResponseEntity<>(orderDetails, addOrderHttpStatus);
     }
 
-    @PostMapping(value = "/execute/{instrumentId}", produces = {"application/json"}, consumes = {"application/json"})
+    @PostMapping(value = "/{instrumentId}/execute", produces = {"application/json"}, consumes = {"application/json"})
     /*@ApiResponses(value = {@ApiResponse(code = 200, message = "Successfully executed the orders."),
             @ApiResponse(code = 500, message = "Internal server error.")})*/
     public ResponseEntity<ExecutedOrderResponse> addExecutionAndExecuteOrder(
-            @PathVariable int instrumentId, @RequestBody ExecutionRequest executionRequest) throws Exception {
+            @PathVariable int instrumentId, @RequestBody ExecutionRequest executionRequest) {
         //log.info("The incoming request for instrumentId " + instrumentId + " is " + mapper.serialize(executionRequest));
         ExecutedOrderResponse executedOrderResponse;
         HttpStatus addExecutionAndExecuteOrderHttpStatus = HttpStatus.OK;

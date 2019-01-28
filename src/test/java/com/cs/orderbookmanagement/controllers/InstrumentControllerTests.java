@@ -44,15 +44,6 @@ public class InstrumentControllerTests {
 
     private MockHttpServletRequestBuilder requestBuilder;
 
-    @Before
-    public void setUp() throws Exception {
-    }
-
-    @After
-    public void tearDown() throws Exception {
-
-    }
-
     @Test
     public void testAddInstrument() throws Exception {
         int instrumentId = 1;
@@ -68,7 +59,7 @@ public class InstrumentControllerTests {
                 andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8)).
                 andReturn();
         context = JsonPath.parse(response.getResponse().getContentAsString());
-        Assertions.assertThat(context.read("$.instrumentId").toString()).isEqualTo(instrumentId);
+        Assertions.assertThat(Integer.parseInt(context.read("$.instrumentId").toString())).isEqualTo(instrumentId);
     }
 
 }

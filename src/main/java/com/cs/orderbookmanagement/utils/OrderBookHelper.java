@@ -26,6 +26,8 @@ public class OrderBookHelper {
                     orderDetail.setOrderStatus(OrderBookConstants.VALID);
                     validOrderDetails.add(orderDetail);
                     iterator.remove();
+                } else {
+                    orderDetail.setOrderStatus(OrderBookConstants.INVALID);
                 }
             }
         }
@@ -37,26 +39,29 @@ public class OrderBookHelper {
         for (OrderDetails validOrderDetail : validOrderDetails) {
             totalDemandedQty = totalDemandedQty + validOrderDetail.getOrder().getQuantity();
         }
-        double distributionFactor = execution.getQuantity() / totalDemandedQty;
-        for (OrderDetails validOrderDetail : validOrderDetails) {
+        return getExecuteOrderByDistributionFactor(validOrderDetails, execution.getQuantity() / totalDemandedQty, execution);
+    }
+
+    private List<OrderDetails> getExecuteOrderByDistributionFactor(List<OrderDetails> validOrderDetails, double distributionFactor, Execution execution) {
+        validOrderDetails.forEach(validOrderDetail -> {
             validOrderDetail.setAllocatedQuantity((int) (validOrderDetail.getOrder().getQuantity() * distributionFactor));
             if (validOrderDetail.getAllocatedQuantity() > 0) {
+                //====================================================================================================//
                 /*
                  ASSUMPTION - 1
-                 The execution price for allocated quantity would be the price it was quotebmmmmmmmmnnnnnnbbbbbbvvvvvvvvvvvccccccccxx`d while adding order
+                 The execution price for allocated quantity would be the price it was quoted while adding order
                   */
-                validOrderDetail.setExecutionPrice(validOrderDetail.getOrder().getPrice());
+                //validOrderDetail.setExecutionPrice(validOrderDetail.getOrder().getPrice());
+                //====================================================================================================//
                 /*
                 ASSUMPTION - 2
                 The execution price for allocated quantity would be calculated as below
                 price for 1 unit -> execution.getExecutionPrice() / execution.getQuantity() = X
                 Execution price for all the allocated quantity -> allocated quantity * X = Y
                 validOrderDetail.setExecutionPrice(Y);
-
-                program
+                */
                 validOrderDetail.setExecutionPrice(validOrderDetail.getAllocatedQuantity() * (execution.getExecutionPrice() / execution.getQuantity()));
-                 */
-
+                //====================================================================================================//
                 /*
                 ASSUMPTION - 3
                 The execution price for allocated quantity would be the execution price
@@ -66,9 +71,8 @@ public class OrderBookHelper {
                 validOrderDetail.setExecutionPrice(execution.getExecutionPrice());
                  */
             }
-        }
-        List<OrderDetails> executedOrderDetails = new ArrayList<>(validOrderDetails);
-        return executedOrderDetails;
+        });
+        return new ArrayList<>(validOrderDetails);
     }
 
 }

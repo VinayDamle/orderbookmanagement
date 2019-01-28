@@ -5,6 +5,6 @@ import com.cs.orderbookmanagement.models.InstrumentResponse;
 
 public interface InstrumentService {
 
-    public InstrumentResponse addInstrument(ExecutionRequest executionRequest);
+    InstrumentResponse addInstrument(ExecutionRequest executionRequest);
 
 }

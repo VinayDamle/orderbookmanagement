@@ -39,15 +39,6 @@ public class OrderBookStatsticsServiceImplTests {
     @Mock
     private OrderDetailsRepository orderDetailsRepository;
 
-    @Before
-    public void setUp() throws Exception {
-    }
-
-    @After
-    public void tearDown() throws Exception {
-
-    }
-
     @Test
     public void testFindAll() {
         List<OrderDetails> orderDetailsList = getTestOrderDetails();
@@ -71,6 +62,8 @@ public class OrderBookStatsticsServiceImplTests {
         Assertions.assertThat(fetchedOrderDetailsList).isNotNull();
         Assertions.assertThat(fetchedOrderDetailsList.size()).isEqualTo(3);
     }
+
+    //NEED TO WRITE TEST CASE FOR getOrderStatstics
 
     public List<OrderDetails> getTestOrderDetails() {
         List<OrderDetails> orderDetailsList = new ArrayList<>();

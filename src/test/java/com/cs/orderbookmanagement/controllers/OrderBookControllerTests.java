@@ -58,22 +58,12 @@ public class OrderBookControllerTests {
 
     private MockHttpServletRequestBuilder requestBuilder;
 
-    @Before
-    public void setUp() throws Exception {
-
-    }
-
-    @After
-    public void tearDown() throws Exception {
-
-    }
-
     @Test
     public void testOpenOrderBook() throws Exception {
         instrumentId = 1;
         when(service.changeOrderBookStatus(anyInt(), anyString())).thenReturn(OrderBookConstants.OPEN);
         openOrderBookRequestJsonPayload = getOpenOrderBookRequestJsonPayload();
-        requestBuilder = MockMvcRequestBuilders.post(OrderBookConstants.ORDERBOOKMGMNT + OrderBookConstants.STATUS + instrumentId).
+        requestBuilder = MockMvcRequestBuilders.post("/orderbook/" + instrumentId + "/status").
                 content(openOrderBookRequestJsonPayload).characterEncoding(OrderBookConstants.UTF_8).contentType(MediaType.APPLICATION_JSON).
                 accept(MediaType.APPLICATION_JSON);
         response = mockMvc.perform(requestBuilder).
@@ -90,7 +80,7 @@ public class OrderBookControllerTests {
         instrumentId = 10;
         when(service.changeOrderBookStatus(anyInt(), anyString())).thenReturn(OrderBookConstants.INSTRUMENT_ID_NOT_FOUND);
         openOrderBookRequestJsonPayload = getOpenOrderBookRequestJsonPayload();
-        requestBuilder = MockMvcRequestBuilders.post(OrderBookConstants.ORDERBOOKMGMNT + OrderBookConstants.STATUS + instrumentId).
+        requestBuilder = MockMvcRequestBuilders.post("/orderbook/" + instrumentId + "/status").
                 content(openOrderBookRequestJsonPayload).characterEncoding(OrderBookConstants.UTF_8).contentType(MediaType.APPLICATION_JSON).
                 accept(MediaType.APPLICATION_JSON);
         response = mockMvc.perform(requestBuilder).
@@ -108,7 +98,7 @@ public class OrderBookControllerTests {
         instrumentId = 1;
         when(service.changeOrderBookStatus(anyInt(), anyString())).thenReturn(OrderBookConstants.CLOSE);
         closeOrderBookRequestJsonPayload = getCloseOrderBookRequestJsonPayload();
-        requestBuilder = MockMvcRequestBuilders.post(OrderBookConstants.ORDERBOOKMGMNT + OrderBookConstants.STATUS + instrumentId).
+        requestBuilder = MockMvcRequestBuilders.post("/orderbook/" + instrumentId + "/status").
                 content(closeOrderBookRequestJsonPayload).characterEncoding(OrderBookConstants.UTF_8).contentType(MediaType.APPLICATION_JSON).
                 accept(MediaType.APPLICATION_JSON).param("instrumentId", "1");
         response = mockMvc.perform(requestBuilder).
@@ -125,7 +115,7 @@ public class OrderBookControllerTests {
         instrumentId = 10;
         when(service.changeOrderBookStatus(anyInt(), anyString())).thenReturn(OrderBookConstants.INSTRUMENT_ID_NOT_FOUND);
         closeOrderBookRequestJsonPayload = getCloseOrderBookRequestJsonPayload();
-        requestBuilder = MockMvcRequestBuilders.post(OrderBookConstants.ORDERBOOKMGMNT + OrderBookConstants.STATUS + instrumentId).
+        requestBuilder = MockMvcRequestBuilders.post("/orderbook/" + instrumentId + "/status").
                 content(closeOrderBookRequestJsonPayload).characterEncoding(OrderBookConstants.UTF_8).contentType(MediaType.APPLICATION_JSON).
                 accept(MediaType.APPLICATION_JSON);
         response = mockMvc.perform(requestBuilder).
@@ -146,7 +136,7 @@ public class OrderBookControllerTests {
                 null, 0, OrderBookConstants.LIMIT_ORDER, 0.0);
         when(service.addOrder(any(Order.class), anyInt())).thenReturn(orderDetails);
         orderBookRequestJsonPayload = getOrderBookRequestJsonPayload();
-        requestBuilder = MockMvcRequestBuilders.post(OrderBookConstants.ORDERBOOKMGMNT + OrderBookConstants.ORDER + instrumentId).
+        requestBuilder = MockMvcRequestBuilders.post("/orderbook/" + instrumentId + "/order").
                 content(orderBookRequestJsonPayload).characterEncoding(OrderBookConstants.UTF_8).contentType(MediaType.APPLICATION_JSON).
                 accept(MediaType.APPLICATION_JSON);
         response = mockMvc.perform(requestBuilder).
@@ -165,7 +155,7 @@ public class OrderBookControllerTests {
         OrderDetails orderDetails = new OrderDetails(new Error(OrderBookConstants.OBMS_0001, OrderBookConstants.INSTRUMENT_ID_NOT_FOUND));
         when(service.addOrder(any(Order.class), anyInt())).thenReturn(orderDetails);
         orderBookRequestJsonPayload = getOrderBookRequestJsonPayload();
-        requestBuilder = MockMvcRequestBuilders.post(OrderBookConstants.ORDERBOOKMGMNT + OrderBookConstants.ORDER + instrumentId).
+        requestBuilder = MockMvcRequestBuilders.post("/orderbook/" + instrumentId + "/order").
                 content(orderBookRequestJsonPayload).characterEncoding(OrderBookConstants.UTF_8).contentType(MediaType.APPLICATION_JSON).
                 accept(MediaType.APPLICATION_JSON);
         response = mockMvc.perform(requestBuilder).
@@ -192,7 +182,7 @@ public class OrderBookControllerTests {
         when(executionRequest.getPrice()).thenReturn(100.0);
         when(service.addExecutionAndProcessOrder(any(ExecutionRequest.class), anyInt())).thenReturn(executedOrderResponse);
         orderBookExecutionRequestJsonPayload = getOrderBookExecutionRequestJsonPayload();
-        requestBuilder = MockMvcRequestBuilders.post(OrderBookConstants.ORDERBOOKMGMNT + OrderBookConstants.EXECUTE + instrumentId).
+        requestBuilder = MockMvcRequestBuilders.post("/orderbook/" + instrumentId + "/execute").
                 content(orderBookExecutionRequestJsonPayload).characterEncoding(OrderBookConstants.UTF_8).contentType(MediaType.APPLICATION_JSON).
                 accept(MediaType.APPLICATION_JSON);
         response = mockMvc.perform(requestBuilder).
@@ -215,7 +205,7 @@ public class OrderBookControllerTests {
         when(executionRequest.getPrice()).thenReturn(100.0);
         when(service.addExecutionAndProcessOrder(any(ExecutionRequest.class), anyInt())).thenReturn(executedOrderResponse);
         orderBookExecutionRequestJsonPayload = getOrderBookExecutionRequestJsonPayload();
-        requestBuilder = MockMvcRequestBuilders.post(OrderBookConstants.ORDERBOOKMGMNT + OrderBookConstants.EXECUTE + instrumentId).
+        requestBuilder = MockMvcRequestBuilders.post("/orderbook/" + instrumentId + "/execute").
                 content(orderBookExecutionRequestJsonPayload).characterEncoding(OrderBookConstants.UTF_8).contentType(MediaType.APPLICATION_JSON).
                 accept(MediaType.APPLICATION_JSON);
         response = mockMvc.perform(requestBuilder).
