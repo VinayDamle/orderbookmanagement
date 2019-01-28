@@ -2,6 +2,7 @@ package com.cs.orderbookmanagement.services;
 
 import com.cs.orderbookmanagement.models.Execution;
 import com.cs.orderbookmanagement.models.ExecutionRequest;
+import com.cs.orderbookmanagement.models.InstrumentRequest;
 import com.cs.orderbookmanagement.models.InstrumentResponse;
 import com.cs.orderbookmanagement.repository.InstrumentRepository;
 import com.cs.orderbookmanagement.utils.OrderBookHelper;
@@ -44,7 +45,7 @@ public class InstrumentServiceImplTests {
     public void testAddInstrument() {
         Execution execution = new Execution();
         execution.setInstrumentId(1);
-        ExecutionRequest executionRequest = new ExecutionRequest();
+        InstrumentRequest executionRequest = new InstrumentRequest();
         executionRequest.setPrice(50);
         executionRequest.setQuantity(30);
         executionRequest.setInstrumentDesc("");

@@ -5,6 +5,8 @@ import com.cs.orderbookmanagement.models.*;
 import com.cs.orderbookmanagement.services.OrderBookService;
 import com.cs.orderbookmanagement.utils.JSONMapper;
 import com.cs.orderbookmanagement.utils.OrderBookConstants;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,9 +24,9 @@ public class OrderBookController {
     private OrderBookService orderBookService;
 
     @PostMapping(value = "/{instrumentId}/status", produces = {"application/json"}, consumes = {"application/json"})
-    /*@ApiResponses(value = {@ApiResponse(code = 200, message = "Successfully opened/closed the order book."),
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Successfully opened/closed the order book."),
             @ApiResponse(code = 400, message = "Authorization error"),
-            @ApiResponse(code = 500, message = "Internal server error")})*/
+            @ApiResponse(code = 500, message = "Internal server error")})
     public ResponseEntity<OrderBookStatusResponse> openOrCloseOrderBook(
             @PathVariable int instrumentId,
             @RequestBody OrderBookStatusCommandRequest orderBookStatusCommandRequest) {
@@ -54,8 +56,8 @@ public class OrderBookController {
     }
 
     @PostMapping(value = "/{instrumentId}/order", produces = {"application/json"}, consumes = {"application/json"})
-    /*@ApiResponses(value = {@ApiResponse(code = 200, message = "Successfully added the orders to the order book."),
-            @ApiResponse(code = 500, message = "Internal server error.")})*/
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Successfully added the orders to the order book."),
+            @ApiResponse(code = 500, message = "Internal server error.")})
     public ResponseEntity<OrderDetails> addOrder(@PathVariable int instrumentId, @RequestBody Order order) {
         //log.info("The incoming request for instrumentId " + instrumentId + " is " + mapper.serialize(order));
         OrderDetails orderDetails;
@@ -76,8 +78,8 @@ public class OrderBookController {
     }
 
     @PostMapping(value = "/{instrumentId}/execute", produces = {"application/json"}, consumes = {"application/json"})
-    /*@ApiResponses(value = {@ApiResponse(code = 200, message = "Successfully executed the orders."),
-            @ApiResponse(code = 500, message = "Internal server error.")})*/
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Successfully executed the orders."),
+            @ApiResponse(code = 500, message = "Internal server error.")})
     public ResponseEntity<ExecutedOrderResponse> addExecutionAndExecuteOrder(
             @PathVariable int instrumentId, @RequestBody ExecutionRequest executionRequest) {
         //log.info("The incoming request for instrumentId " + instrumentId + " is " + mapper.serialize(executionRequest));

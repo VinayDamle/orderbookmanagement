@@ -1,9 +1,7 @@
 package com.cs.orderbookmanagement.services;
 
+import com.cs.orderbookmanagement.models.*;
 import com.cs.orderbookmanagement.models.Error;
-import com.cs.orderbookmanagement.models.Execution;
-import com.cs.orderbookmanagement.models.ExecutionRequest;
-import com.cs.orderbookmanagement.models.InstrumentResponse;
 import com.cs.orderbookmanagement.repository.InstrumentRepository;
 import com.cs.orderbookmanagement.utils.OrderBookConstants;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +16,7 @@ public class InstrumentServiceImpl implements InstrumentService {
     private InstrumentRepository instrumentRepository;
 
     @Override
-    public InstrumentResponse addInstrument(ExecutionRequest executionRequest) {
+    public InstrumentResponse addInstrument(InstrumentRequest executionRequest) {
         Execution addedInstrument = null;
         InstrumentResponse instrumentResponse = null;
         Execution execution = new Execution();

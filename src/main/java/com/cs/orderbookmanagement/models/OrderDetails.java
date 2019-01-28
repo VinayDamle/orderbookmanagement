@@ -26,6 +26,9 @@ public class OrderDetails {
 
     private String orderType;
 
+    @ManyToOne
+    private OrderBook orderBook;
+
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String orderStatus;
 

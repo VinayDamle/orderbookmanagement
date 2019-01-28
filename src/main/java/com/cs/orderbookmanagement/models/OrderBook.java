@@ -24,6 +24,7 @@ public class OrderBook {
     private Execution execution;
 
     @OneToMany
+    @JoinColumn(name = "order.instrumentId")
     private List<OrderDetails> orderDetails = new ArrayList<>();
 
     public OrderBook(int instrumentId, String orderBookStatus, Execution execution, List<OrderDetails> orderDetails) {

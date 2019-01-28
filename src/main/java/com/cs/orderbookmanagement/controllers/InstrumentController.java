@@ -1,6 +1,7 @@
 package com.cs.orderbookmanagement.controllers;
 
 import com.cs.orderbookmanagement.models.ExecutionRequest;
+import com.cs.orderbookmanagement.models.InstrumentRequest;
 import com.cs.orderbookmanagement.models.InstrumentResponse;
 import com.cs.orderbookmanagement.services.InstrumentService;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +22,7 @@ public class InstrumentController {
     private InstrumentService instrumentService;
 
     @PostMapping(produces = {"application/json"}, consumes = {"application/json"})
-    public ResponseEntity<InstrumentResponse> addInstrument(@RequestBody ExecutionRequest executionRequest) {
+    public ResponseEntity<InstrumentResponse> addInstrument(@RequestBody InstrumentRequest executionRequest) {
         HttpStatus addInstrumentHttpStatus = HttpStatus.OK;
         InstrumentResponse instrumentResponse = instrumentService.addInstrument(executionRequest);
         System.out.println(instrumentResponse.getInstrumentId() + 1);
