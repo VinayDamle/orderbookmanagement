@@ -88,5 +88,5 @@ Added SOAP UI project with Order Book test suite
 Enhancement
 -----------
 1. Crud for Instrument API
-2. Link OrderBoo with Instrument
-3. Validation for orderBook for non-existing instrument
+2. Link OrderBook with Instrument
+3. Validation to perforn any opertation for non-existing instrument
