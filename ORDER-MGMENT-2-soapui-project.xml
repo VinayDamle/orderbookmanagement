@@ -1,0 +1,507 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:soapui-project id="760fd99c-a78d-430f-9754-fb153f508c48" activeEnvironment="Default" name="ORDER-MGMENT-2" resourceRoot="${projectDir}" soapui-version="5.4.0" abortOnError="false" runType="SEQUENTIAL" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:RestService" id="bba302ee-3402-4317-b0d0-a3632a1459b7" wadlVersion="http://wadl.dev.java.net/2009/02" name="https://localhost:9090" type="rest" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart=""/><con:endpoints><con:endpoint>${#Project#ORDMGMNTENDPT}</con:endpoint></con:endpoints><con:resource name="OPEN-CLOSE" path="/orderbook/{instrumentId}/status" id="00ea1da2-44ce-4d4f-a7e8-3b51b3fd0202"><con:settings/><con:parameters><con:parameter><con:name>instrumentId</con:name><con:value/><con:style>TEMPLATE</con:style><con:default/><con:description xsi:nil="true"/></con:parameter></con:parameters><con:method name="POST" id="4879a8c4-ee85-4082-8684-829b33e53554" method="POST"><con:settings/><con:parameters/><con:representation type="REQUEST"><con:mediaType>application/json</con:mediaType><con:params/></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType>application/json;charset=UTF-8</con:mediaType><con:status>200</con:status><con:params/><con:element xmlns:ins="https://localhost/instrument">ins:Response</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="FAULT"><con:mediaType>application/json;charset=UTF-8</con:mediaType><con:status>404 500 400</con:status><con:params/><con:element xmlns:ins="https://localhost/instrument">ins:Fault</con:element></con:representation><con:request name="OPEN-BOOK" id="32906241-517f-4cf1-9d04-0c3443f1d48f" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;entry key="Authorization" value="${#Project#ORDMGMNTBASICAUTH}" xmlns="http://eviware.com/soapui/config"/></con:setting></con:settings><con:endpoint>${#Project#ORDMGMNTENDPT}</con:endpoint><con:request>{
+	"orderBookStatusCommand": "Open"
+}</con:request><con:originalUri>https://localhost/instrument</con:originalUri><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="instrumentId" value="1" xmlns="http://eviware.com/soapui/config"/></con:parameters><con:parameterOrder><con:entry>instrumentId</con:entry></con:parameterOrder></con:request><con:request name="CLOSE-BOOK" id="32906241-517f-4cf1-9d04-0c3443f1d48f" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;entry key="Authorization" value="${#Project#ORDMGMNTBASICAUTH}" xmlns="http://eviware.com/soapui/config"/></con:setting></con:settings><con:endpoint>${#Project#ORDMGMNTENDPT}</con:endpoint><con:request>{
+	"orderBookStatusCommand": "Close"
+}</con:request><con:originalUri>https://localhost/instrument</con:originalUri><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="instrumentId" value="1" xmlns="http://eviware.com/soapui/config"/></con:parameters><con:parameterOrder><con:entry>instrumentId</con:entry></con:parameterOrder></con:request></con:method></con:resource><con:resource name="ADD-ORDER" path="/orderbook/{instrumentId}/order" id="53a7014c-0d2e-40da-a3dc-54a4c0759caa"><con:settings/><con:parameters><con:parameter><con:name>instrumentId</con:name><con:value/><con:style>TEMPLATE</con:style><con:default/><con:description xsi:nil="true"/></con:parameter></con:parameters><con:method name="POST" id="289443d3-6eae-4845-9aaa-5c25a9bd274b" method="POST"><con:settings/><con:parameters/><con:representation type="REQUEST"><con:mediaType>application/json</con:mediaType><con:params/></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="FAULT"><con:mediaType>application/json;charset=UTF-8</con:mediaType><con:status>404 400</con:status><con:params/><con:element xmlns:ns="http://localhost/orderbook/order/1">ns:Fault</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType>application/json;charset=UTF-8</con:mediaType><con:status>200</con:status><con:params/><con:element xmlns:ns="http://localhost/orderbook/order/1">ns:Response</con:element></con:representation><con:request name="ADD-ORDER" id="42ea3e27-0dd6-4989-900c-e0d9301e9d3e" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;entry key="Authorization" value="${#Project#ORDMGMNTBASICAUTH}" xmlns="http://eviware.com/soapui/config"/></con:setting></con:settings><con:endpoint>${#Project#ORDMGMNTENDPT}</con:endpoint><con:request>{
+	"price": 300,
+	"entryDate": "20-01-2019",
+	"quantity": 30,
+	"instrumentId": 1
+}</con:request><con:originalUri>http://localhost/orderbook/order/1</con:originalUri><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="instrumentId" value="1" xmlns="http://eviware.com/soapui/config"/></con:parameters><con:parameterOrder><con:entry>instrumentId</con:entry></con:parameterOrder></con:request></con:method></con:resource><con:resource name="EXEC-ORDER" path="/orderbook/{instrumentId}/execute" id="3e1fb4ba-caae-431a-95d5-92d2b3c262bd"><con:settings/><con:parameters><con:parameter><con:name>instrumentId</con:name><con:value/><con:style>TEMPLATE</con:style><con:default/><con:description xsi:nil="true"/></con:parameter></con:parameters><con:method name="POST" id="ea925640-6e6f-4364-94da-f9058f8f79d5" method="POST"><con:settings/><con:parameters/><con:representation type="REQUEST"><con:mediaType>application/json</con:mediaType><con:params/></con:representation><con:representation type="FAULT"><con:mediaType>application/json;charset=UTF-8</con:mediaType><con:status>404</con:status><con:params/><con:element xmlns:ns="http://localhost/orderbook/execute/1">ns:Fault</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType>application/json;charset=UTF-8</con:mediaType><con:status>200</con:status><con:params/><con:element xmlns:ns="http://localhost/orderbook/execute/1">ns:Response</con:element></con:representation><con:request name="ADD-EXE-PROCESS-ORD" id="49e2b295-5e28-4def-a96e-ed74cd05b8fd" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;entry key="Authorization" value="${#Project#ORDMGMNTBASICAUTH}" xmlns="http://eviware.com/soapui/config"/></con:setting></con:settings><con:endpoint>${#Project#ORDMGMNTENDPT}</con:endpoint><con:request>{
+	"price": 50.0,
+	"quantity": 30
+}</con:request><con:originalUri>http://localhost/orderbook/execute/1</con:originalUri><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="instrumentId" value="2" xmlns="http://eviware.com/soapui/config"/></con:parameters><con:parameterOrder><con:entry>instrumentId</con:entry></con:parameterOrder></con:request></con:method></con:resource><con:resource name="GET-ALL-ORDERS" path="/orderbook/statstics/orders" id="f2b765e8-dd7c-40bd-a22c-9f3b91ed579f"><con:settings/><con:parameters/><con:method name="GET" id="b034d6cf-0183-4c1f-805b-7331e6eaf2d3" method="GET"><con:settings/><con:parameters/><con:representation type="FAULT"><con:mediaType xsi:nil="true"/><con:status>401</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="FAULT"><con:mediaType>application/json;charset=UTF-8</con:mediaType><con:status>415</con:status><con:params/><con:element xmlns:ord="http://localhost/orderbook/statstics/orders">ord:Fault</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType>application/json;charset=UTF-8</con:mediaType><con:status>200</con:status><con:params/><con:element>Response</con:element></con:representation><con:representation type="REQUEST"><con:mediaType>application/json</con:mediaType><con:params/></con:representation><con:request name="GET-ALL-ORDERS" id="922880a8-20ef-4b23-a9f4-e063c8ee2574" mediaType="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment xmlns:con="http://eviware.com/soapui/config">
+  &lt;con:entry key="Authorization" value="${#Project#ORDMGMNTBASICAUTH}"/>
+  &lt;con:entry key="Content-Type" value="application/json "/>
+&lt;/xml-fragment></con:setting></con:settings><con:endpoint>${#Project#ORDMGMNTENDPT}</con:endpoint><con:request/><con:originalUri>http://localhost/orderbook/statstics/orders</con:originalUri><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/><con:parameterOrder/></con:request></con:method></con:resource><con:resource name="GET-ORDERS-BY-INST-ID" path="/orderbook/statstics/{instrumentId}/orders" id="ae0ee24f-a6b6-4e9c-a3d4-7c995d0da00f"><con:settings/><con:parameters><con:parameter><con:name>instrumentId</con:name><con:value/><con:style>TEMPLATE</con:style><con:default/><con:description xsi:nil="true"/></con:parameter></con:parameters><con:method name="GET" id="4c3f6b3f-6684-448c-8085-f11fc533741b" method="GET"><con:settings/><con:parameters/><con:representation type="FAULT"><con:mediaType xsi:nil="true"/><con:status>401</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType>application/json;charset=UTF-8</con:mediaType><con:status>200</con:status><con:params/><con:element>Response</con:element></con:representation><con:representation type="REQUEST"><con:mediaType>application/json</con:mediaType><con:params/></con:representation><con:request name="GET-ORDS-INST-ID" id="562a21a6-7d18-4276-b0c8-fb980d2049db" mediaType="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment xmlns:con="http://eviware.com/soapui/config">
+  &lt;con:entry key="Authorization" value="${#Project#ORDMGMNTBASICAUTH}"/>
+  &lt;con:entry key="Content-Type" value="application/json"/>
+&lt;/xml-fragment></con:setting></con:settings><con:endpoint>${#Project#ORDMGMNTENDPT}</con:endpoint><con:request/><con:originalUri>http://localhost/orderbook/statstics/orders</con:originalUri><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="instrumentId" value="2" xmlns="http://eviware.com/soapui/config"/></con:parameters><con:parameterOrder><con:entry>instrumentId</con:entry></con:parameterOrder></con:request></con:method></con:resource><con:resource name="GET-ORDS-ORDR-BY-ID" path="/orderbook/statstics/order/{orderId}" id="1ab62929-c1c0-40fa-b3a3-a6d45aa07abe"><con:settings/><con:parameters><con:parameter><con:name>orderId</con:name><con:value/><con:style>TEMPLATE</con:style><con:default/><con:description xsi:nil="true"/></con:parameter></con:parameters><con:method name="GET" id="be2539ad-f6eb-4fb0-bb89-5b535038badf" method="GET"><con:settings/><con:parameters/><con:representation type="FAULT"><con:mediaType xsi:nil="true"/><con:status>401</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="REQUEST"><con:mediaType>application/json</con:mediaType><con:params/></con:representation><con:representation type="RESPONSE"><con:mediaType>application/json;charset=UTF-8</con:mediaType><con:status>200</con:status><con:params/><con:element>Response</con:element></con:representation><con:representation type="FAULT"><con:mediaType>application/json;charset=UTF-8</con:mediaType><con:status>500</con:status><con:params/><con:element xmlns:ord="http://localhost/orderbook/statstics/orders">ord:Fault</con:element></con:representation><con:request name="GET-ORDS-ORDR-ID" id="df0e2cb7-1ca1-4184-be37-19f2efb1413c" mediaType="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment xmlns:con="http://eviware.com/soapui/config">
+  &lt;con:entry key="Authorization" value="${#Project#ORDMGMNTBASICAUTH}"/>
+  &lt;con:entry key="Content-Type" value="application/json"/>
+&lt;/xml-fragment></con:setting></con:settings><con:endpoint>${#Project#ORDMGMNTENDPT}</con:endpoint><con:request/><con:originalUri>http://localhost/orderbook/statstics/orders</con:originalUri><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="orderId" value="2" xmlns="http://eviware.com/soapui/config"/></con:parameters><con:parameterOrder><con:entry>orderId</con:entry></con:parameterOrder></con:request></con:method></con:resource><con:resource name="GET-ORDER-STATE-BY-ORDER-ID" path="/orderbook/statstics/order/{orderId}/orderState" id="c2cd55bf-49a4-4ce2-954f-b45b6caa606f"><con:settings/><con:parameters><con:parameter><con:name>orderId</con:name><con:value/><con:style>TEMPLATE</con:style><con:default/></con:parameter></con:parameters><con:method name="GET" id="0843656a-19f7-4ff3-b126-ec5984adc8eb" method="GET"><con:settings/><con:parameters/><con:representation type="FAULT"><con:mediaType xsi:nil="true"/><con:status>401</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="REQUEST"><con:mediaType>application/json</con:mediaType><con:params/></con:representation><con:representation type="FAULT"><con:mediaType xsi:nil="true"/><con:status>401</con:status><con:params/><con:element>data</con:element></con:representation><con:request name="GET-ORDER-STATE-BY-ORDER-ID" id="e4716b3a-e11c-462c-8db3-0b51358085bd" mediaType="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment xmlns:con="http://eviware.com/soapui/config">
+  &lt;con:entry key="Authorizarion" value="${#Project#ORDMGMNTBASICAUTH}"/>
+  &lt;con:entry key="Content-Type" value="application/json"/>
+&lt;/xml-fragment></con:setting></con:settings><con:endpoint>${#Project#ORDMGMNTENDPT}</con:endpoint><con:request/><con:originalUri>http://localhost/orderbook/statstics/order/2/orderState</con:originalUri><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="orderId" value="2" xmlns="http://eviware.com/soapui/config"/></con:parameters><con:parameterOrder><con:entry>orderId</con:entry></con:parameterOrder></con:request></con:method></con:resource><con:resource name="GET-STATSTICS" path="/orderbook/statstics" id="1ff5ddc5-a423-4834-902f-b15662a00357"><con:settings/><con:parameters/><con:method name="GET" id="452d3d50-aac2-4b8d-96f0-8dcb0bc5a34e" method="GET"><con:settings/><con:parameters/><con:representation type="FAULT"><con:mediaType xsi:nil="true"/><con:status>401</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="REQUEST"><con:mediaType>application/json</con:mediaType><con:params/></con:representation><con:representation type="RESPONSE"><con:mediaType>application/json;charset=UTF-8</con:mediaType><con:status>200</con:status><con:params/><con:element>Response</con:element></con:representation><con:request name="GET-STATSTICS" id="1b398214-7727-4d54-beae-dd9c4d9277a8" mediaType="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment xmlns:con="http://eviware.com/soapui/config">
+  &lt;con:entry key="Authorization" value="${#Project#ORDMGMNTBASICAUTH}"/>
+  &lt;con:entry key="Content-Type" value="application/json"/>
+&lt;/xml-fragment></con:setting></con:settings><con:endpoint>${#Project#ORDMGMNTENDPT}</con:endpoint><con:request/><con:originalUri>http://localhost/orderbook/statstics</con:originalUri><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:request></con:method></con:resource><con:resource name="GET-STATS-VALID-INVALID" path="/orderbook/statstics?fetchValidInvalidRecords=true" id="dbed8890-bcc8-458e-99bf-cbe1713eaa6d"><con:settings/><con:parameters/><con:method name="GET" id="4983fb26-7233-4ba9-ab2d-dab4ecf87280" method="GET"><con:settings/><con:parameters/><con:representation type="RESPONSE"><con:mediaType>application/json;charset=UTF-8</con:mediaType><con:status>200</con:status><con:params/><con:element>Response</con:element></con:representation><con:representation type="REQUEST"><con:mediaType>application/json</con:mediaType><con:params/></con:representation><con:request name="GET-STATS-VALID-INVALID" id="3f42b1d2-f542-4abc-b124-126419bd7feb" mediaType="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment xmlns:con="http://eviware.com/soapui/config">
+  &lt;con:entry key="Authorization" value="${#Project#ORDMGMNTBASICAUTH}"/>
+  &lt;con:entry key="Content-Type" value="application/json"/>
+&lt;/xml-fragment></con:setting></con:settings><con:endpoint>${#Project#ORDMGMNTENDPT}</con:endpoint><con:request/><con:originalUri>http://localhost/orderbook/statstics</con:originalUri><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:request></con:method></con:resource></con:interface><con:testSuite id="fed954a7-4445-4e2e-a33c-422f33b948a3" name="ORDER-BOOK-TEST-SUITE"><con:settings/><con:runType>SEQUENTIAL</con:runType><con:testCase id="88b78dba-e1d7-4359-b8cb-7ea907352cc0" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="EXECUTE" searchProperties="true"><con:settings/><con:testStep type="groovy" name="PRE-SUITE" id="29a7a9c2-9169-4890-907e-540277a8eded"><con:settings/><con:config><script>import groovy.json.JsonSlurper
+
+def generator = { String alphabet, int n ->
+  new Random().with {
+    (1..n).collect { alphabet[ nextInt( alphabet.length() ) ] }.join()
+  }
+}
+def RandomWord = generator( (('A'..'Z')+('0'..'9')).join(), 6)
+log.info RandomWord
+testRunner.testCase.testSuite.project.setPropertyValue("ORDMGMNTTXNID", RandomWord)
+
+def ORDMGMNTENDPT = "http://localhost:9090"
+log.info ORDMGMNTENDPT
+testRunner.testCase.testSuite.project.setPropertyValue("ORDMGMNTENDPT", ORDMGMNTENDPT)
+
+def ORDMGMNTBASICAUTH = "Basic T3JkZXJCb29rVXNlcjAxOk9yZGVyQm9va1VzZXIwMQ=="
+log.info ORDMGMNTBASICAUTH
+testRunner.testCase.testSuite.project.setPropertyValue("ORDMGMNTBASICAUTH", ORDMGMNTBASICAUTH)
+
+def INSTRUMENTID1 = "1"
+log.info INSTRUMENTID1
+testRunner.testCase.testSuite.project.setPropertyValue("INSTRUMENTID1", INSTRUMENTID1)
+
+def INSTRUMENTID2 = "2"
+log.info INSTRUMENTID2
+testRunner.testCase.testSuite.project.setPropertyValue("INSTRUMENTID2", INSTRUMENTID2)
+
+</script></con:config></con:testStep><con:testStep type="restrequest" name="OPEN-BOOK-1" id="0bcc997f-841d-401a-9747-e8594fe4f95a"><con:settings/><con:config service="https://localhost:9090" resourcePath="/orderbook/{instrumentId}/status" methodName="POST" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="OPEN-BOOK-1" id="32906241-517f-4cf1-9d04-0c3443f1d48f" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;entry key="Authorization" value="${#Project#ORDMGMNTBASICAUTH}" xmlns="http://eviware.com/soapui/config"/></con:setting></con:settings><con:endpoint>${#Project#ORDMGMNTENDPT}</con:endpoint><con:request>{
+	"orderBookStatusCommand": "Open"
+}</con:request><con:originalUri>https://localhost/instrument</con:originalUri><con:assertion type="GroovyScriptAssertion" id="5abbf3ef-e630-4d29-a280-a515d51c6ed8" name="Script Assertion"><con:configuration><scriptText>import groovy.json.JsonSlurper
+def ResponseMessage = messageExchange.response.responseContent
+def jsonSlurper = new JsonSlurper().parseText(ResponseMessage)
+def ResponseHeaders = messageExchange.responseHeaders
+assert !(jsonSlurper.isEmpty())
+assert (jsonSlurper.orderBookStatus == "Open")</scriptText></con:configuration></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="instrumentId" value="${#Project#INSTRUMENTID1}" xmlns="http://eviware.com/soapui/config"/></con:parameters><con:parameterOrder><con:entry>instrumentId</con:entry></con:parameterOrder></con:restRequest></con:config></con:testStep><con:testStep type="restrequest" name="OPEN-BOOK-2" id="a5c6759a-db2a-4ce8-8412-37e5934072b1"><con:settings/><con:config service="https://localhost:9090" resourcePath="/orderbook/{instrumentId}/status" methodName="POST" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="OPEN-BOOK-2" id="32906241-517f-4cf1-9d04-0c3443f1d48f" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;entry key="Authorization" value="${#Project#ORDMGMNTBASICAUTH}" xmlns="http://eviware.com/soapui/config"/></con:setting></con:settings><con:endpoint>${#Project#ORDMGMNTENDPT}</con:endpoint><con:request>{
+	"orderBookStatusCommand": "Open"
+}</con:request><con:originalUri>https://localhost/instrument</con:originalUri><con:assertion type="GroovyScriptAssertion" id="0c686859-652d-42c9-9d25-87cb000cd3e8" name="Script Assertion"><con:configuration><scriptText>import groovy.json.JsonSlurper
+def ResponseMessage = messageExchange.response.responseContent
+def jsonSlurper = new JsonSlurper().parseText(ResponseMessage)
+def ResponseHeaders = messageExchange.responseHeaders
+assert !(jsonSlurper.isEmpty())
+assert (jsonSlurper.orderBookStatus == "Open")</scriptText></con:configuration></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="instrumentId" value="2" xmlns="http://eviware.com/soapui/config"/></con:parameters><con:parameterOrder><con:entry>instrumentId</con:entry></con:parameterOrder></con:restRequest></con:config></con:testStep><con:testStep type="restrequest" name="ADD-ORDER-1-1" id="67f5a1c6-149d-4bee-8b38-c62866115cda"><con:settings/><con:config service="https://localhost:9090" resourcePath="/orderbook/{instrumentId}/order" methodName="POST" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="ADD-ORDER-1-1" id="42ea3e27-0dd6-4989-900c-e0d9301e9d3e" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;entry key="Authorization" value="${#Project#ORDMGMNTBASICAUTH}" xmlns="http://eviware.com/soapui/config"/></con:setting></con:settings><con:endpoint>${#Project#ORDMGMNTENDPT}</con:endpoint><con:request>{
+	"price": 300,
+	"entryDate": "20-01-2019",
+	"quantity": 30,
+	"instrumentId": ${#Project#INSTRUMENTID1}
+}</con:request><con:originalUri>http://localhost/orderbook/order/1</con:originalUri><con:assertion type="GroovyScriptAssertion" id="f5f42b23-5cb1-4461-a634-e79c08b95592" name="Script Assertion"><con:configuration><scriptText>import groovy.json.JsonSlurper
+
+def ResponseMessage = messageExchange.response.responseContent
+def jsonSlurper = new JsonSlurper().parseText(ResponseMessage)
+def ResponseHeaders = messageExchange.responseHeaders
+assert !(jsonSlurper.isEmpty())
+assert (jsonSlurper.orderId != 0)
+assert (jsonSlurper.order.price == 300)
+assert (jsonSlurper.executionPrice == 0)
+assert (jsonSlurper.order.quantity == 30)
+assert (jsonSlurper.allocatedQuantity == 0)
+assert (jsonSlurper.order.instrumentId == 1)
+assert (jsonSlurper.orderType == "LimitOrder")
+assert (jsonSlurper.order.entryDate == "20-01-2019")</scriptText></con:configuration></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="instrumentId" value="${#Project#INSTRUMENTID1}" xmlns="http://eviware.com/soapui/config"/></con:parameters><con:parameterOrder><con:entry>instrumentId</con:entry></con:parameterOrder></con:restRequest></con:config></con:testStep><con:testStep type="restrequest" name="ADD-ORDER-1-2" id="fadae8e0-6a15-4418-8bdf-7701a44c6d29"><con:settings/><con:config service="https://localhost:9090" resourcePath="/orderbook/{instrumentId}/order" methodName="POST" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="ADD-ORDER-1-2" id="42ea3e27-0dd6-4989-900c-e0d9301e9d3e" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;entry key="Authorization" value="${#Project#ORDMGMNTBASICAUTH}" xmlns="http://eviware.com/soapui/config"/></con:setting></con:settings><con:endpoint>${#Project#ORDMGMNTENDPT}</con:endpoint><con:request>{
+	"price": 200,
+	"entryDate": "20-01-2019",
+	"quantity": 20,
+	"instrumentId": ${#Project#INSTRUMENTID1}
+}</con:request><con:originalUri>http://localhost/orderbook/order/1</con:originalUri><con:assertion type="GroovyScriptAssertion" id="4375921a-a33e-4345-b0f7-d89ac5f7f2b1" name="Script Assertion"><con:configuration><scriptText>import groovy.json.JsonSlurper
+def ResponseMessage = messageExchange.response.responseContent
+def jsonSlurper = new JsonSlurper().parseText(ResponseMessage)
+def ResponseHeaders = messageExchange.responseHeaders
+assert !(jsonSlurper.isEmpty())
+assert (jsonSlurper.orderId != 0)
+assert (jsonSlurper.order.price == 200)
+assert (jsonSlurper.executionPrice == 0)
+assert (jsonSlurper.order.quantity == 20)
+assert (jsonSlurper.allocatedQuantity == 0)
+assert (jsonSlurper.order.instrumentId == 1)
+assert (jsonSlurper.orderType == "LimitOrder")
+assert (jsonSlurper.order.entryDate == "20-01-2019")</scriptText></con:configuration></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="instrumentId" value="${#Project#INSTRUMENTID1}" xmlns="http://eviware.com/soapui/config"/></con:parameters><con:parameterOrder><con:entry>instrumentId</con:entry></con:parameterOrder></con:restRequest></con:config></con:testStep><con:testStep type="restrequest" name="ADD-ORDER-1-3" id="281e74e3-77c6-4deb-9a7f-73372d4b61b1"><con:settings/><con:config service="https://localhost:9090" resourcePath="/orderbook/{instrumentId}/order" methodName="POST" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="ADD-ORDER-1-3" id="42ea3e27-0dd6-4989-900c-e0d9301e9d3e" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;entry key="Authorization" value="${#Project#ORDMGMNTBASICAUTH}" xmlns="http://eviware.com/soapui/config"/></con:setting></con:settings><con:endpoint>${#Project#ORDMGMNTENDPT}</con:endpoint><con:request>{
+	"price": 100,
+	"entryDate": "20-01-2019",
+	"quantity": 10,
+	"instrumentId": ${#Project#INSTRUMENTID1}
+}</con:request><con:originalUri>http://localhost/orderbook/order/1</con:originalUri><con:assertion type="GroovyScriptAssertion" id="5c339d0d-6f0c-4e75-bac5-871a4e2cdc21" name="Script Assertion"><con:configuration><scriptText>import groovy.json.JsonSlurper
+def ResponseMessage = messageExchange.response.responseContent
+def jsonSlurper = new JsonSlurper().parseText(ResponseMessage)
+def ResponseHeaders = messageExchange.responseHeaders
+assert !(jsonSlurper.isEmpty())
+assert (jsonSlurper.orderId != 0)
+assert (jsonSlurper.order.price == 100)
+assert (jsonSlurper.executionPrice == 0)
+assert (jsonSlurper.order.quantity == 10)
+assert (jsonSlurper.allocatedQuantity == 0)
+assert (jsonSlurper.order.instrumentId == 1)
+assert (jsonSlurper.orderType == "LimitOrder")
+assert (jsonSlurper.order.entryDate == "20-01-2019")</scriptText></con:configuration></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="instrumentId" value="${#Project#INSTRUMENTID1}" xmlns="http://eviware.com/soapui/config"/></con:parameters><con:parameterOrder><con:entry>instrumentId</con:entry></con:parameterOrder></con:restRequest></con:config></con:testStep><con:testStep type="restrequest" name="ADD-ORDER-1-4" id="70d06b97-0018-4d06-9cb6-e2f36a26d6f2"><con:settings/><con:config service="https://localhost:9090" resourcePath="/orderbook/{instrumentId}/order" methodName="POST" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="ADD-ORDER-1-4" id="42ea3e27-0dd6-4989-900c-e0d9301e9d3e" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;entry key="Authorization" value="${#Project#ORDMGMNTBASICAUTH}" xmlns="http://eviware.com/soapui/config"/></con:setting></con:settings><con:endpoint>${#Project#ORDMGMNTENDPT}</con:endpoint><con:request>{
+	"price": 5,
+	"entryDate": "20-01-2019",
+	"quantity": 50,
+	"instrumentId": ${#Project#INSTRUMENTID1}
+}</con:request><con:originalUri>http://localhost/orderbook/order/1</con:originalUri><con:assertion type="GroovyScriptAssertion" id="abf77d66-7b60-41bf-a566-00e4f2328a7b" name="Script Assertion"><con:configuration><scriptText>import groovy.json.JsonSlurper
+def ResponseMessage = messageExchange.response.responseContent
+def jsonSlurper = new JsonSlurper().parseText(ResponseMessage)
+def ResponseHeaders = messageExchange.responseHeaders
+assert !(jsonSlurper.isEmpty())
+assert (jsonSlurper.orderId != 0)
+assert (jsonSlurper.order.price == 5)
+assert (jsonSlurper.executionPrice == 0)
+assert (jsonSlurper.order.quantity == 50)
+assert (jsonSlurper.allocatedQuantity == 0)
+assert (jsonSlurper.order.instrumentId == 1)
+assert (jsonSlurper.orderType == "LimitOrder")
+assert (jsonSlurper.order.entryDate == "20-01-2019")</scriptText></con:configuration></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="instrumentId" value="${#Project#INSTRUMENTID1}" xmlns="http://eviware.com/soapui/config"/></con:parameters><con:parameterOrder><con:entry>instrumentId</con:entry></con:parameterOrder></con:restRequest></con:config></con:testStep><con:testStep type="restrequest" name="ADD-ORDER-1-5" id="4282a97f-d6da-4bf5-afb0-ec8580a60428"><con:settings/><con:config service="https://localhost:9090" resourcePath="/orderbook/{instrumentId}/order" methodName="POST" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="ADD-ORDER-1-5" id="42ea3e27-0dd6-4989-900c-e0d9301e9d3e" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;entry key="Authorization" value="${#Project#ORDMGMNTBASICAUTH}" xmlns="http://eviware.com/soapui/config"/></con:setting></con:settings><con:endpoint>${#Project#ORDMGMNTENDPT}</con:endpoint><con:request>{
+	"price": 40,
+	"entryDate": "30-01-2019",
+	"quantity": 40,
+	"instrumentId": ${#Project#INSTRUMENTID1}
+}</con:request><con:originalUri>http://localhost/orderbook/order/1</con:originalUri><con:assertion type="GroovyScriptAssertion" id="fee1f24c-eaa0-4cde-9232-9b2d278d0545" name="Script Assertion"><con:configuration><scriptText>import groovy.json.JsonSlurper
+def ResponseMessage = messageExchange.response.responseContent
+def jsonSlurper = new JsonSlurper().parseText(ResponseMessage)
+def ResponseHeaders = messageExchange.responseHeaders
+assert !(jsonSlurper.isEmpty())
+assert (jsonSlurper.orderId != 0)
+assert (jsonSlurper.order.price == 40)
+assert (jsonSlurper.executionPrice == 0)
+assert (jsonSlurper.order.quantity == 40)
+assert (jsonSlurper.allocatedQuantity == 0)
+assert (jsonSlurper.order.instrumentId == 1)
+assert (jsonSlurper.orderType == "LimitOrder")
+assert (jsonSlurper.order.entryDate == "30-01-2019")</scriptText></con:configuration></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="instrumentId" value="${#Project#INSTRUMENTID1}" xmlns="http://eviware.com/soapui/config"/></con:parameters><con:parameterOrder><con:entry>instrumentId</con:entry></con:parameterOrder></con:restRequest></con:config></con:testStep><con:testStep type="restrequest" name="ADD-ORDER-1-6" id="096b470a-4b2d-4407-9233-b294f31a7a06"><con:settings/><con:config service="https://localhost:9090" resourcePath="/orderbook/{instrumentId}/order" methodName="POST" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="ADD-ORDER-1-6" id="42ea3e27-0dd6-4989-900c-e0d9301e9d3e" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;entry key="Authorization" value="${#Project#ORDMGMNTBASICAUTH}" xmlns="http://eviware.com/soapui/config"/></con:setting></con:settings><con:endpoint>${#Project#ORDMGMNTENDPT}</con:endpoint><con:request>{
+	"price": 200,
+	"entryDate": "16-01-2019",
+	"quantity": 90,
+	"instrumentId": 1
+}</con:request><con:originalUri>http://localhost/orderbook/order/1</con:originalUri><con:assertion type="GroovyScriptAssertion" id="e44dce74-930c-4f61-a522-c24ad8ac500e" name="Script Assertion"><con:configuration><scriptText>import groovy.json.JsonSlurper
+def ResponseMessage = messageExchange.response.responseContent
+def jsonSlurper = new JsonSlurper().parseText(ResponseMessage)
+def ResponseHeaders = messageExchange.responseHeaders
+assert !(jsonSlurper.isEmpty())
+assert (jsonSlurper.orderId != 0)
+assert (jsonSlurper.order.price == 200)
+assert (jsonSlurper.executionPrice == 0)
+assert (jsonSlurper.order.quantity == 90)
+assert (jsonSlurper.allocatedQuantity == 0)
+assert (jsonSlurper.order.instrumentId == 1)
+assert (jsonSlurper.orderType == "LimitOrder")
+assert (jsonSlurper.order.entryDate == "16-01-2019")</scriptText></con:configuration></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="instrumentId" value="${#Project#INSTRUMENTID1}" xmlns="http://eviware.com/soapui/config"/></con:parameters><con:parameterOrder><con:entry>instrumentId</con:entry></con:parameterOrder></con:restRequest></con:config></con:testStep><con:testStep type="restrequest" name="ADD-ORDER-1-7" id="e8817c30-57cf-4749-a0a7-21552ac24872"><con:settings/><con:config service="https://localhost:9090" resourcePath="/orderbook/{instrumentId}/order" methodName="POST" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="ADD-ORDER-1-7" id="42ea3e27-0dd6-4989-900c-e0d9301e9d3e" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;entry key="Authorization" value="${#Project#ORDMGMNTBASICAUTH}" xmlns="http://eviware.com/soapui/config"/></con:setting></con:settings><con:endpoint>${#Project#ORDMGMNTENDPT}</con:endpoint><con:request>{
+	"price": 1,
+	"entryDate": "29-01-2019",
+	"quantity": 900,
+	"instrumentId": ${#Project#INSTRUMENTID1}
+}</con:request><con:originalUri>http://localhost/orderbook/order/1</con:originalUri><con:assertion type="GroovyScriptAssertion" id="5626fb4b-8ad6-450a-baa5-f40828607f3a" name="Script Assertion"><con:configuration><scriptText>import groovy.json.JsonSlurper
+def ResponseMessage = messageExchange.response.responseContent
+def jsonSlurper = new JsonSlurper().parseText(ResponseMessage)
+def ResponseHeaders = messageExchange.responseHeaders
+assert !(jsonSlurper.isEmpty())
+assert (jsonSlurper.orderId != 0)
+assert (jsonSlurper.order.price == 1)
+assert (jsonSlurper.executionPrice == 0)
+assert (jsonSlurper.order.quantity == 900)
+assert (jsonSlurper.allocatedQuantity == 0)
+assert (jsonSlurper.order.instrumentId == 1)
+assert (jsonSlurper.orderType == "LimitOrder")
+assert (jsonSlurper.order.entryDate == "29-01-2019")</scriptText></con:configuration></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="instrumentId" value="${#Project#INSTRUMENTID1}" xmlns="http://eviware.com/soapui/config"/></con:parameters><con:parameterOrder><con:entry>instrumentId</con:entry></con:parameterOrder></con:restRequest></con:config></con:testStep><con:testStep type="restrequest" name="ADD-ORDER-1-8" id="37f4374f-4a2b-47db-9a4b-0d46f9016551"><con:settings/><con:config service="https://localhost:9090" resourcePath="/orderbook/{instrumentId}/order" methodName="POST" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="ADD-ORDER-1-8" id="42ea3e27-0dd6-4989-900c-e0d9301e9d3e" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;entry key="Authorization" value="${#Project#ORDMGMNTBASICAUTH}" xmlns="http://eviware.com/soapui/config"/></con:setting></con:settings><con:endpoint>${#Project#ORDMGMNTENDPT}</con:endpoint><con:request>{
+	"price": 20,
+	"entryDate": "27-01-2019",
+	"quantity": 21,
+	"instrumentId": ${#Project#INSTRUMENTID1}
+}</con:request><con:originalUri>http://localhost/orderbook/order/1</con:originalUri><con:assertion type="GroovyScriptAssertion" id="6c4ab439-0557-43b6-97e7-a411fbd947f4" name="Script Assertion"><con:configuration><scriptText>import groovy.json.JsonSlurper
+def ResponseMessage = messageExchange.response.responseContent
+def jsonSlurper = new JsonSlurper().parseText(ResponseMessage)
+def ResponseHeaders = messageExchange.responseHeaders
+assert !(jsonSlurper.isEmpty())
+assert (jsonSlurper.orderId != 0)
+assert (jsonSlurper.order.price == 20)
+assert (jsonSlurper.executionPrice == 0)
+assert (jsonSlurper.order.quantity == 21)
+assert (jsonSlurper.allocatedQuantity == 0)
+assert (jsonSlurper.order.instrumentId == 1)
+assert (jsonSlurper.orderType == "LimitOrder")
+assert (jsonSlurper.order.entryDate == "27-01-2019")</scriptText></con:configuration></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="instrumentId" value="${#Project#INSTRUMENTID1}" xmlns="http://eviware.com/soapui/config"/></con:parameters><con:parameterOrder><con:entry>instrumentId</con:entry></con:parameterOrder></con:restRequest></con:config></con:testStep><con:testStep type="restrequest" name="ADD-ORDER-2-1" id="9fb933d7-0ec3-4776-a4a0-256cddfdb134"><con:settings/><con:config service="https://localhost:9090" resourcePath="/orderbook/{instrumentId}/order" methodName="POST" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="ADD-ORDER-2-1" id="42ea3e27-0dd6-4989-900c-e0d9301e9d3e" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;entry key="Authorization" value="${#Project#ORDMGMNTBASICAUTH}" xmlns="http://eviware.com/soapui/config"/></con:setting></con:settings><con:endpoint>${#Project#ORDMGMNTENDPT}</con:endpoint><con:request>{
+	"price": 300,
+	"entryDate": "20-01-2019",
+	"quantity": 30,
+	"instrumentId": ${#Project#INSTRUMENTID2}
+}</con:request><con:originalUri>http://localhost/orderbook/order/1</con:originalUri><con:assertion type="GroovyScriptAssertion" id="3dbda2f9-934e-49c2-acf5-eafe1098cd14" name="Script Assertion"><con:configuration><scriptText>import groovy.json.JsonSlurper
+def ResponseMessage = messageExchange.response.responseContent
+def jsonSlurper = new JsonSlurper().parseText(ResponseMessage)
+def ResponseHeaders = messageExchange.responseHeaders
+assert !(jsonSlurper.isEmpty())
+assert (jsonSlurper.orderId != 0)
+assert (jsonSlurper.order.price == 300)
+assert (jsonSlurper.executionPrice == 0)
+assert (jsonSlurper.order.quantity == 30)
+assert (jsonSlurper.allocatedQuantity == 0)
+assert (jsonSlurper.order.instrumentId == 2)
+assert (jsonSlurper.orderType == "LimitOrder")
+assert (jsonSlurper.order.entryDate == "20-01-2019")</scriptText></con:configuration></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="instrumentId" value="${#Project#INSTRUMENTID2}" xmlns="http://eviware.com/soapui/config"/></con:parameters><con:parameterOrder><con:entry>instrumentId</con:entry></con:parameterOrder></con:restRequest></con:config></con:testStep><con:testStep type="restrequest" name="ADD-ORDER-2-2" id="ef4c7a40-7840-4c97-8b83-6f5ddeb158c9"><con:settings/><con:config service="https://localhost:9090" resourcePath="/orderbook/{instrumentId}/order" methodName="POST" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="ADD-ORDER-2-2" id="42ea3e27-0dd6-4989-900c-e0d9301e9d3e" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;entry key="Authorization" value="${#Project#ORDMGMNTBASICAUTH}" xmlns="http://eviware.com/soapui/config"/></con:setting></con:settings><con:endpoint>${#Project#ORDMGMNTENDPT}</con:endpoint><con:request>{
+	"price": 200,
+	"entryDate": "20-01-2019",
+	"quantity": 20,
+	"instrumentId": ${#Project#INSTRUMENTID2}
+}</con:request><con:originalUri>http://localhost/orderbook/order/1</con:originalUri><con:assertion type="GroovyScriptAssertion" id="13cb2ba9-fbd5-45fe-979d-abe7462d8bed" name="Script Assertion"><con:configuration><scriptText>import groovy.json.JsonSlurper
+def ResponseMessage = messageExchange.response.responseContent
+def jsonSlurper = new JsonSlurper().parseText(ResponseMessage)
+def ResponseHeaders = messageExchange.responseHeaders
+assert !(jsonSlurper.isEmpty())
+assert (jsonSlurper.orderId != 0)
+assert (jsonSlurper.order.price == 200)
+assert (jsonSlurper.executionPrice == 0)
+assert (jsonSlurper.order.quantity == 20)
+assert (jsonSlurper.allocatedQuantity == 0)
+assert (jsonSlurper.order.instrumentId == 2)
+assert (jsonSlurper.orderType == "LimitOrder")
+assert (jsonSlurper.order.entryDate == "20-01-2019")</scriptText></con:configuration></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="instrumentId" value="${#Project#INSTRUMENTID2}" xmlns="http://eviware.com/soapui/config"/></con:parameters><con:parameterOrder><con:entry>instrumentId</con:entry></con:parameterOrder></con:restRequest></con:config></con:testStep><con:testStep type="restrequest" name="ADD-ORDER-2-3" id="e5078495-6e02-4807-908b-965ebf491f13"><con:settings/><con:config service="https://localhost:9090" resourcePath="/orderbook/{instrumentId}/order" methodName="POST" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="ADD-ORDER-2-3" id="42ea3e27-0dd6-4989-900c-e0d9301e9d3e" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;entry key="Authorization" value="${#Project#ORDMGMNTBASICAUTH}" xmlns="http://eviware.com/soapui/config"/></con:setting></con:settings><con:endpoint>${#Project#ORDMGMNTENDPT}</con:endpoint><con:request>{
+	"price": 100,
+	"entryDate": "20-01-2019",
+	"quantity": 10,
+	"instrumentId": ${#Project#INSTRUMENTID2}
+}</con:request><con:originalUri>http://localhost/orderbook/order/1</con:originalUri><con:assertion type="GroovyScriptAssertion" id="d9caeb99-0024-484c-92bd-c2d1e4bd5706" name="Script Assertion"><con:configuration><scriptText>import groovy.json.JsonSlurper
+def ResponseMessage = messageExchange.response.responseContent
+def jsonSlurper = new JsonSlurper().parseText(ResponseMessage)
+def ResponseHeaders = messageExchange.responseHeaders
+assert !(jsonSlurper.isEmpty())
+assert (jsonSlurper.orderId != 0)
+assert (jsonSlurper.order.price == 100)
+assert (jsonSlurper.executionPrice == 0)
+assert (jsonSlurper.order.quantity == 10)
+assert (jsonSlurper.allocatedQuantity == 0)
+assert (jsonSlurper.order.instrumentId == 2)
+assert (jsonSlurper.orderType == "LimitOrder")
+assert (jsonSlurper.order.entryDate == "20-01-2019")</scriptText></con:configuration></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="instrumentId" value="${#Project#INSTRUMENTID2}" xmlns="http://eviware.com/soapui/config"/></con:parameters><con:parameterOrder><con:entry>instrumentId</con:entry></con:parameterOrder></con:restRequest></con:config></con:testStep><con:testStep type="restrequest" name="ADD-ORDER-2-4" id="9d7c004e-9f48-499b-9764-ea920235b7e9"><con:settings/><con:config service="https://localhost:9090" resourcePath="/orderbook/{instrumentId}/order" methodName="POST" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="ADD-ORDER-2-4" id="42ea3e27-0dd6-4989-900c-e0d9301e9d3e" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;entry key="Authorization" value="${#Project#ORDMGMNTBASICAUTH}" xmlns="http://eviware.com/soapui/config"/></con:setting></con:settings><con:endpoint>${#Project#ORDMGMNTENDPT}</con:endpoint><con:request>{
+	"price": 0,
+	"entryDate": "20-01-2019",
+	"quantity": 10,
+	"instrumentId": ${#Project#INSTRUMENTID2}
+}</con:request><con:originalUri>http://localhost/orderbook/order/1</con:originalUri><con:assertion type="GroovyScriptAssertion" id="d9caeb99-0024-484c-92bd-c2d1e4bd5706" name="Script Assertion"><con:configuration><scriptText>import groovy.json.JsonSlurper
+def ResponseMessage = messageExchange.response.responseContent
+def jsonSlurper = new JsonSlurper().parseText(ResponseMessage)
+def ResponseHeaders = messageExchange.responseHeaders
+assert !(jsonSlurper.isEmpty())
+assert (jsonSlurper.orderId != 0)
+assert (jsonSlurper.order.price == 0)
+assert (jsonSlurper.executionPrice == 0)
+assert (jsonSlurper.order.quantity == 10)
+assert (jsonSlurper.allocatedQuantity == 0)
+assert (jsonSlurper.order.instrumentId == 2)
+assert (jsonSlurper.orderType == "MarketOrder")
+assert (jsonSlurper.order.entryDate == "20-01-2019")</scriptText></con:configuration></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="instrumentId" value="${#Project#INSTRUMENTID2}" xmlns="http://eviware.com/soapui/config"/></con:parameters><con:parameterOrder><con:entry>instrumentId</con:entry></con:parameterOrder></con:restRequest></con:config></con:testStep><con:testStep type="restrequest" name="ADD-ORDER-1-9" id="7bbc7d00-9bc4-4195-baac-d95d233eaf58"><con:settings/><con:config service="https://localhost:9090" resourcePath="/orderbook/{instrumentId}/order" methodName="POST" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="ADD-ORDER-1-9" id="42ea3e27-0dd6-4989-900c-e0d9301e9d3e" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;entry key="Authorization" value="${#Project#ORDMGMNTBASICAUTH}" xmlns="http://eviware.com/soapui/config"/></con:setting></con:settings><con:endpoint>${#Project#ORDMGMNTENDPT}</con:endpoint><con:request>{
+	"price": 0,
+	"entryDate": "20-01-2019",
+	"quantity": 10,
+	"instrumentId": ${#Project#INSTRUMENTID1}
+}</con:request><con:originalUri>http://localhost/orderbook/order/1</con:originalUri><con:assertion type="GroovyScriptAssertion" id="d9caeb99-0024-484c-92bd-c2d1e4bd5706" name="Script Assertion"><con:configuration><scriptText>import groovy.json.JsonSlurper
+def ResponseMessage = messageExchange.response.responseContent
+def jsonSlurper = new JsonSlurper().parseText(ResponseMessage)
+def ResponseHeaders = messageExchange.responseHeaders
+assert !(jsonSlurper.isEmpty())
+assert (jsonSlurper.orderId != 0)
+assert (jsonSlurper.order.price == 0)
+assert (jsonSlurper.executionPrice == 0)
+assert (jsonSlurper.order.quantity == 10)
+assert (jsonSlurper.allocatedQuantity == 0)
+assert (jsonSlurper.order.instrumentId == 1)
+assert (jsonSlurper.orderType == "MarketOrder")
+assert (jsonSlurper.order.entryDate == "20-01-2019")</scriptText></con:configuration></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="instrumentId" value="${#Project#INSTRUMENTID1}" xmlns="http://eviware.com/soapui/config"/></con:parameters><con:parameterOrder><con:entry>instrumentId</con:entry></con:parameterOrder></con:restRequest></con:config></con:testStep><con:testStep type="restrequest" name="ALL-STATS-B4-EXEC" id="7dc88330-f739-490c-a023-63d4663c250f"><con:settings/><con:config service="https://localhost:9090" resourcePath="/orderbook/statstics?fetchValidInvalidRecords=true" methodName="GET" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="ALL-STATS-B4-EXEC" id="3f42b1d2-f542-4abc-b124-126419bd7feb" mediaType="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment xmlns:con="http://eviware.com/soapui/config">
+  &lt;con:entry key="Authorization" value="${#Project#ORDMGMNTBASICAUTH}"/>
+  &lt;con:entry key="Content-Type" value="application/json"/>
+&lt;/xml-fragment></con:setting></con:settings><con:endpoint>${#Project#ORDMGMNTENDPT}</con:endpoint><con:request/><con:originalUri>http://localhost/orderbook/statstics</con:originalUri><con:assertion type="GroovyScriptAssertion" id="d34dc7f5-55e4-4d64-a8af-e76841d40274" name="Script Assertion"><con:configuration><scriptText>import groovy.json.JsonSlurper
+def ResponseMessage = messageExchange.response.responseContent
+def jsonSlurper = new JsonSlurper().parseText(ResponseMessage)
+def ResponseHeaders = messageExchange.responseHeaders
+assert !(jsonSlurper.isEmpty())
+//assert (jsonSlurper.totalNoOfOrders == 13)
+assert (jsonSlurper.validOrders == 0)
+assert (jsonSlurper.invalidOrders == 1)
+assert (jsonSlurper.biggestOrder.price == 1)
+assert (jsonSlurper.biggestOrder.quantity == 900)
+assert (jsonSlurper.biggestOrder.instrumentId == 1)
+assert (jsonSlurper.biggestOrder.entryDate == "29-01-2019")
+assert (jsonSlurper.smallestOrder.price == 0)
+assert (jsonSlurper.smallestOrder.quantity == 10)
+assert (jsonSlurper.smallestOrder.instrumentId == 1)
+assert (jsonSlurper.smallestOrder.entryDate == "20-01-2019")
+assert (jsonSlurper.latestOrderEntry.price == 40)
+assert (jsonSlurper.latestOrderEntry.quantity == 40)
+assert (jsonSlurper.latestOrderEntry.instrumentId == 1)
+assert (jsonSlurper.latestOrderEntry.entryDate == "30-01-2019")
+assert (jsonSlurper.earliestOrderEntry.price == 200)
+assert (jsonSlurper.earliestOrderEntry.quantity == 90)
+assert (jsonSlurper.earliestOrderEntry.instrumentId == 1)
+assert (jsonSlurper.earliestOrderEntry.entryDate == "16-01-2019")</scriptText></con:configuration></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:restRequest></con:config></con:testStep><con:testStep type="restrequest" name="ALL-STATS-WITH-VALID-INVALID-DETAIL" id="e626c2bb-3b31-42ec-87bf-650c9c817ee0"><con:settings/><con:config service="https://localhost:9090" resourcePath="/orderbook/statstics?fetchValidInvalidRecords=true" methodName="GET" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="ALL-STATS-WITH-VALID-INVALID-DETAIL" id="3f42b1d2-f542-4abc-b124-126419bd7feb" mediaType="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment xmlns:con="http://eviware.com/soapui/config">
+  &lt;con:entry key="Authorization" value="${#Project#ORDMGMNTBASICAUTH}"/>
+  &lt;con:entry key="Content-Type" value="application/json"/>
+&lt;/xml-fragment></con:setting></con:settings><con:endpoint>${#Project#ORDMGMNTENDPT}</con:endpoint><con:request/><con:originalUri>http://localhost/orderbook/statstics</con:originalUri><con:assertion type="GroovyScriptAssertion" id="f8ea2e5c-9325-4a02-a59a-2c58973a8b42" name="Script Assertion"><con:configuration><scriptText>import groovy.json.JsonSlurper
+def ResponseMessage = messageExchange.response.responseContent
+def jsonSlurper = new JsonSlurper().parseText(ResponseMessage)
+def ResponseHeaders = messageExchange.responseHeaders
+assert !(jsonSlurper.isEmpty())
+//assert (jsonSlurper.totalNoOfOrders == 13)
+assert (jsonSlurper.validOrders == 0)
+assert (jsonSlurper.invalidOrders == 1)
+assert (jsonSlurper.biggestOrder.price == 1)
+assert (jsonSlurper.biggestOrder.quantity == 900)
+assert (jsonSlurper.biggestOrder.instrumentId == 1)
+assert (jsonSlurper.biggestOrder.entryDate == "29-01-2019")
+assert (jsonSlurper.smallestOrder.price == 0)
+assert (jsonSlurper.smallestOrder.quantity == 10)
+assert (jsonSlurper.smallestOrder.instrumentId == 1)
+assert (jsonSlurper.smallestOrder.entryDate == "20-01-2019")
+assert (jsonSlurper.latestOrderEntry.price == 40)
+assert (jsonSlurper.latestOrderEntry.quantity == 40)
+assert (jsonSlurper.latestOrderEntry.instrumentId == 1)
+assert (jsonSlurper.latestOrderEntry.entryDate == "30-01-2019")
+assert (jsonSlurper.earliestOrderEntry.price == 200)
+assert (jsonSlurper.earliestOrderEntry.quantity == 90)
+assert (jsonSlurper.earliestOrderEntry.instrumentId == 1)
+assert (jsonSlurper.earliestOrderEntry.entryDate == "16-01-2019")</scriptText></con:configuration></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:restRequest></con:config></con:testStep><con:testStep type="restrequest" name="EXEC-ORDR-50-30-INTRU-ID-1" id="94921014-b80b-4877-a951-71c9f67e8b7b"><con:settings/><con:config service="https://localhost:9090" resourcePath="/orderbook/{instrumentId}/execute" methodName="POST" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="EXEC-ORDR-50-30-INTRU-ID-1" id="49e2b295-5e28-4def-a96e-ed74cd05b8fd" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;entry key="Authorization" value="${#Project#ORDMGMNTBASICAUTH}" xmlns="http://eviware.com/soapui/config"/></con:setting></con:settings><con:endpoint>${#Project#ORDMGMNTENDPT}</con:endpoint><con:request>{
+	"price": 50.0,
+	"quantity": 30
+}</con:request><con:originalUri>http://localhost/orderbook/execute/1</con:originalUri><con:assertion type="GroovyScriptAssertion" id="7a88c366-6019-4492-bb65-1cb115a07db9" name="Script Assertion"><con:configuration><scriptText>import groovy.json.JsonSlurper
+def ResponseMessage = messageExchange.response.responseContent
+def jsonSlurper = new JsonSlurper().parseText(ResponseMessage)
+def ResponseHeaders = messageExchange.responseHeaders
+assert !(jsonSlurper.orderDetails.isEmpty())
+assert (jsonSlurper.orderDetails[0].orderId != 0)
+assert (jsonSlurper.orderDetails[0].orderType == "LimitOrder")
+assert (jsonSlurper.orderDetails[0].orderStatus == "Valid")
+assert (jsonSlurper.orderDetails[0].allocatedQuantity == 6)
+assert (jsonSlurper.orderDetails[0].executionPrice == 10)
+
+assert (jsonSlurper.orderDetails[1].orderId != 0)
+assert (jsonSlurper.orderDetails[1].orderType == "LimitOrder")
+assert (jsonSlurper.orderDetails[1].orderStatus == "Valid")
+assert (jsonSlurper.orderDetails[1].allocatedQuantity == 4)
+assert (jsonSlurper.orderDetails[1].executionPrice == 6.666666666666667)
+
+assert (jsonSlurper.orderDetails[2].orderId != 0)
+assert (jsonSlurper.orderDetails[2].orderType == "LimitOrder")
+assert (jsonSlurper.orderDetails[2].orderStatus == "Valid")
+assert (jsonSlurper.orderDetails[2].allocatedQuantity == 2)
+assert (jsonSlurper.orderDetails[2].executionPrice == 3.3333333333333335)
+
+assert (jsonSlurper.orderDetails[3].orderId != 0)
+assert (jsonSlurper.orderDetails[3].orderType == "LimitOrder")
+assert (jsonSlurper.orderDetails[3].orderStatus == "Valid")
+assert (jsonSlurper.orderDetails[3].allocatedQuantity == 18)
+assert (jsonSlurper.orderDetails[3].executionPrice == 30)</scriptText></con:configuration></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="instrumentId" value="${#Project#INSTRUMENTID1}" xmlns="http://eviware.com/soapui/config"/></con:parameters><con:parameterOrder><con:entry>instrumentId</con:entry></con:parameterOrder></con:restRequest></con:config></con:testStep><con:testStep type="restrequest" name="ALL-STATS-AFTER-EXEC" id="58298d3e-b947-4e05-b5d8-00a9d75a5107"><con:settings/><con:config service="https://localhost:9090" resourcePath="/orderbook/statstics?fetchValidInvalidRecords=true" methodName="GET" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="ALL-STATS-AFTER-EXEC" id="3f42b1d2-f542-4abc-b124-126419bd7feb" mediaType="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment xmlns:con="http://eviware.com/soapui/config">
+  &lt;con:entry key="Authorization" value="${#Project#ORDMGMNTBASICAUTH}"/>
+  &lt;con:entry key="Content-Type" value="application/json"/>
+&lt;/xml-fragment></con:setting></con:settings><con:endpoint>${#Project#ORDMGMNTENDPT}</con:endpoint><con:request/><con:originalUri>http://localhost/orderbook/statstics</con:originalUri><con:assertion type="GroovyScriptAssertion" id="4a76d7d4-aa17-4d3c-8028-ca985aada6be" name="Script Assertion"><con:configuration><scriptText>import groovy.json.JsonSlurper
+def ResponseMessage = messageExchange.response.responseContent
+def jsonSlurper = new JsonSlurper().parseText(ResponseMessage)
+def ResponseHeaders = messageExchange.responseHeaders
+assert !(jsonSlurper.isEmpty())
+//assert (jsonSlurper.totalNoOfOrders == 13)
+assert (jsonSlurper.validOrders == 0)
+assert (jsonSlurper.invalidOrders == 1)
+assert (jsonSlurper.biggestOrder.price == 1)
+assert (jsonSlurper.biggestOrder.quantity == 900)
+assert (jsonSlurper.biggestOrder.instrumentId == 1)
+assert (jsonSlurper.biggestOrder.entryDate == "29-01-2019")
+assert (jsonSlurper.smallestOrder.price == 0)
+assert (jsonSlurper.smallestOrder.quantity == 10)
+assert (jsonSlurper.smallestOrder.instrumentId == 1)
+assert (jsonSlurper.smallestOrder.entryDate == "20-01-2019")
+assert (jsonSlurper.latestOrderEntry.price == 40)
+assert (jsonSlurper.latestOrderEntry.quantity == 40)
+assert (jsonSlurper.latestOrderEntry.instrumentId == 1)
+assert (jsonSlurper.latestOrderEntry.entryDate == "30-01-2019")
+assert (jsonSlurper.earliestOrderEntry.price == 200)
+assert (jsonSlurper.earliestOrderEntry.quantity == 90)
+assert (jsonSlurper.earliestOrderEntry.instrumentId == 1)
+assert (jsonSlurper.earliestOrderEntry.entryDate == "16-01-2019")</scriptText></con:configuration></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:restRequest></con:config></con:testStep><con:testStep type="restrequest" name="ALL-STATS-AFTER-EXEC-WITH-VALID-INVALID-DETAIL" id="66374663-8733-4cb1-886c-884d62e2a931"><con:settings/><con:config service="https://localhost:9090" resourcePath="/orderbook/statstics?fetchValidInvalidRecords=true" methodName="GET" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="ALL-STATS-AFTER-EXEC-WITH-VALID-INVALID-DETAIL" id="3f42b1d2-f542-4abc-b124-126419bd7feb" mediaType="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment xmlns:con="http://eviware.com/soapui/config">
+  &lt;con:entry key="Authorization" value="${#Project#ORDMGMNTBASICAUTH}"/>
+  &lt;con:entry key="Content-Type" value="application/json"/>
+&lt;/xml-fragment></con:setting></con:settings><con:endpoint>${#Project#ORDMGMNTENDPT}</con:endpoint><con:request/><con:originalUri>http://localhost/orderbook/statstics</con:originalUri><con:assertion type="GroovyScriptAssertion" id="d3e5d14b-7d0b-445d-a97a-83003dea6198" name="Script Assertion"><con:configuration><scriptText>import groovy.json.JsonSlurper
+def ResponseMessage = messageExchange.response.responseContent
+def jsonSlurper = new JsonSlurper().parseText(ResponseMessage)
+def ResponseHeaders = messageExchange.responseHeaders
+assert !(jsonSlurper.isEmpty())
+//assert (jsonSlurper.totalNoOfOrders == 13)
+assert (jsonSlurper.validOrders == 0)
+assert (jsonSlurper.invalidOrders == 1)
+assert (jsonSlurper.biggestOrder.price == 1)
+assert (jsonSlurper.biggestOrder.quantity == 900)
+assert (jsonSlurper.biggestOrder.instrumentId == 1)
+assert (jsonSlurper.biggestOrder.entryDate == "29-01-2019")
+assert (jsonSlurper.smallestOrder.price == 0)
+assert (jsonSlurper.smallestOrder.quantity == 10)
+assert (jsonSlurper.smallestOrder.instrumentId == 1)
+assert (jsonSlurper.smallestOrder.entryDate == "20-01-2019")
+assert (jsonSlurper.latestOrderEntry.price == 40)
+assert (jsonSlurper.latestOrderEntry.quantity == 40)
+assert (jsonSlurper.latestOrderEntry.instrumentId == 1)
+assert (jsonSlurper.latestOrderEntry.entryDate == "30-01-2019")
+assert (jsonSlurper.earliestOrderEntry.price == 200)
+assert (jsonSlurper.earliestOrderEntry.quantity == 90)
+assert (jsonSlurper.earliestOrderEntry.instrumentId == 1)
+assert (jsonSlurper.earliestOrderEntry.entryDate == "16-01-2019")</scriptText></con:configuration></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:restRequest></con:config></con:testStep><con:testStep type="restrequest" name="GET-ORDR-DETAIL-BY-ORDR-ID" id="91b082ba-92fc-4868-9e29-a26a4c9251fe"><con:settings/><con:config service="https://localhost:9090" resourcePath="/orderbook/statstics/order/{orderId}" methodName="GET" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="GET-ORDR-DETAIL-BY-ORDR-ID" id="df0e2cb7-1ca1-4184-be37-19f2efb1413c" mediaType="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment xmlns:con="http://eviware.com/soapui/config">
+  &lt;con:entry key="Authorization" value="${#Project#ORDMGMNTBASICAUTH}"/>
+  &lt;con:entry key="Content-Type" value="application/json"/>
+&lt;/xml-fragment></con:setting></con:settings><con:endpoint>${#Project#ORDMGMNTENDPT}</con:endpoint><con:request/><con:originalUri>http://localhost/orderbook/statstics/orders</con:originalUri><con:assertion type="GroovyScriptAssertion" id="98bbb7a5-5b56-4f17-b2fe-517e38479856" name="Script Assertion"><con:configuration><scriptText>import groovy.json.JsonSlurper
+def ResponseMessage = messageExchange.response.responseContent
+def jsonSlurper = new JsonSlurper().parseText(ResponseMessage)
+def ResponseHeaders = messageExchange.responseHeaders
+assert !(jsonSlurper.isEmpty())
+assert (jsonSlurper.order.orderId == 2)
+assert (jsonSlurper.orderType == "LimitOrder")
+assert (jsonSlurper.orderStatus == "Valid")
+assert (jsonSlurper.allocatedQuantity == 4)
+assert (jsonSlurper.executionPrice == 6.666666666666667)
+assert (jsonSlurper.order.instrumentId == 1)
+assert (jsonSlurper.order.entryDate == "20-01-2019")
+assert (jsonSlurper.order.price == 200)
+assert (jsonSlurper.order.quantity == 20)</scriptText></con:configuration></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="orderId" value="2" xmlns="http://eviware.com/soapui/config"/></con:parameters><con:parameterOrder><con:entry>orderId</con:entry></con:parameterOrder></con:restRequest></con:config></con:testStep><con:testStep type="restrequest" name="GET-ORDRS-BY-INTRU-ID-1" id="0c56ae78-044b-49bd-aba6-b42bd8abe8aa"><con:settings/><con:config service="https://localhost:9090" resourcePath="/orderbook/statstics/{instrumentId}/orders" methodName="GET" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="GET-ORDRS-BY-INTRU-ID-1" id="562a21a6-7d18-4276-b0c8-fb980d2049db" mediaType="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment xmlns:con="http://eviware.com/soapui/config">
+  &lt;con:entry key="Authorization" value="${#Project#ORDMGMNTBASICAUTH}"/>
+  &lt;con:entry key="Content-Type" value="application/json"/>
+&lt;/xml-fragment></con:setting></con:settings><con:endpoint>${#Project#ORDMGMNTENDPT}</con:endpoint><con:request/><con:originalUri>http://localhost/orderbook/statstics/orders</con:originalUri><con:assertion type="GroovyScriptAssertion" id="48ce1fef-0ea3-4c3b-87e4-9cc98f3936b5" name="Script Assertion"><con:configuration><scriptText>import groovy.json.JsonSlurper
+def ResponseMessage = messageExchange.response.responseContent
+def jsonSlurper = new JsonSlurper().parseText(ResponseMessage)
+def ResponseHeaders = messageExchange.responseHeaders
+assert !(jsonSlurper.isEmpty())
+assert (jsonSlurper[0].order.orderId == 1)
+assert (jsonSlurper[1].order.orderId == 2)
+assert (jsonSlurper[2].order.orderId == 3)
+assert (jsonSlurper[3].order.orderId == 4)
+assert (jsonSlurper[4].order.orderId == 5)
+assert (jsonSlurper[5].order.orderId == 6)
+assert (jsonSlurper[6].order.orderId == 7)
+assert (jsonSlurper[7].order.orderId == 8)
+assert (jsonSlurper[8].order.orderId == 13)</scriptText></con:configuration></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="instrumentId" value="${#Project#INSTRUMENTID1}" xmlns="http://eviware.com/soapui/config"/></con:parameters><con:parameterOrder><con:entry>instrumentId</con:entry></con:parameterOrder></con:restRequest></con:config></con:testStep><con:testStep type="restrequest" name="GET-ORDRS-BY-INTRU-ID-2" id="7a677844-d576-4ee1-8a99-4d7c73b83aa0"><con:settings/><con:config service="https://localhost:9090" resourcePath="/orderbook/statstics/{instrumentId}/orders" methodName="GET" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="GET-ORDRS-BY-INTRU-ID-2" id="562a21a6-7d18-4276-b0c8-fb980d2049db" mediaType="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment xmlns:con="http://eviware.com/soapui/config">
+  &lt;con:entry key="Authorization" value="${#Project#ORDMGMNTBASICAUTH}"/>
+  &lt;con:entry key="Content-Type" value="application/json"/>
+&lt;/xml-fragment></con:setting></con:settings><con:endpoint>${#Project#ORDMGMNTENDPT}</con:endpoint><con:request/><con:originalUri>http://localhost/orderbook/statstics/orders</con:originalUri><con:assertion type="GroovyScriptAssertion" id="73991026-eaa5-49cd-b27b-584b117e489e" name="Script Assertion"><con:configuration><scriptText>import groovy.json.JsonSlurper
+def ResponseMessage = messageExchange.response.responseContent
+def jsonSlurper = new JsonSlurper().parseText(ResponseMessage)
+def ResponseHeaders = messageExchange.responseHeaders
+assert !(jsonSlurper.isEmpty())
+assert (jsonSlurper[0].order.orderId == 9)
+assert (jsonSlurper[1].order.orderId == 10)
+assert (jsonSlurper[2].order.orderId == 11)
+assert (jsonSlurper[3].order.orderId == 12)</scriptText></con:configuration></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="instrumentId" value="${#Project#INSTRUMENTID2}" xmlns="http://eviware.com/soapui/config"/></con:parameters><con:parameterOrder><con:entry>instrumentId</con:entry></con:parameterOrder></con:restRequest></con:config></con:testStep><con:testStep type="restrequest" name="GET-ALL-ORDERS" id="90ba0ed4-ddee-46f3-8b26-1da331b5bff5"><con:settings/><con:config service="https://localhost:9090" resourcePath="/orderbook/statstics/orders" methodName="GET" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="GET-ALL-ORDERS" id="922880a8-20ef-4b23-a9f4-e063c8ee2574" mediaType="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment xmlns:con="http://eviware.com/soapui/config">
+  &lt;con:entry key="Authorization" value="${#Project#ORDMGMNTBASICAUTH}"/>
+  &lt;con:entry key="Content-Type" value="application/json "/>
+&lt;/xml-fragment></con:setting></con:settings><con:endpoint>${#Project#ORDMGMNTENDPT}</con:endpoint><con:request/><con:originalUri>http://localhost/orderbook/statstics/orders</con:originalUri><con:assertion type="GroovyScriptAssertion" id="ee389726-c7e2-47dc-96f8-3fd0ca6aa75e" name="Script Assertion"><con:configuration><scriptText>import groovy.json.JsonSlurper
+def ResponseMessage = messageExchange.response.responseContent
+def jsonSlurper = new JsonSlurper().parseText(ResponseMessage)
+def ResponseHeaders = messageExchange.responseHeaders
+assert !(jsonSlurper.isEmpty())
+assert (jsonSlurper[0].order.orderId == 1)
+assert (jsonSlurper[1].order.orderId == 2)
+assert (jsonSlurper[2].order.orderId == 3)
+assert (jsonSlurper[3].order.orderId == 4)
+assert (jsonSlurper[4].order.orderId == 5)
+assert (jsonSlurper[5].order.orderId == 6)
+assert (jsonSlurper[6].order.orderId == 7)
+assert (jsonSlurper[7].order.orderId == 8)
+assert (jsonSlurper[8].order.orderId == 9)
+assert (jsonSlurper[9].order.orderId == 10)
+assert (jsonSlurper[10].order.orderId == 11)
+assert (jsonSlurper[11].order.orderId == 12)
+assert (jsonSlurper[12].order.orderId == 13)
+</scriptText></con:configuration></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/><con:parameterOrder/></con:restRequest></con:config></con:testStep><con:testStep type="restrequest" name="CLOSE-BOOK-1" id="082035ab-3f0b-446b-b9e4-3410c5f9a1c6"><con:settings/><con:config service="https://localhost:9090" resourcePath="/orderbook/{instrumentId}/status" methodName="POST" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="CLOSE-BOOK-1" id="32906241-517f-4cf1-9d04-0c3443f1d48f" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;entry key="Authorization" value="${#Project#ORDMGMNTBASICAUTH}" xmlns="http://eviware.com/soapui/config"/></con:setting></con:settings><con:endpoint>${#Project#ORDMGMNTENDPT}</con:endpoint><con:request>{
+	"orderBookStatusCommand": "Close"
+}</con:request><con:originalUri>https://localhost/instrument</con:originalUri><con:assertion type="GroovyScriptAssertion" id="4efd039d-6a66-4d5d-bcbf-bc80925a495f" name="Script Assertion"><con:configuration><scriptText>import groovy.json.JsonSlurper
+def ResponseMessage = messageExchange.response.responseContent
+def jsonSlurper = new JsonSlurper().parseText(ResponseMessage)
+def ResponseHeaders = messageExchange.responseHeaders
+assert !(jsonSlurper.isEmpty())
+assert (jsonSlurper.orderBookStatus == "Close")</scriptText></con:configuration></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="instrumentId" value="${#Project#INSTRUMENTID1}" xmlns="http://eviware.com/soapui/config"/></con:parameters><con:parameterOrder><con:entry>instrumentId</con:entry></con:parameterOrder></con:restRequest></con:config></con:testStep><con:testStep type="restrequest" name="CLOSE-BOOK-2" id="39333cc6-e7d6-4b64-9425-5ad5b6b43091"><con:settings/><con:config service="https://localhost:9090" resourcePath="/orderbook/{instrumentId}/status" methodName="POST" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="CLOSE-BOOK-2" id="32906241-517f-4cf1-9d04-0c3443f1d48f" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;entry key="Authorization" value="${#Project#ORDMGMNTBASICAUTH}" xmlns="http://eviware.com/soapui/config"/></con:setting></con:settings><con:endpoint>${#Project#ORDMGMNTENDPT}</con:endpoint><con:request>{
+	"orderBookStatusCommand": "Close"
+}</con:request><con:originalUri>https://localhost/instrument</con:originalUri><con:assertion type="GroovyScriptAssertion" id="02d87bf5-c713-4550-b205-d5bc43024dec" name="Script Assertion"><con:configuration><scriptText>import groovy.json.JsonSlurper
+def ResponseMessage = messageExchange.response.responseContent
+def jsonSlurper = new JsonSlurper().parseText(ResponseMessage)
+def ResponseHeaders = messageExchange.responseHeaders
+assert !(jsonSlurper.isEmpty())
+assert (jsonSlurper.orderBookStatus == "Close")</scriptText></con:configuration></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="instrumentId" value="${#Project#INSTRUMENTID2}" xmlns="http://eviware.com/soapui/config"/></con:parameters><con:parameterOrder><con:entry>instrumentId</con:entry></con:parameterOrder></con:restRequest></con:config></con:testStep><con:properties/></con:testCase><con:properties/></con:testSuite><con:properties><con:property><con:name>ORDMGMNTTXNID</con:name><con:value>R8JK7U</con:value></con:property><con:property><con:name>ORDMGMNTENDPT</con:name><con:value>http://localhost:9090</con:value></con:property><con:property><con:name>ORDMGMNTBASICAUTH</con:name><con:value>Basic T3JkZXJCb29rVXNlcjAxOk9yZGVyQm9va1VzZXIwMQ==</con:value></con:property><con:property><con:name>INSTID</con:name><con:value>1</con:value></con:property><con:property><con:name>INSTRUMENTID1</con:name><con:value>1</con:value></con:property><con:property><con:name>INSTRUMENTID2</con:name><con:value>2</con:value></con:property></con:properties><con:wssContainer/><con:oAuth2ProfileContainer/><con:oAuth1ProfileContainer/></con:soapui-project>
