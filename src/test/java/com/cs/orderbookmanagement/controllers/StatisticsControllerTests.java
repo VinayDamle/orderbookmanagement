@@ -1,12 +1,15 @@
 package com.cs.orderbookmanagement.controllers;
 
-import com.cs.orderbookmanagement.models.*;
-import com.cs.orderbookmanagement.services.OrderDetailsStatsticsService;
+import com.cs.orderbookmanagement.entities.OrderDao;
+import com.cs.orderbookmanagement.entities.OrderDetail;
+import com.cs.orderbookmanagement.models.ExecuteOrderRequest;
+import com.cs.orderbookmanagement.models.OrderRequest;
+import com.cs.orderbookmanagement.models.OrderState;
+import com.cs.orderbookmanagement.models.OrderStatstics;
+import com.cs.orderbookmanagement.services.StatsticsService;
 import com.cs.orderbookmanagement.utils.OrderBookConstants;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +20,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,8 +32,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(value = OrderDetailsStatsticsController.class, secure = false)
-public class OrderDetailsStatisticsControllerTests {
+@WebMvcTest(value = StatsticsController.class, secure = false)
+public class StatisticsControllerTests {
 
     @Autowired
     private MockMvc mockMvc;
@@ -43,10 +45,10 @@ public class OrderDetailsStatisticsControllerTests {
     private DocumentContext context;
 
     @MockBean
-    private OrderDetailsStatsticsService service;
+    private StatsticsService service;
 
     @MockBean
-    private ExecutionRequest executionRequest;
+    private ExecuteOrderRequest executionRequest;
 
     private MockHttpServletRequestBuilder requestBuilder;
 
@@ -102,8 +104,8 @@ public class OrderDetailsStatisticsControllerTests {
     @Test
     public void testGetOrderStateByOrderId() throws Exception {
         int orderId = 1;
-        List<OrderDetails> orderDetailsList = getTestOrderDetails();
-        OrderDetails orderDetails = getTestOrderDetails().get(0);
+        List<OrderDetail> orderDetailsList = getTestOrderDetails();
+        OrderDetail orderDetails = getTestOrderDetails().get(0);
         orderDetails.setExecutionPrice(100);
         orderDetails.getOrder().setPrice(80);
         orderDetails.setOrderStatus(OrderBookConstants.VALID);
@@ -127,15 +129,15 @@ public class OrderDetailsStatisticsControllerTests {
 
     @Test
     public void testGetOrderStatstics() throws Exception {
-        List<OrderDetails> orderDetailsList = getTestOrderDetails();
+        List<OrderDetail> orderDetailsList = getTestOrderDetails();
         OrderStatstics orderStatstic = new OrderStatstics();
-        orderStatstic.setEarliestOrderEntry(new Order(orderDetailsList.get(0).getOrder().getQuantity(), orderDetailsList.get(0).getOrder().getEntryDate(),
+        orderStatstic.setEarliestOrderEntry(new OrderRequest(orderDetailsList.get(0).getOrder().getQuantity(), orderDetailsList.get(0).getOrder().getEntryDate(),
                 orderDetailsList.get(0).getOrder().getInstrumentId(), orderDetailsList.get(0).getOrder().getPrice()));
-        orderStatstic.setLatestOrderEntry(new Order(orderDetailsList.get(2).getOrder().getQuantity(), orderDetailsList.get(2).getOrder().getEntryDate(),
+        orderStatstic.setLatestOrderEntry(new OrderRequest(orderDetailsList.get(2).getOrder().getQuantity(), orderDetailsList.get(2).getOrder().getEntryDate(),
                 orderDetailsList.get(2).getOrder().getInstrumentId(), orderDetailsList.get(2).getOrder().getPrice()));
-        orderStatstic.setBiggestOrder(new Order(orderDetailsList.get(2).getOrder().getQuantity(), orderDetailsList.get(2).getOrder().getEntryDate(),
+        orderStatstic.setBiggestOrder(new OrderRequest(orderDetailsList.get(2).getOrder().getQuantity(), orderDetailsList.get(2).getOrder().getEntryDate(),
                 orderDetailsList.get(2).getOrder().getInstrumentId(), orderDetailsList.get(2).getOrder().getPrice()));
-        orderStatstic.setSmallestOrder(new Order(orderDetailsList.get(0).getOrder().getQuantity(), orderDetailsList.get(0).getOrder().getEntryDate(),
+        orderStatstic.setSmallestOrder(new OrderRequest(orderDetailsList.get(0).getOrder().getQuantity(), orderDetailsList.get(0).getOrder().getEntryDate(),
                 orderDetailsList.get(0).getOrder().getInstrumentId(), orderDetailsList.get(0).getOrder().getPrice()));
 
         when(service.getOrderStatstics(false)).thenReturn(orderStatstic);
@@ -158,21 +160,21 @@ public class OrderDetailsStatisticsControllerTests {
         assertThat(Integer.parseInt(context.read("$.smallestOrder.quantity").toString())).isEqualTo(10);
     }
 
-    public List<OrderDetails> getTestOrderDetails() {
-        List<OrderDetails> orderDetailsList = new ArrayList<>();
-        OrderDetails orderDetails = new OrderDetails();
+    public List<OrderDetail> getTestOrderDetails() {
+        List<OrderDetail> orderDetailsList = new ArrayList<>();
+        OrderDetail orderDetails = new OrderDetail();
         OrderDao order = new OrderDao(10, "24-01-2019", 1, 100);
         order.setOrderId(1);
         orderDetails.setOrder(order);
         orderDetailsList.add(orderDetails);
 
-        orderDetails = new OrderDetails();
+        orderDetails = new OrderDetail();
         order = new OrderDao(20, "28-01-2019", 1, 200);
         order.setOrderId(2);
         orderDetails.setOrder(order);
         orderDetailsList.add(orderDetails);
 
-        orderDetails = new OrderDetails();
+        orderDetails = new OrderDetail();
         order = new OrderDao(30, "29-01-2019", 1, 300);
         order.setOrderId(3);
         orderDetails.setOrder(order);

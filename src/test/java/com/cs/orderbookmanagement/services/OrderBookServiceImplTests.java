@@ -1,5 +1,8 @@
 package com.cs.orderbookmanagement.services;
 
+import com.cs.orderbookmanagement.entities.OrderBook;
+import com.cs.orderbookmanagement.entities.OrderDao;
+import com.cs.orderbookmanagement.entities.OrderDetail;
 import com.cs.orderbookmanagement.models.*;
 import com.cs.orderbookmanagement.repository.OrderBookRepository;
 import com.cs.orderbookmanagement.repository.OrderDetailsRepository;
@@ -93,10 +96,10 @@ public class OrderBookServiceImplTests {
         orderBook.setOrderBookStatus(OrderBookConstants.OPEN);
         when(orderBookRepository.findById(anyInt())).thenReturn(Optional.of(orderBook));
 
-        OrderDetails orderDetails = new OrderDetails();
+        OrderDetail orderDetails = new OrderDetail();
         //orderDetails.setOrderId(1);
-        when(orderDetailsRepository.save(any(OrderDetails.class))).thenReturn(orderDetails);
-        OrderDetails addedRrderDetails = orderBookService.addOrder(new Order(10, "10/10/2019", 1, 100), 1);
+        when(orderDetailsRepository.save(any(OrderDetail.class))).thenReturn(orderDetails);
+        OrderResponse addedRrderDetails = orderBookService.addOrder(new OrderRequest(10, "10/10/2019", 1, 100), 1);
         Assertions.assertThat(addedRrderDetails).isNotNull();
         Assertions.assertThat(addedRrderDetails.getError()).isNull();
         //Assertions.assertThat(addedRrderDetails.getOrderId()).isEqualTo(1);
@@ -104,9 +107,9 @@ public class OrderBookServiceImplTests {
 
     @Test
     public void testAddOrderForAnInvalidInstrumentIdThenReturnInstrumentIdNotFound() {
-        OrderDetails orderDetails = new OrderDetails();
+        OrderDetail orderDetails = new OrderDetail();
         //orderDetails.setOrderId(1);
-        OrderDetails addedRrderDetails = orderBookService.addOrder(new Order(10, "10/10/2019", 1, 100), 1);
+        OrderResponse addedRrderDetails = orderBookService.addOrder(new OrderRequest(10, "10/10/2019", 1, 100), 1);
         Assertions.assertThat(addedRrderDetails).isNotNull();
         Assertions.assertThat(addedRrderDetails.getError()).isNotNull();
         Assertions.assertThat(addedRrderDetails.getError().getErrorMessage()).isEqualTo(OrderBookConstants.INSTRUMENT_ID_NOT_FOUND);
@@ -119,49 +122,49 @@ public class OrderBookServiceImplTests {
         orderBook.setInstrumentId(1);
         orderBook.setOrderBookStatus(OrderBookConstants.OPEN);
         when(orderBookRepository.findById(anyInt())).thenReturn(Optional.of(orderBook));
-        List<OrderDetails> orderDetailsList = getTestOrderDetails();
+        List<OrderDetail> orderDetailsList = getTestOrderDetails();
         when(orderDetailsRepository.findAllOrderDetailsByOrderInstrumentId(anyInt())).thenReturn(orderDetailsList);
 
-        ExecutionRequest execution = new ExecutionRequest();
+        ExecuteOrderRequest execution = new ExecuteOrderRequest();
         execution.setPrice(30);
         execution.setPrice(100.0);
-        List<OrderDetails> validOrders = getTestOrderDetails();
+        List<OrderDetail> validOrders = getTestOrderDetails();
         validOrders.forEach(vod -> vod.setOrderStatus(OrderBookConstants.VALID));
         validOrders.get(0).setAllocatedQuantity(5);
         validOrders.get(1).setAllocatedQuantity(10);
         validOrders.get(2).setAllocatedQuantity(15);
-        ExecutedOrderResponse executedOrderResponse = orderBookService.addExecutionAndProcessOrder(execution, 1);
+        ExecuteOrderResponse executedOrderResponse = orderBookService.addExecutionAndProcessOrder(execution, 1);
         Assertions.assertThat(executedOrderResponse).isNotNull();
         Assertions.assertThat(executedOrderResponse.getError()).isNull();
     }
 
     @Test
     public void testAddExecutionForAnInvalidInstrumentIdThenReturnInstrumentIdNotFound() {
-        ExecutionRequest execution = new ExecutionRequest();
+        ExecuteOrderRequest execution = new ExecuteOrderRequest();
         execution.setPrice(30);
         execution.setPrice(100.0);
-        List<OrderDetails> validOrders = getTestOrderDetails();
+        List<OrderDetail> validOrders = getTestOrderDetails();
         validOrders.forEach(vod -> vod.setOrderStatus(OrderBookConstants.VALID));
         validOrders.get(0).setAllocatedQuantity(5);
         validOrders.get(1).setAllocatedQuantity(10);
         validOrders.get(2).setAllocatedQuantity(15);
-        ExecutedOrderResponse executedOrderResponse = orderBookService.addExecutionAndProcessOrder(execution, 1);
+        ExecuteOrderResponse executedOrderResponse = orderBookService.addExecutionAndProcessOrder(execution, 1);
         Assertions.assertThat(executedOrderResponse).isNotNull();
         Assertions.assertThat(executedOrderResponse.getError()).isNotNull();
         Assertions.assertThat(executedOrderResponse.getError().getErrorMessage()).isEqualTo(OrderBookConstants.INSTRUMENT_ID_NOT_FOUND);
     }
 
-    public List<OrderDetails> getTestOrderDetails() {
-        List<OrderDetails> orderDetailsList = new ArrayList<>();
-        OrderDetails orderDetails = new OrderDetails();
+    public List<OrderDetail> getTestOrderDetails() {
+        List<OrderDetail> orderDetailsList = new ArrayList<>();
+        OrderDetail orderDetails = new OrderDetail();
         OrderDao order = new OrderDao(10, "", 1, 100);
         orderDetails.setOrder(order);
         orderDetailsList.add(orderDetails);
-        orderDetails = new OrderDetails();
+        orderDetails = new OrderDetail();
         order = new OrderDao(20, "", 1, 200);
         orderDetails.setOrder(order);
         orderDetailsList.add(orderDetails);
-        orderDetails = new OrderDetails();
+        orderDetails = new OrderDetail();
         order = new OrderDao(30, "", 1, 300);
         orderDetails.setOrder(order);
         orderDetailsList.add(orderDetails);

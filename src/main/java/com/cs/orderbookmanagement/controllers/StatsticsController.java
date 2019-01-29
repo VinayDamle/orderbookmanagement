@@ -1,9 +1,9 @@
 package com.cs.orderbookmanagement.controllers;
 
-import com.cs.orderbookmanagement.models.OrderDetails;
+import com.cs.orderbookmanagement.entities.OrderDetail;
 import com.cs.orderbookmanagement.models.OrderState;
 import com.cs.orderbookmanagement.models.OrderStatstics;
-import com.cs.orderbookmanagement.services.OrderDetailsStatsticsService;
+import com.cs.orderbookmanagement.services.StatsticsService;
 import com.cs.orderbookmanagement.utils.JSONMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,23 +11,22 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
 @RestController
 @RequestMapping(value = "/orderbook/statstics")
-public class OrderDetailsStatsticsController {
+public class StatsticsController {
 
     private JSONMapper mapper;
 
     @Autowired
-    private OrderDetailsStatsticsService orderDetailsStatsticsService;
+    private StatsticsService orderDetailsStatsticsService;
 
     @GetMapping(value = "/orders", produces = {"application/json"}, consumes = {"application/json"})
-    public ResponseEntity<List<OrderDetails>> getAllOrders() {
+    public ResponseEntity<List<OrderDetail>> getAllOrders() {
         HttpStatus getAllOrdersHttpStatus = HttpStatus.OK;
-        List<OrderDetails> orderDetailsList = orderDetailsStatsticsService.getAllOrders();
+        List<OrderDetail> orderDetailsList = orderDetailsStatsticsService.getAllOrders();
         return new ResponseEntity<>(orderDetailsList, getAllOrdersHttpStatus);
     }
 
@@ -43,9 +42,9 @@ public class OrderDetailsStatsticsController {
     }
 
     @GetMapping(value = "/{instrumentId}/orders", produces = {"application/json"}, consumes = {"application/json"})
-    public ResponseEntity<List<OrderDetails>> getOrderDetailsByInstId(@PathVariable int instrumentId) {
+    public ResponseEntity<List<OrderDetail>> getOrderDetailsByInstId(@PathVariable int instrumentId) {
         HttpStatus orderDetailsByInstIdHttpStatus = HttpStatus.OK;
-        List<OrderDetails> orderDetailsList = orderDetailsStatsticsService.getOrderDetailsByInstId(instrumentId);
+        List<OrderDetail> orderDetailsList = orderDetailsStatsticsService.getOrderDetailsByInstId(instrumentId);
         if (!orderDetailsList.isEmpty() && orderDetailsList.get(0) != null && orderDetailsList.get(0).getError() != null) {
             orderDetailsByInstIdHttpStatus = HttpStatus.NOT_FOUND;
         }
@@ -53,9 +52,9 @@ public class OrderDetailsStatsticsController {
     }
 
     @GetMapping(value = "/order/{orderId}", produces = {"application/json"}, consumes = {"application/json"})
-    public ResponseEntity<OrderDetails> getOrderDetailsByOrderId(@PathVariable int orderId) {
+    public ResponseEntity<OrderDetail> getOrderDetailsByOrderId(@PathVariable int orderId) {
         HttpStatus orderDetailsByOrderIdHttpStatus = HttpStatus.OK;
-        OrderDetails orderDetails = orderDetailsStatsticsService.getOrderDetailsByOrderId(orderId);
+        OrderDetail orderDetails = orderDetailsStatsticsService.getOrderDetailsByOrderId(orderId);
         if (orderDetails.getError() != null) {
             orderDetailsByOrderIdHttpStatus = HttpStatus.NOT_FOUND;
         }

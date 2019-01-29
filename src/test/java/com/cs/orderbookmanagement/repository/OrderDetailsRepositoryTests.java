@@ -1,9 +1,7 @@
 package com.cs.orderbookmanagement.repository;
 
-import com.cs.orderbookmanagement.models.Order;
-import com.cs.orderbookmanagement.models.OrderDao;
-import com.cs.orderbookmanagement.models.OrderDetails;
-import org.assertj.core.api.Assertions;
+import com.cs.orderbookmanagement.entities.OrderDao;
+import com.cs.orderbookmanagement.entities.OrderDetail;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,24 +21,24 @@ public class OrderDetailsRepositoryTests {
 
     @Test
     public void testSaveOrderBook() {
-        OrderDetails orderDetails = getTestOrderDetails();
+        OrderDetail orderDetails = getTestOrderDetails();
         int instrumentId = orderDetails.getOrder().getInstrumentId();
         assertThat(orderDetailsRepository.save(orderDetails).getOrder().getInstrumentId()).isEqualTo(instrumentId);
     }
 
     @Test
     public void testFindAllOrderDetailsByOrderInstrumentId() {
-        OrderDetails orderDetails = getTestOrderDetails();
+        OrderDetail orderDetails = getTestOrderDetails();
         int instrumentId = orderDetails.getOrder().getInstrumentId();
         assertThat(orderDetailsRepository.save(orderDetails).getOrder().getInstrumentId()).isEqualTo(instrumentId);
 
-        List<OrderDetails> orderDetailsList = orderDetailsRepository.findAllOrderDetailsByOrderInstrumentId(instrumentId);
+        List<OrderDetail> orderDetailsList = orderDetailsRepository.findAllOrderDetailsByOrderInstrumentId(instrumentId);
         assertThat(orderDetailsList).isNotNull();
         assertThat(orderDetailsList.size()).isEqualTo(1);
     }
 
-    public OrderDetails getTestOrderDetails() {
-        OrderDetails orderDetails = new OrderDetails();
+    public OrderDetail getTestOrderDetails() {
+        OrderDetail orderDetails = new OrderDetail();
         OrderDao order = new OrderDao(10, "", 1, 100);
         orderDetails.setOrder(order);
         return orderDetails;

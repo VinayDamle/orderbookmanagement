@@ -1,7 +1,11 @@
 package com.cs.orderbookmanagement.services;
 
+import com.cs.orderbookmanagement.entities.OrderDao;
+import com.cs.orderbookmanagement.entities.OrderDetail;
 import com.cs.orderbookmanagement.models.Error;
-import com.cs.orderbookmanagement.models.*;
+import com.cs.orderbookmanagement.models.OrderRequest;
+import com.cs.orderbookmanagement.models.OrderState;
+import com.cs.orderbookmanagement.models.OrderStatstics;
 import com.cs.orderbookmanagement.repository.OrderBookRepository;
 import com.cs.orderbookmanagement.repository.OrderDetailsRepository;
 import com.cs.orderbookmanagement.utils.OrderBookConstants;
@@ -14,7 +18,7 @@ import java.util.*;
 
 @Slf4j
 @Service
-public class OrderDetailsStatsticsServiceImpl implements OrderDetailsStatsticsService {
+public class StatsticsServiceImpl implements StatsticsService {
 
     @Autowired
     private OrderBookHelper helper;
@@ -26,13 +30,13 @@ public class OrderDetailsStatsticsServiceImpl implements OrderDetailsStatsticsSe
     private OrderDetailsRepository orderDetailsRepository;
 
     @Override
-    public List<OrderDetails> getAllOrders() {
+    public List<OrderDetail> getAllOrders() {
         return orderDetailsRepository.findAll();
     }
 
     public OrderStatstics getOrderStatstics(boolean fetchValidInvalidRecords) {
         OrderStatstics osc = new OrderStatstics();
-        List<OrderDetails> ods = orderDetailsRepository.findAll();
+        List<OrderDetail> ods = orderDetailsRepository.findAll();
         if (ods == null || ods.isEmpty()) {
             osc.setError(new Error("", "No order found."));
             return osc;
@@ -41,17 +45,17 @@ public class OrderDetailsStatsticsServiceImpl implements OrderDetailsStatsticsSe
         osc.setTotalNoOfOrders(ods.size());
         sortByOrderByQuantityAsc(ods);
         OrderDao orderDao = ods.get(0).getOrder();
-        Order biggestOrder = new Order(orderDao.getQuantity(), orderDao.getEntryDate(), orderDao.getInstrumentId(), orderDao.getPrice());
+        OrderRequest biggestOrder = new OrderRequest(orderDao.getQuantity(), orderDao.getEntryDate(), orderDao.getInstrumentId(), orderDao.getPrice());
         osc.setBiggestOrder(biggestOrder);
         orderDao = ods.get(ods.size() - 1).getOrder();
-        Order smallestOrder = new Order(orderDao.getQuantity(), orderDao.getEntryDate(), orderDao.getInstrumentId(), orderDao.getPrice());
+        OrderRequest smallestOrder = new OrderRequest(orderDao.getQuantity(), orderDao.getEntryDate(), orderDao.getInstrumentId(), orderDao.getPrice());
         osc.setSmallestOrder(smallestOrder);
         sortByOrderByEntryDateAsc(ods);
         orderDao = ods.get(0).getOrder();
-        Order earliestOrder = new Order(orderDao.getQuantity(), orderDao.getEntryDate(), orderDao.getInstrumentId(), orderDao.getPrice());
+        OrderRequest earliestOrder = new OrderRequest(orderDao.getQuantity(), orderDao.getEntryDate(), orderDao.getInstrumentId(), orderDao.getPrice());
         osc.setEarliestOrderEntry(earliestOrder);
         orderDao = ods.get(ods.size() - 1).getOrder();
-        Order latestOrder = new Order(orderDao.getQuantity(), orderDao.getEntryDate(), orderDao.getInstrumentId(), orderDao.getPrice());
+        OrderRequest latestOrder = new OrderRequest(orderDao.getQuantity(), orderDao.getEntryDate(), orderDao.getInstrumentId(), orderDao.getPrice());
         osc.setLatestOrderEntry(latestOrder);
         if (fetchValidInvalidRecords) {
             setAdditionalRecords(osc, ods);
@@ -59,8 +63,8 @@ public class OrderDetailsStatsticsServiceImpl implements OrderDetailsStatsticsSe
         return osc;
     }
 
-    private void setAdditionalRecords(OrderStatstics osc, List<OrderDetails> ods) {
-        for (OrderDetails od : ods) {
+    private void setAdditionalRecords(OrderStatstics osc, List<OrderDetail> ods) {
+        for (OrderDetail od : ods) {
             int validOrderCount = 0;
             int invalidOrderCount = 0;
             if (od.getOrderStatus() != null && OrderBookConstants.VALID.equalsIgnoreCase(od.getOrderStatus())) {
@@ -74,24 +78,24 @@ public class OrderDetailsStatsticsServiceImpl implements OrderDetailsStatsticsSe
     }
 
 
-    private void sortByOrderByQuantityAsc(List<OrderDetails> unSortedOrderDetails) {
+    private void sortByOrderByQuantityAsc(List<OrderDetail> unSortedOrderDetails) {
         Collections.sort(unSortedOrderDetails, (o1, o2) -> o2.getOrder().getQuantity() - o1.getOrder().getQuantity());
     }
 
-    private void sortByOrderByEntryDateAsc(List<OrderDetails> unSortedOrderDetails) {
-        Collections.sort(unSortedOrderDetails, new Comparator<OrderDetails>() {
+    private void sortByOrderByEntryDateAsc(List<OrderDetail> unSortedOrderDetails) {
+        Collections.sort(unSortedOrderDetails, new Comparator<OrderDetail>() {
             @Override
-            public int compare(OrderDetails o1, OrderDetails o2) {
+            public int compare(OrderDetail o1, OrderDetail o2) {
                 return o1.getOrder().getEntryDate().compareTo(o2.getOrder().getEntryDate());
             }
         });
     }
 
     @Override
-    public List<OrderDetails> getOrderDetailsByInstId(int instrumentId) {
-        List<OrderDetails> orderDetailsList = orderDetailsRepository.findAllOrderDetailsByOrderInstrumentId(instrumentId);
+    public List<OrderDetail> getOrderDetailsByInstId(int instrumentId) {
+        List<OrderDetail> orderDetailsList = orderDetailsRepository.findAllOrderDetailsByOrderInstrumentId(instrumentId);
         if (orderDetailsList == null || orderDetailsList.isEmpty()) {
-            OrderDetails orderDetails = new OrderDetails();
+            OrderDetail orderDetails = new OrderDetail();
             orderDetails.setError(new Error(OrderBookConstants.OBMS_0003, "Order not found for instrumentId " + instrumentId));
             if (orderDetailsList == null) {
                 orderDetailsList = new ArrayList<>();
@@ -102,13 +106,13 @@ public class OrderDetailsStatsticsServiceImpl implements OrderDetailsStatsticsSe
     }
 
     @Override
-    public OrderDetails getOrderDetailsByOrderId(int orderId) {
-        Optional<OrderDetails> orderDetailsHolder = orderDetailsRepository.findById(orderId);
-        OrderDetails orderDetails = null;
+    public OrderDetail getOrderDetailsByOrderId(int orderId) {
+        Optional<OrderDetail> orderDetailsHolder = orderDetailsRepository.findById(orderId);
+        OrderDetail orderDetails = null;
         if (orderDetailsHolder.isPresent()) {
             orderDetails = orderDetailsHolder.get();
         } else {
-            orderDetails = new OrderDetails();
+            orderDetails = new OrderDetail();
             orderDetails.setError(new Error(OrderBookConstants.OBMS_0003, "Order not found for orderId " + orderId));
         }
         return orderDetails;
@@ -116,7 +120,7 @@ public class OrderDetailsStatsticsServiceImpl implements OrderDetailsStatsticsSe
 
     @Override
     public OrderState getOrderStateByOrderId(int orderId) {
-        OrderDetails orderDetails = getOrderDetailsByOrderId(orderId);
+        OrderDetail orderDetails = getOrderDetailsByOrderId(orderId);
         if (orderDetails == null) {
             OrderState orderStatus = new OrderState();
             orderStatus.setError(new Error(OrderBookConstants.OBMS_0003, "Order not found for orderId " + orderId));

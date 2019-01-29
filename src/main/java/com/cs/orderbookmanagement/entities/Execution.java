@@ -1,4 +1,4 @@
-package com.cs.orderbookmanagement.models;
+package com.cs.orderbookmanagement.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;

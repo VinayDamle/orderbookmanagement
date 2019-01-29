@@ -1,32 +1,24 @@
 package com.cs.orderbookmanagement.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import javax.persistence.*;
 
 @Getter
 @Setter
-@Entity
-@NoArgsConstructor
 @JsonIgnoreProperties
-public class OrderDao {
+final public class OrderRequest {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int orderId;
+    private final double price;
 
-    private double price;
+    private final int quantity;
 
-    private int quantity;
+    private final int instrumentId;
 
-    private int instrumentId;
+    private final String entryDate;
 
-    private String entryDate;
-
-    public OrderDao(int quantity, String entryDate, int instrumentId, double price) {
+    public OrderRequest(int quantity, String entryDate, int instrumentId, double price) {
         this.price = price;
         this.quantity = quantity;
         this.entryDate = entryDate;
@@ -41,6 +33,12 @@ public class OrderDao {
                 ", entryDate=" + entryDate +
                 ", instrumentId=" + instrumentId +
                 '}';
+    }
+
+    public static void main(String[] args) throws Exception {
+        ObjectMapper m = new ObjectMapper();
+        String s = m.writer().withDefaultPrettyPrinter().writeValueAsString(new OrderRequest(1, "", 1, 20));
+        System.out.println(s);
     }
 
 }

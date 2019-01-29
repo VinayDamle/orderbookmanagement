@@ -1,6 +1,6 @@
 package com.cs.orderbookmanagement.repository;
 
-import com.cs.orderbookmanagement.models.OrderBook;
+import com.cs.orderbookmanagement.entities.OrderBook;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

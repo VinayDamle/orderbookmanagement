@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
 @Getter
 @Setter
 @JsonIgnoreProperties
-public class InstrumentRequest {
+public class ExecuteOrderRequest {
 
     @NotNull
     private int quantity;
@@ -17,15 +17,11 @@ public class InstrumentRequest {
     @NotNull
     private double price;
 
-    private String instrumentName;
-
-    private String instrumentDesc;
-
     @Override
     public String toString() {
-        return "Execution{" +
-                ", instrumentName=" + instrumentName +
-                "instrumentDesc=" + instrumentDesc +
+        return "ExecutionRequest{" +
+                "quantity=" + quantity +
+                ", price=" + price +
                 '}';
     }
 }

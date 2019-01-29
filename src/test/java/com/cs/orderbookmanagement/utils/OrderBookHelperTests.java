@@ -1,8 +1,8 @@
 package com.cs.orderbookmanagement.utils;
 
-import com.cs.orderbookmanagement.models.Execution;
-import com.cs.orderbookmanagement.models.OrderDao;
-import com.cs.orderbookmanagement.models.OrderDetails;
+import com.cs.orderbookmanagement.entities.OrderDetail;
+import com.cs.orderbookmanagement.entities.Execution;
+import com.cs.orderbookmanagement.entities.OrderDao;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,11 +33,11 @@ public class OrderBookHelperTests {
 
     @Test
     public void testFilterValidOrders() {
-        List<OrderDetails> orderDetailsList = getTestOrderDetails();
+        List<OrderDetail> orderDetailsList = getTestOrderDetails();
         Execution execution = new Execution();
         execution.setQuantity(30);
         execution.setExecutionPrice(100.0);
-        List<OrderDetails> validOrderDetailsList = helper.getValidOrders(orderDetailsList, execution);
+        List<OrderDetail> validOrderDetailsList = helper.getValidOrders(orderDetailsList, execution);
         assertThat(validOrderDetailsList.get(0).getOrderStatus()).isEqualTo(OrderBookConstants.VALID);
         assertThat(validOrderDetailsList.get(1).getOrderStatus()).isEqualTo(OrderBookConstants.VALID);
         assertThat(validOrderDetailsList.get(2).getOrderStatus()).isEqualTo(OrderBookConstants.VALID);
@@ -45,7 +45,7 @@ public class OrderBookHelperTests {
 
     @Test
     public void testGetExecutedOrderDetails() {
-        List<OrderDetails> orderDetailsList = getTestOrderDetails();
+        List<OrderDetail> orderDetailsList = getTestOrderDetails();
         orderDetailsList.get(0).setOrderStatus(OrderBookConstants.VALID);
         orderDetailsList.get(1).setOrderStatus(OrderBookConstants.VALID);
         orderDetailsList.get(2).setOrderStatus(OrderBookConstants.VALID);
@@ -58,17 +58,17 @@ public class OrderBookHelperTests {
         assertThat(orderDetailsList.get(2).getAllocatedQuantity()).isEqualTo(15);
     }
 
-    public List<OrderDetails> getTestOrderDetails() {
-        List<OrderDetails> orderDetailsList = new ArrayList<>();
-        OrderDetails orderDetails = new OrderDetails();
+    public List<OrderDetail> getTestOrderDetails() {
+        List<OrderDetail> orderDetailsList = new ArrayList<>();
+        OrderDetail orderDetails = new OrderDetail();
         OrderDao order = new OrderDao(10, "", 1, 100);
         orderDetails.setOrder(order);
         orderDetailsList.add(orderDetails);
-        orderDetails = new OrderDetails();
+        orderDetails = new OrderDetail();
         order = new OrderDao(20, "", 1, 200);
         orderDetails.setOrder(order);
         orderDetailsList.add(orderDetails);
-        orderDetails = new OrderDetails();
+        orderDetails = new OrderDetail();
         order = new OrderDao(30, "", 1, 300);
         orderDetails.setOrder(order);
         orderDetailsList.add(orderDetails);

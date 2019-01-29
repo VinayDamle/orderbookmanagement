@@ -1,7 +1,7 @@
 package com.cs.orderbookmanagement.utils;
 
-import com.cs.orderbookmanagement.models.Execution;
-import com.cs.orderbookmanagement.models.OrderDetails;
+import com.cs.orderbookmanagement.entities.OrderDetail;
+import com.cs.orderbookmanagement.entities.Execution;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -13,11 +13,11 @@ import java.util.List;
 @Component
 public class OrderBookHelper {
 
-    public List<OrderDetails> getValidOrders(List<OrderDetails> orderDetails, Execution execution) {
-        List<OrderDetails> validOrderDetails = new ArrayList<>();
-        Iterator<OrderDetails> iterator = orderDetails.iterator();
+    public List<OrderDetail> getValidOrders(List<OrderDetail> orderDetails, Execution execution) {
+        List<OrderDetail> validOrderDetails = new ArrayList<>();
+        Iterator<OrderDetail> iterator = orderDetails.iterator();
         while (iterator.hasNext()) {
-            OrderDetails orderDetail = iterator.next();
+            OrderDetail orderDetail = iterator.next();
             if (orderDetail.getOrder().getPrice() >= 0.0) {
                 orderDetail.setOrderType(OrderBookConstants.LIMIT_ORDER);
             }
@@ -34,15 +34,15 @@ public class OrderBookHelper {
         return validOrderDetails;
     }
 
-    public List<OrderDetails> getExecutedOrderDetails(List<OrderDetails> validOrderDetails, Execution execution) {
+    public List<OrderDetail> getExecutedOrderDetails(List<OrderDetail> validOrderDetails, Execution execution) {
         double totalDemandedQty = 0.0;
-        for (OrderDetails validOrderDetail : validOrderDetails) {
+        for (OrderDetail validOrderDetail : validOrderDetails) {
             totalDemandedQty = totalDemandedQty + validOrderDetail.getOrder().getQuantity();
         }
         return getExecuteOrderByDistributionFactor(validOrderDetails, execution.getQuantity() / totalDemandedQty, execution);
     }
 
-    private List<OrderDetails> getExecuteOrderByDistributionFactor(List<OrderDetails> validOrderDetails, double distributionFactor, Execution execution) {
+    private List<OrderDetail> getExecuteOrderByDistributionFactor(List<OrderDetail> validOrderDetails, double distributionFactor, Execution execution) {
         validOrderDetails.forEach(validOrderDetail -> {
             validOrderDetail.setAllocatedQuantity((int) (validOrderDetail.getOrder().getQuantity() * distributionFactor));
             if (validOrderDetail.getAllocatedQuantity() > 0) {

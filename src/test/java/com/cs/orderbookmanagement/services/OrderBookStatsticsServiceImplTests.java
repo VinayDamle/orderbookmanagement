@@ -1,15 +1,13 @@
 package com.cs.orderbookmanagement.services;
 
-import com.cs.orderbookmanagement.models.OrderBook;
-import com.cs.orderbookmanagement.models.OrderDao;
-import com.cs.orderbookmanagement.models.OrderDetails;
+import com.cs.orderbookmanagement.entities.OrderBook;
+import com.cs.orderbookmanagement.entities.OrderDao;
+import com.cs.orderbookmanagement.entities.OrderDetail;
 import com.cs.orderbookmanagement.repository.OrderBookRepository;
 import com.cs.orderbookmanagement.repository.OrderDetailsRepository;
 import com.cs.orderbookmanagement.utils.OrderBookConstants;
 import com.cs.orderbookmanagement.utils.OrderBookHelper;
 import org.assertj.core.api.Assertions;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -31,7 +29,7 @@ public class OrderBookStatsticsServiceImplTests {
     private OrderBookHelper helper;
 
     @InjectMocks
-    private OrderDetailsStatsticsServiceImpl orderBookStatsticsService;
+    private StatsticsServiceImpl orderBookStatsticsService;
 
     @Mock
     private OrderBookRepository orderBookRepository;
@@ -41,41 +39,41 @@ public class OrderBookStatsticsServiceImplTests {
 
     @Test
     public void testFindAll() {
-        List<OrderDetails> orderDetailsList = getTestOrderDetails();
+        List<OrderDetail> orderDetailsList = getTestOrderDetails();
         OrderBook orderBook = new OrderBook();
         orderBook.setInstrumentId(1);
         orderBook.setOrderBookStatus(OrderBookConstants.OPEN);
         when(orderDetailsRepository.findAll()).thenReturn(orderDetailsList);
-        List<OrderDetails> fetchedOrderDetailsList = orderDetailsRepository.findAll();
+        List<OrderDetail> fetchedOrderDetailsList = orderDetailsRepository.findAll();
         Assertions.assertThat(fetchedOrderDetailsList).isNotNull();
         Assertions.assertThat(fetchedOrderDetailsList.size()).isEqualTo(3);
     }
 
     @Test
     public void testOrderDetailsByOrderInstrumentId() {
-        List<OrderDetails> orderDetailsList = getTestOrderDetails();
+        List<OrderDetail> orderDetailsList = getTestOrderDetails();
         OrderBook orderBook = new OrderBook();
         orderBook.setInstrumentId(1);
         orderBook.setOrderBookStatus(OrderBookConstants.OPEN);
         when(orderDetailsRepository.findAllOrderDetailsByOrderInstrumentId(anyInt())).thenReturn(orderDetailsList);
-        List<OrderDetails> fetchedOrderDetailsList = orderDetailsRepository.findAllOrderDetailsByOrderInstrumentId(orderBook.getInstrumentId());
+        List<OrderDetail> fetchedOrderDetailsList = orderDetailsRepository.findAllOrderDetailsByOrderInstrumentId(orderBook.getInstrumentId());
         Assertions.assertThat(fetchedOrderDetailsList).isNotNull();
         Assertions.assertThat(fetchedOrderDetailsList.size()).isEqualTo(3);
     }
 
     //NEED TO WRITE TEST CASE FOR getOrderStatstics
 
-    public List<OrderDetails> getTestOrderDetails() {
-        List<OrderDetails> orderDetailsList = new ArrayList<>();
-        OrderDetails orderDetails = new OrderDetails();
+    public List<OrderDetail> getTestOrderDetails() {
+        List<OrderDetail> orderDetailsList = new ArrayList<>();
+        OrderDetail orderDetails = new OrderDetail();
         OrderDao order = new OrderDao(10, "", 1, 100);
         orderDetails.setOrder(order);
         orderDetailsList.add(orderDetails);
-        orderDetails = new OrderDetails();
+        orderDetails = new OrderDetail();
         order = new OrderDao(20, "", 1, 200);
         orderDetails.setOrder(order);
         orderDetailsList.add(orderDetails);
-        orderDetails = new OrderDetails();
+        orderDetails = new OrderDetail();
         order = new OrderDao(30, "", 1, 300);
         orderDetails.setOrder(order);
         orderDetailsList.add(orderDetails);

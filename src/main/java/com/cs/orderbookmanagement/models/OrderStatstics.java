@@ -18,10 +18,10 @@ public class OrderStatstics {
     private int totalNoOfOrders;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private Order biggestOrder;
+    private OrderRequest biggestOrder;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private Order smallestOrder;
+    private OrderRequest smallestOrder;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private int validOrders;
@@ -30,10 +30,10 @@ public class OrderStatstics {
     private int invalidOrders;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private Order latestOrderEntry;
+    private OrderRequest latestOrderEntry;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private Order earliestOrderEntry;
+    private OrderRequest earliestOrderEntry;
 
     public OrderStatstics() {
     }

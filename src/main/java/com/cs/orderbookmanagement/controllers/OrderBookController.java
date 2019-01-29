@@ -23,73 +23,78 @@ public class OrderBookController {
     @Autowired
     private OrderBookService orderBookService;
 
-    @PostMapping(value = "/{instrumentId}/status", produces = {"application/json"}, consumes = {"application/json"})
+    @PostMapping(value = "/{instrumentId}", produces = {"application/json"}, consumes = {"application/json"})
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Successfully opened/closed the order book."),
             @ApiResponse(code = 400, message = "Authorization error"),
             @ApiResponse(code = 500, message = "Internal server error")})
-    public ResponseEntity<OrderBookStatusResponse> openOrCloseOrderBook(
-            @PathVariable int instrumentId,
-            @RequestBody OrderBookStatusCommandRequest orderBookStatusCommandRequest) {
-        //log.info("The incoming request for instrumentId " + instrumentId + " is " + mapper.serialize(orderBookStatusCommandRequest));
+    public ResponseEntity<OrderBookStatusResponse> openOrderBook(@PathVariable int instrumentId) {
         Error error = null;
         HttpStatus openOrCloseOrderBookHttpStatus = HttpStatus.OK;
         OrderBookStatusResponse orderBookStatusResponse = new OrderBookStatusResponse();
-        String command = orderBookStatusCommandRequest.getOrderBookStatusCommand();
-        if (command == null || !((command.equalsIgnoreCase(OrderBookConstants.OPEN) || command.equalsIgnoreCase(OrderBookConstants.CLOSE)))) {
-            openOrCloseOrderBookHttpStatus = HttpStatus.BAD_REQUEST;
-            error = new Error(OrderBookConstants.OBMS_0002, OrderBookConstants.INVALID_COMMAND);
-            orderBookStatusResponse.setError(new Error(OrderBookConstants.OBMS_0002, OrderBookConstants.INVALID_COMMAND));
+        String orderBookStatus = orderBookService.changeOrderBookStatus(instrumentId, OrderBookConstants.OPEN);
+        orderBookStatusResponse.setOrderBookStatus(orderBookStatus);
+        if (orderBookStatus.equalsIgnoreCase(OrderBookConstants.INSTRUMENT_ID_NOT_FOUND)) {
+            openOrCloseOrderBookHttpStatus = HttpStatus.NOT_FOUND;
+            error = new Error(OrderBookConstants.OBMS_0001, orderBookStatus);
+            orderBookStatusResponse.setError(error);
             orderBookStatusResponse.setOrderBookStatus(null);
-        } else {
-            String orderBookStatus = orderBookService.changeOrderBookStatus(instrumentId, orderBookStatusCommandRequest.getOrderBookStatusCommand());
-            orderBookStatusResponse.setOrderBookStatus(orderBookStatus);
-            if (orderBookStatus.equalsIgnoreCase(OrderBookConstants.INSTRUMENT_ID_NOT_FOUND)) {
-                openOrCloseOrderBookHttpStatus = HttpStatus.NOT_FOUND;
-                error = new Error(OrderBookConstants.OBMS_0001, orderBookStatus);
-                orderBookStatusResponse.setError(error);
-                orderBookStatusResponse.setOrderBookStatus(null);
-            }
         }
         orderBookStatusResponse.setError(error);
-        //log.info("Service response is " + mapper.serialize(orderBookStatusResponse));
+        return new ResponseEntity<>(orderBookStatusResponse, openOrCloseOrderBookHttpStatus);
+    }
+
+    @PutMapping(value = "/{instrumentId}", produces = {"application/json"}, consumes = {"application/json"})
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Successfully opened/closed the order book."),
+            @ApiResponse(code = 400, message = "Authorization error"),
+            @ApiResponse(code = 500, message = "Internal server error")})
+    public ResponseEntity<OrderBookStatusResponse> closeOrderBook(
+            @PathVariable int instrumentId) {
+        Error error = null;
+        HttpStatus openOrCloseOrderBookHttpStatus = HttpStatus.OK;
+        OrderBookStatusResponse orderBookStatusResponse = new OrderBookStatusResponse();
+        String orderBookStatus = orderBookService.changeOrderBookStatus(instrumentId, OrderBookConstants.CLOSE);
+        orderBookStatusResponse.setOrderBookStatus(orderBookStatus);
+        if (orderBookStatus.equalsIgnoreCase(OrderBookConstants.INSTRUMENT_ID_NOT_FOUND)) {
+            openOrCloseOrderBookHttpStatus = HttpStatus.NOT_FOUND;
+            error = new Error(OrderBookConstants.OBMS_0001, orderBookStatus);
+            orderBookStatusResponse.setError(error);
+            orderBookStatusResponse.setOrderBookStatus(null);
+        }
+        orderBookStatusResponse.setError(error);
         return new ResponseEntity<>(orderBookStatusResponse, openOrCloseOrderBookHttpStatus);
     }
 
     @PostMapping(value = "/{instrumentId}/order", produces = {"application/json"}, consumes = {"application/json"})
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Successfully added the orders to the order book."),
             @ApiResponse(code = 500, message = "Internal server error.")})
-    public ResponseEntity<OrderDetails> addOrder(@PathVariable int instrumentId, @RequestBody Order order) {
-        //log.info("The incoming request for instrumentId " + instrumentId + " is " + mapper.serialize(order));
-        OrderDetails orderDetails;
+    public ResponseEntity<OrderResponse> addOrder(@PathVariable int instrumentId, @RequestBody OrderRequest orderRequest) {
+        OrderResponse orderResponse = null;
         HttpStatus addOrderHttpStatus = HttpStatus.OK;
-        if (instrumentId != order.getInstrumentId()) {
-            orderDetails = new OrderDetails();
+        if (instrumentId != orderRequest.getInstrumentId()) {
+            orderResponse = new OrderResponse();
             addOrderHttpStatus = HttpStatus.BAD_REQUEST;
-            orderDetails.setOrder(null);
-            orderDetails.setError(new Error(OrderBookConstants.OBMS_0004, OrderBookConstants.UNEQUAL_INST_ID));
+            orderResponse.setOrder(null);
+            orderResponse.setError(new Error(OrderBookConstants.OBMS_0004, OrderBookConstants.UNEQUAL_INST_ID));
         } else {
-            orderDetails = orderBookService.addOrder(order, instrumentId);
-            if (orderDetails.getError() != null) {
+            orderResponse = orderBookService.addOrder(orderRequest, instrumentId);
+            if (orderResponse.getError() != null) {
                 addOrderHttpStatus = HttpStatus.NOT_FOUND;
             }
         }
-        //log.info("Service response is " + mapper.serialize(orderDetails));
-        return new ResponseEntity<>(orderDetails, addOrderHttpStatus);
+        return new ResponseEntity<>(orderResponse, addOrderHttpStatus);
     }
 
     @PostMapping(value = "/{instrumentId}/execute", produces = {"application/json"}, consumes = {"application/json"})
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Successfully executed the orders."),
             @ApiResponse(code = 500, message = "Internal server error.")})
-    public ResponseEntity<ExecutedOrderResponse> addExecutionAndExecuteOrder(
-            @PathVariable int instrumentId, @RequestBody ExecutionRequest executionRequest) {
-        //log.info("The incoming request for instrumentId " + instrumentId + " is " + mapper.serialize(executionRequest));
-        ExecutedOrderResponse executedOrderResponse;
+    public ResponseEntity<ExecuteOrderResponse> addExecutionAndExecuteOrder(
+            @PathVariable int instrumentId, @RequestBody ExecuteOrderRequest executionRequest) {
+        ExecuteOrderResponse executedOrderResponse;
         HttpStatus addExecutionAndExecuteOrderHttpStatus = HttpStatus.OK;
         executedOrderResponse = orderBookService.addExecutionAndProcessOrder(executionRequest, instrumentId);
         if (executedOrderResponse.getError() != null) {
             addExecutionAndExecuteOrderHttpStatus = HttpStatus.NOT_FOUND;
         }
-        //log.info("Service response is " + mapper.serialize(executedOrderResponse));
         return new ResponseEntity<>(executedOrderResponse, addExecutionAndExecuteOrderHttpStatus);
     }
 
