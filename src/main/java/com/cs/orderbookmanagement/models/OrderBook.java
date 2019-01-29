@@ -23,8 +23,7 @@ public class OrderBook {
     @OneToOne
     private Execution execution;
 
-    @OneToMany
-    @JoinColumn(name = "order.instrumentId")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "orderBook")
     private List<OrderDetails> orderDetails = new ArrayList<>();
 
     public OrderBook(int instrumentId, String orderBookStatus, Execution execution, List<OrderDetails> orderDetails) {

@@ -62,9 +62,9 @@ public class OrderDetailsStatisticsControllerTests {
                 andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8)).
                 andReturn();
         context = JsonPath.parse(response.getResponse().getContentAsString());
-        assertThat(Integer.parseInt(context.read("$.[0].orderId").toString())).isEqualTo(1);
-        assertThat(Integer.parseInt(context.read("$.[1].orderId").toString())).isEqualTo(2);
-        assertThat(Integer.parseInt(context.read("$.[2].orderId").toString())).isEqualTo(3);
+        assertThat(Integer.parseInt(context.read("$.[0].order.orderId").toString())).isEqualTo(1);
+        assertThat(Integer.parseInt(context.read("$.[1].order.orderId").toString())).isEqualTo(2);
+        assertThat(Integer.parseInt(context.read("$.[2].order.orderId").toString())).isEqualTo(3);
     }
 
     @Test
@@ -96,7 +96,7 @@ public class OrderDetailsStatisticsControllerTests {
                 andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8)).
                 andReturn();
         context = JsonPath.parse(response.getResponse().getContentAsString());
-        assertThat(Integer.parseInt(context.read("$.orderId").toString())).isEqualTo(1);
+        assertThat(Integer.parseInt(context.read("$.order.orderId").toString())).isEqualTo(1);
     }
 
     @Test
@@ -104,11 +104,10 @@ public class OrderDetailsStatisticsControllerTests {
         int orderId = 1;
         List<OrderDetails> orderDetailsList = getTestOrderDetails();
         OrderDetails orderDetails = getTestOrderDetails().get(0);
-        orderDetails.setOrderId(1);
         orderDetails.setExecutionPrice(100);
         orderDetails.getOrder().setPrice(80);
         orderDetails.setOrderStatus(OrderBookConstants.VALID);
-        OrderState orderState = new OrderState(orderDetails.getOrderId(), orderDetails.getOrder().getPrice(),
+        OrderState orderState = new OrderState(1, orderDetails.getOrder().getPrice(),
                 orderDetails.getAllocatedQuantity(), orderDetails.getExecutionPrice(), orderDetails.getOrderStatus());
         when(service.getOrderStateByOrderId(anyInt())).thenReturn(orderState);
         requestBuilder = get("/orderbook/statstics/order/" + orderId + "/orderState").
@@ -120,7 +119,7 @@ public class OrderDetailsStatisticsControllerTests {
                 andReturn();
         context = JsonPath.parse(response.getResponse().getContentAsString());
         assertThat(context.read("$.validityStatus").toString()).isEqualTo(orderDetails.getOrderStatus());
-        assertThat(Integer.parseInt(context.read("$.orderId").toString())).isEqualTo(orderDetails.getOrderId());
+        assertThat(Integer.parseInt(context.read("$.orderId").toString())).isEqualTo(1);
         assertThat(Double.parseDouble(context.read("$.orderPrice").toString())).isEqualTo(orderDetails.getOrder().getPrice());
         assertThat(Double.parseDouble(context.read("$.executionPrice").toString())).isEqualTo(orderDetails.getExecutionPrice());
         assertThat(Integer.parseInt(context.read("$.executionQuantity").toString())).isEqualTo(orderDetails.getAllocatedQuantity());
@@ -163,20 +162,20 @@ public class OrderDetailsStatisticsControllerTests {
         List<OrderDetails> orderDetailsList = new ArrayList<>();
         OrderDetails orderDetails = new OrderDetails();
         OrderDao order = new OrderDao(10, "24-01-2019", 1, 100);
+        order.setOrderId(1);
         orderDetails.setOrder(order);
-        orderDetails.setOrderId(1);
         orderDetailsList.add(orderDetails);
 
         orderDetails = new OrderDetails();
         order = new OrderDao(20, "28-01-2019", 1, 200);
+        order.setOrderId(2);
         orderDetails.setOrder(order);
-        orderDetails.setOrderId(2);
         orderDetailsList.add(orderDetails);
 
         orderDetails = new OrderDetails();
         order = new OrderDao(30, "29-01-2019", 1, 300);
+        order.setOrderId(3);
         orderDetails.setOrder(order);
-        orderDetails.setOrderId(3);
         orderDetailsList.add(orderDetails);
 
         return orderDetailsList;

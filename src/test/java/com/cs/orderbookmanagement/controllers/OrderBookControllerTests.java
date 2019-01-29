@@ -134,6 +134,7 @@ public class OrderBookControllerTests {
         OrderDetails orderDetails = new OrderDetails(instrumentId,
                 new OrderDao(10, "10-10-2019", instrumentId, 100.0),
                 null, 0, OrderBookConstants.LIMIT_ORDER, 0.0);
+        orderDetails.setOrderDetailsId(1);
         when(service.addOrder(any(Order.class), anyInt())).thenReturn(orderDetails);
         orderBookRequestJsonPayload = getOrderBookRequestJsonPayload();
         requestBuilder = MockMvcRequestBuilders.post("/orderbook/" + instrumentId + "/order").
@@ -145,7 +146,8 @@ public class OrderBookControllerTests {
                 andReturn();
         context = JsonPath.parse(response.getResponse().getContentAsString());
         Assertions.assertThat(context.read("$.order").toString()).isNotNull();
-        Assertions.assertThat(context.read("$.orderId").toString()).isNotNull();
+        Assertions.assertThat(context.read("$.order.orderId").toString()).isNotNull();
+        Assertions.assertThat(Integer.parseInt(context.read("$.orderDetailsId").toString())).isEqualTo(1);
         Assertions.assertThat(Integer.parseInt(context.read("$.order.instrumentId").toString())).isEqualTo(1);
     }
 

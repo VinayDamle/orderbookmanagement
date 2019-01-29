@@ -5,14 +5,18 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Embeddable;
+import javax.persistence.*;
 
 @Getter
 @Setter
-@Embeddable
+@Entity
 @NoArgsConstructor
 @JsonIgnoreProperties
 public class OrderDao {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int orderId;
 
     private double price;
 

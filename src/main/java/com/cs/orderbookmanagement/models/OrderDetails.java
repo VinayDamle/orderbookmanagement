@@ -3,6 +3,7 @@ package com.cs.orderbookmanagement.models;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -10,6 +11,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
+@NoArgsConstructor
 @JsonIgnoreProperties
 public class OrderDetails {
 
@@ -19,14 +21,15 @@ public class OrderDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int orderId;
+    private int orderDetailsId;
 
-    @Embedded
+    @OneToOne(cascade = CascadeType.ALL)
     private OrderDao order;
 
     private String orderType;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "instrumentId")
     private OrderBook orderBook;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -37,9 +40,6 @@ public class OrderDetails {
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private double executionPrice;
-
-    public OrderDetails() {
-    }
 
     public OrderDetails(int instrumentId, OrderDao order, String orderStatus, int allocatedQuantity, String orderType, double executionPrice) {
         this.order = order;
@@ -56,7 +56,7 @@ public class OrderDetails {
     @Override
     public String toString() {
         return "OrderDetails{" +
-                "orderId=" + orderId +
+                "orderDetailsId=" + orderDetailsId +
                 ", orderType=" + orderType +
                 ", order=" + order +
                 ", error=" + error +

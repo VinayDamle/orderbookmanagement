@@ -122,7 +122,7 @@ public class OrderDetailsStatsticsServiceImpl implements OrderDetailsStatsticsSe
             orderStatus.setError(new Error(OrderBookConstants.OBMS_0003, "Order not found for orderId " + orderId));
             return orderStatus;
         }
-        return new OrderState(orderDetails.getOrderId(), orderDetails.getOrder().getPrice(),
+        return new OrderState(orderId, orderDetails.getOrder().getPrice(),
                 orderDetails.getAllocatedQuantity(), orderDetails.getExecutionPrice(), orderDetails.getOrderStatus());
     }
 
