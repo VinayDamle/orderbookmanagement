@@ -23,45 +23,39 @@ public class OrderBookController {
     @Autowired
     private OrderBookService orderBookService;
 
-    @PostMapping(value = "/{instrumentId}", produces = {"application/json"}, consumes = {"application/json"})
+    @PostMapping(produces = {"application/json"}, consumes = {"application/json"})
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Successfully opened/closed the order book."),
             @ApiResponse(code = 400, message = "Authorization error"),
             @ApiResponse(code = 500, message = "Internal server error")})
-    public ResponseEntity<OrderBookStatusResponse> openOrderBook(@PathVariable int instrumentId) {
+    public ResponseEntity<OBStatusResponse> openOrderBook() {
         Error error = null;
         HttpStatus openOrCloseOrderBookHttpStatus = HttpStatus.OK;
-        OrderBookStatusResponse orderBookStatusResponse = new OrderBookStatusResponse();
-        String orderBookStatus = orderBookService.changeOrderBookStatus(instrumentId, OrderBookConstants.OPEN);
-        orderBookStatusResponse.setOrderBookStatus(orderBookStatus);
-        if (orderBookStatus.equalsIgnoreCase(OrderBookConstants.INSTRUMENT_ID_NOT_FOUND)) {
+        OBStatusResponse orderBookStatusResponse = new OBStatusResponse();
+        Integer orderBookId = orderBookService.openOrderBook();
+        if (orderBookId == null) {
             openOrCloseOrderBookHttpStatus = HttpStatus.NOT_FOUND;
-            error = new Error(OrderBookConstants.OBMS_0001, orderBookStatus);
-            orderBookStatusResponse.setError(error);
-            orderBookStatusResponse.setOrderBookStatus(null);
+            orderBookStatusResponse.setError(new Error(OrderBookConstants.OBMS_0001, OrderBookConstants.INSTRUMENT_ID_NOT_FOUND));
         }
-        orderBookStatusResponse.setError(error);
+        orderBookStatusResponse.setOrderBookId(orderBookId);
+        orderBookStatusResponse.setBookStatus(OrderBookConstants.OPEN);
         return new ResponseEntity<>(orderBookStatusResponse, openOrCloseOrderBookHttpStatus);
     }
 
-    @PutMapping(value = "/{instrumentId}", produces = {"application/json"}, consumes = {"application/json"})
+    @PutMapping(value = "/{orderBookId}", produces = {"application/json"}, consumes = {"application/json"})
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Successfully opened/closed the order book."),
             @ApiResponse(code = 400, message = "Authorization error"),
             @ApiResponse(code = 500, message = "Internal server error")})
-    public ResponseEntity<OrderBookStatusResponse> closeOrderBook(
-            @PathVariable int instrumentId) {
+    public ResponseEntity<OBStatusResponse> closeOrderBook(@PathVariable int orderBookId) {
         Error error = null;
-        HttpStatus openOrCloseOrderBookHttpStatus = HttpStatus.OK;
-        OrderBookStatusResponse orderBookStatusResponse = new OrderBookStatusResponse();
-        String orderBookStatus = orderBookService.changeOrderBookStatus(instrumentId, OrderBookConstants.CLOSE);
-        orderBookStatusResponse.setOrderBookStatus(orderBookStatus);
+        OBStatusResponse orderBookStatusResponse = new OBStatusResponse();
+        HttpStatus closeOrderBookHttpStatus = HttpStatus.OK;
+        String orderBookStatus = orderBookService.closeOrderBook(orderBookId);
         if (orderBookStatus.equalsIgnoreCase(OrderBookConstants.INSTRUMENT_ID_NOT_FOUND)) {
-            openOrCloseOrderBookHttpStatus = HttpStatus.NOT_FOUND;
-            error = new Error(OrderBookConstants.OBMS_0001, orderBookStatus);
-            orderBookStatusResponse.setError(error);
-            orderBookStatusResponse.setOrderBookStatus(null);
+            closeOrderBookHttpStatus = HttpStatus.NOT_FOUND;
+            orderBookStatusResponse.setError(new Error(OrderBookConstants.OBMS_0001, OrderBookConstants.INSTRUMENT_ID_NOT_FOUND));
         }
-        orderBookStatusResponse.setError(error);
-        return new ResponseEntity<>(orderBookStatusResponse, openOrCloseOrderBookHttpStatus);
+        orderBookStatusResponse.setBookStatus(orderBookStatus);
+        return new ResponseEntity<>(orderBookStatusResponse, closeOrderBookHttpStatus);
     }
 
     @PostMapping(value = "/{instrumentId}/order", produces = {"application/json"}, consumes = {"application/json"})

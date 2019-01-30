@@ -10,24 +10,20 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @JsonIgnoreProperties
-public class OrderBookStatusResponse {
+public class OBStatusResponse {
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Error error;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private String orderBookStatus;
+    private Integer orderBookId;
 
-    public OrderBookStatusResponse(Error error, String orderBookStatus) {
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private String bookStatus;
+
+    public OBStatusResponse(Error error) {
         this.error = error;
-        this.orderBookStatus = orderBookStatus;
     }
 
-    @Override
-    public String toString() {
-        return "OrderBookStatusResponse{" +
-                "error=" + error +
-                ", orderBookStatus='" + orderBookStatus + '\'' +
-                '}';
-    }
+
 }

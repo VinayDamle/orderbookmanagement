@@ -32,28 +32,35 @@ public class OrderBookServiceImpl implements OrderBookService {
     private OrderDetailsRepository orderDetailsRepository;
 
     @Override
-    public String changeOrderBookStatus(int instrumentId, String command) {
+    public Integer openOrderBook() {
+        Integer orderBookId = null;
+        OrderBook orderBook = new OrderBook();
+        orderBook.setOrderBookStatus(OrderBookConstants.OPEN);
+        OrderBook savedOrderBook = orderBookRepository.save(orderBook);
+        if (savedOrderBook != null) {
+            orderBookId = savedOrderBook.getInstrumentId();
+        }
+        return orderBookId;
+    }
+
+    @Override
+    public String closeOrderBook(int instrumentId) {
         OrderBook orderBook;
+        String status = null;
         Optional<OrderBook> orderBookHolder = orderBookRepository.findById(instrumentId);
-        if (!orderBookHolder.isPresent()) {
+        if (orderBookHolder == null || !orderBookHolder.isPresent()) {
             orderBook = new OrderBook();
             orderBook.setInstrumentId(instrumentId);
+            status = OrderBookConstants.INSTRUMENT_ID_NOT_FOUND;
         } else {
             orderBook = orderBookHolder.get();
-            if (orderBook.getOrderBookStatus() == null) {
-                return OrderBookConstants.INSTRUMENT_ID_NOT_FOUND;
+            orderBook.setOrderBookStatus(OrderBookConstants.CLOSE);
+            OrderBook savedOrderBook = orderBookRepository.save(orderBook);
+            if (savedOrderBook != null) {
+                status = savedOrderBook.getOrderBookStatus();
             }
         }
-        orderBook.setInstrumentId(instrumentId);
-        String currentOrderBookStatus;
-        if (!OrderBookConstants.OPEN.equalsIgnoreCase(command)) {
-            currentOrderBookStatus = OrderBookConstants.CLOSE;
-        } else {
-            currentOrderBookStatus = OrderBookConstants.OPEN;
-        }
-        orderBook.setOrderBookStatus(currentOrderBookStatus);
-        orderBookRepository.save(orderBook);
-        return currentOrderBookStatus;
+        return status;
     }
 
     /*@Override

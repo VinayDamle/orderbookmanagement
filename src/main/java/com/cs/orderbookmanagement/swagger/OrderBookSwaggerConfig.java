@@ -44,7 +44,7 @@ public class OrderBookSwaggerConfig {
                                 typeResolver.resolve(ResponseEntity.class, WildcardType.class)),
                         typeResolver.resolve(WildcardType.class)))
                 .useDefaultResponseMessages(true).apiInfo(apiInfo()).
-                        select().paths(regex("/orderbook/.*"))
+                        select().paths(regex("/orderbook.*"))
                 .build();
     }
 

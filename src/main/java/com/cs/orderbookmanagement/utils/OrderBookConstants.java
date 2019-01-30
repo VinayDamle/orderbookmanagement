@@ -27,4 +27,5 @@ public interface OrderBookConstants {
     String OBMS_0003 = "OBMS_0003";
     String OBMS_0004 = "OBMS_0004";
     String UNEQUAL_INST_ID = "Payload instrumentId is not same as path param instrumentId. Please pass same instrumentId.";
+    String SUCCESS = "Success";
 }

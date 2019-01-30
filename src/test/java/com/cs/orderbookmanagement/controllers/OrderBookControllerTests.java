@@ -60,9 +60,8 @@ public class OrderBookControllerTests {
 
     @Test
     public void testOpenOrderBook() throws Exception {
-        instrumentId = 1;
-        when(service.changeOrderBookStatus(anyInt(), anyString())).thenReturn(OrderBookConstants.OPEN);
-        requestBuilder = MockMvcRequestBuilders.post("/orderbook/" + instrumentId).
+        when(service.openOrderBook()).thenReturn(1);
+        requestBuilder = MockMvcRequestBuilders.post("/orderbook").
                 characterEncoding(OrderBookConstants.UTF_8).contentType(MediaType.APPLICATION_JSON).
                 accept(MediaType.APPLICATION_JSON);
         response = mockMvc.perform(requestBuilder).
@@ -70,15 +69,15 @@ public class OrderBookControllerTests {
                 andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8)).
                 andReturn();
         context = JsonPath.parse(response.getResponse().getContentAsString());
-        Assertions.assertThat(context.read("$.orderBookStatus").toString()).isNotNull();
-        Assertions.assertThat(context.read("$.orderBookStatus").toString()).isEqualTo(OrderBookConstants.OPEN);
+        Assertions.assertThat(context.read("$.orderBookId").toString()).isNotNull();
+        Assertions.assertThat(Integer.parseInt(context.read("$.orderBookId").toString())).isEqualTo(1);
     }
 
     @Test
     public void testOpenOrderBookWhenInvalidInstrumentIdThenReturnInstrumentIdNotFound() throws Exception {
         instrumentId = 10;
-        when(service.changeOrderBookStatus(anyInt(), anyString())).thenReturn(OrderBookConstants.INSTRUMENT_ID_NOT_FOUND);
-        requestBuilder = MockMvcRequestBuilders.post("/orderbook/" + instrumentId).
+        when(service.openOrderBook()).thenReturn(null);
+        requestBuilder = MockMvcRequestBuilders.post("/orderbook").
                 characterEncoding(OrderBookConstants.UTF_8).contentType(MediaType.APPLICATION_JSON).
                 accept(MediaType.APPLICATION_JSON);
         response = mockMvc.perform(requestBuilder).
@@ -94,23 +93,22 @@ public class OrderBookControllerTests {
     @Test
     public void testCloseOrderBook() throws Exception {
         instrumentId = 1;
-        when(service.changeOrderBookStatus(anyInt(), anyString())).thenReturn(OrderBookConstants.CLOSE);
+        when(service.closeOrderBook(anyInt())).thenReturn(OrderBookConstants.CLOSE);
         requestBuilder = MockMvcRequestBuilders.put("/orderbook/" + instrumentId).
                 characterEncoding(OrderBookConstants.UTF_8).contentType(MediaType.APPLICATION_JSON).
                 accept(MediaType.APPLICATION_JSON).param("instrumentId", "1");
         response = mockMvc.perform(requestBuilder).
                 andExpect(status().isOk()).
-                andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8)).
                 andReturn();
         context = JsonPath.parse(response.getResponse().getContentAsString());
-        Assertions.assertThat(context.read("$.orderBookStatus").toString()).isNotNull();
-        Assertions.assertThat(context.read("$.orderBookStatus").toString()).isEqualTo(OrderBookConstants.CLOSE);
+        Assertions.assertThat(context.read("$.bookStatus").toString()).isNotNull();
+        Assertions.assertThat(context.read("$.bookStatus").toString()).isEqualTo(OrderBookConstants.CLOSE);
     }
 
     @Test
     public void testCloseOrderBookWhenInvalidInstrumentIdThenReturnInstrumentIdNotFound() throws Exception {
         instrumentId = 10;
-        when(service.changeOrderBookStatus(anyInt(), anyString())).thenReturn(OrderBookConstants.INSTRUMENT_ID_NOT_FOUND);
+        when(service.closeOrderBook(anyInt())).thenReturn(OrderBookConstants.INSTRUMENT_ID_NOT_FOUND);
         requestBuilder = MockMvcRequestBuilders.put("/orderbook/" + instrumentId).
                 characterEncoding(OrderBookConstants.UTF_8).contentType(MediaType.APPLICATION_JSON).
                 accept(MediaType.APPLICATION_JSON);
@@ -119,9 +117,8 @@ public class OrderBookControllerTests {
                 andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8)).
                 andReturn();
         context = JsonPath.parse(response.getResponse().getContentAsString());
-        Assertions.assertThat(context.read("$.error").toString()).isNotNull();
-        Assertions.assertThat(context.read("$.error.errorMessage").toString()).isNotNull();
-        Assertions.assertThat(context.read("$.error.errorMessage").toString()).isEqualTo(OrderBookConstants.INSTRUMENT_ID_NOT_FOUND);
+        Assertions.assertThat(context.read("$.bookStatus").toString()).isNotNull();
+        Assertions.assertThat(context.read("$.bookStatus").toString()).isEqualTo(OrderBookConstants.INSTRUMENT_ID_NOT_FOUND);
     }
 
     @Test
