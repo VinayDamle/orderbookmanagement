@@ -2,6 +2,7 @@ package com.cs.orderbookmanagement.utils;
 
 import com.cs.orderbookmanagement.entities.OrderDetail;
 import com.cs.orderbookmanagement.entities.Execution;
+import com.cs.orderbookmanagement.models.OrderType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -19,9 +20,9 @@ public class OrderBookHelper {
         while (iterator.hasNext()) {
             OrderDetail orderDetail = iterator.next();
             if (orderDetail.getOrder().getPrice() >= 0.0) {
-                orderDetail.setOrderType(OrderBookConstants.LIMIT_ORDER);
+                orderDetail.setOrderType(OrderType.LIMIT_ORDER);
             }
-            if (orderDetail.getOrderType().equalsIgnoreCase(OrderBookConstants.LIMIT_ORDER)) {
+            if (orderDetail.getOrderType().equals(OrderType.LIMIT_ORDER)) {
                 if (orderDetail.getOrder().getPrice() >= execution.getExecutionPrice()) {
                     orderDetail.setOrderStatus(OrderBookConstants.VALID);
                     validOrderDetails.add(orderDetail);

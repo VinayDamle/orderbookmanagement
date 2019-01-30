@@ -23,7 +23,7 @@ public class OrderResponse {
 
     private OrderDao order;
 
-    private String orderType;
+    private OrderType orderType;
 
     private OrderBook orderBook;
 
@@ -36,7 +36,7 @@ public class OrderResponse {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private double executionPrice;
 
-    public OrderResponse(int instrumentId, OrderDao order, String orderStatus, int allocatedQuantity, String orderType, double executionPrice) {
+    public OrderResponse(int instrumentId, OrderDao order, String orderStatus, int allocatedQuantity, OrderType orderType, double executionPrice) {
         this.order = order;
         this.orderType = orderType;
         this.orderStatus = orderStatus;

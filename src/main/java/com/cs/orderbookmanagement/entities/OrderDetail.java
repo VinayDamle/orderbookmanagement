@@ -1,6 +1,7 @@
 package com.cs.orderbookmanagement.entities;
 
 import com.cs.orderbookmanagement.models.Error;
+import com.cs.orderbookmanagement.models.OrderType;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
@@ -27,7 +28,8 @@ public class OrderDetail {
     @OneToOne(cascade = CascadeType.ALL)
     private OrderDao order;
 
-    private String orderType;
+    @Enumerated(EnumType.STRING)
+    private OrderType orderType;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "instrumentId")
@@ -42,7 +44,7 @@ public class OrderDetail {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private double executionPrice;
 
-    public OrderDetail(int instrumentId, OrderDao order, String orderStatus, int allocatedQuantity, String orderType, double executionPrice) {
+    public OrderDetail(int instrumentId, OrderDao order, String orderStatus, int allocatedQuantity, OrderType orderType, double executionPrice) {
         this.order = order;
         this.orderType = orderType;
         this.orderStatus = orderStatus;

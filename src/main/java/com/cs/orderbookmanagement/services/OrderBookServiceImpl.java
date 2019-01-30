@@ -105,9 +105,9 @@ public class OrderBookServiceImpl implements OrderBookService {
                 orderDao.setQuantity(order.getQuantity());
                 orderDao.setEntryDate(order.getEntryDate());
                 orderDao.setInstrumentId(order.getInstrumentId());
-                String orderType = OrderBookConstants.LIMIT_ORDER;
+                OrderType orderType = OrderType.LIMIT_ORDER;
                 if (order.getPrice() == 0) {
-                    orderType = OrderBookConstants.MARKET_ORDER;
+                    orderType = OrderType.MARKET_ORDER;
                 }
                 OrderDetail orderDetailsToSave = new OrderDetail(order.getInstrumentId(),
                         orderDao, null, 0, orderType, 0.0);

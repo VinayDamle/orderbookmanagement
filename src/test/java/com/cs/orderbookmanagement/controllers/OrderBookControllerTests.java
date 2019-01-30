@@ -126,7 +126,7 @@ public class OrderBookControllerTests {
         instrumentId = 1;
         OrderResponse orderDetails = new OrderResponse(instrumentId,
                 new OrderDao(10, "10-10-2019", instrumentId, 100.0),
-                null, 0, OrderBookConstants.LIMIT_ORDER, 0.0);
+                null, 0, OrderType.LIMIT_ORDER, 0.0);
         orderDetails.setOrderDetailsId(1);
         when(service.addOrder(any(OrderRequest.class), anyInt())).thenReturn(orderDetails);
         orderBookRequestJsonPayload = getOrderBookRequestJsonPayload();
@@ -169,7 +169,7 @@ public class OrderBookControllerTests {
         OrderDao order = new OrderDao(10, "10-10-2019", instrumentId, 100);
         OrderDetail orderDetails = new OrderDetail(instrumentId,
                 order, "Valid", 10,
-                executionRequest.getPrice() != 0 ? OrderBookConstants.LIMIT_ORDER : OrderBookConstants.MARKET_ORDER, 0.0);
+                executionRequest.getPrice() != 0 ? OrderType.LIMIT_ORDER : OrderType.MARKET_ORDER, 0.0);
         List<OrderDetail> orderDetailsList = new ArrayList<>();
         orderDetailsList.add(orderDetails);
         ExecuteOrderResponse executedOrderResponse = new ExecuteOrderResponse();
