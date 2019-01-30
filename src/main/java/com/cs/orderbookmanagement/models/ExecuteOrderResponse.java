@@ -16,13 +16,13 @@ public class ExecuteOrderResponse {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Error error;
 
-    private List<OrderDetail> orderDetails;
+    private List<OrderResponse> orderResponses;
 
     @Override
     public String toString() {
         return "ExecutedOrderResponse{" +
                 "error=" + error +
-                ", orderDetails=" + orderDetails +
+                ", orderResponses=" + orderResponses +
                 '}';
     }
 }

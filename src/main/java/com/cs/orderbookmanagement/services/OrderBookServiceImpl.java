@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -31,9 +32,13 @@ public class OrderBookServiceImpl implements OrderBookService {
     @Autowired
     private OrderDetailsRepository orderDetailsRepository;
 
+    public OrderBookServiceImpl() {
+        super();
+    }
+
     @Override
-    public Integer openOrderBook() {
-        Integer orderBookId = null;
+    public Long openOrderBook() {
+        Long orderBookId = null;
         OrderBook orderBook = new OrderBook();
         orderBook.setOrderBookStatus(OrderBookConstants.OPEN);
         OrderBook savedOrderBook = orderBookRepository.save(orderBook);
@@ -44,7 +49,7 @@ public class OrderBookServiceImpl implements OrderBookService {
     }
 
     @Override
-    public String closeOrderBook(int instrumentId) {
+    public String closeOrderBook(Long instrumentId) {
         OrderBook orderBook;
         String status = null;
         Optional<OrderBook> orderBookHolder = orderBookRepository.findById(instrumentId);
@@ -92,7 +97,7 @@ public class OrderBookServiceImpl implements OrderBookService {
     }*/
 
     @Override
-    public OrderResponse addOrder(OrderRequest order, int instrumentId) {
+    public OrderResponse addOrder(OrderRequest order, Long instrumentId) {
         OrderResponse orderResponse = null;
         Optional<OrderBook> orderBookHolder = orderBookRepository.findById(instrumentId);
         if (orderBookHolder.isPresent()) {
@@ -106,14 +111,14 @@ public class OrderBookServiceImpl implements OrderBookService {
                 orderDao.setEntryDate(order.getEntryDate());
                 orderDao.setInstrumentId(order.getInstrumentId());
                 OrderType orderType = OrderType.LIMIT_ORDER;
-                if (order.getPrice() == 0) {
+                if (order.getPrice().intValue() == 0) {
                     orderType = OrderType.MARKET_ORDER;
                 }
                 OrderDetail orderDetailsToSave = new OrderDetail(order.getInstrumentId(),
-                        orderDao, null, 0, orderType, 0.0);
+                        orderDao, null, 0, orderType, new BigDecimal(0.0));
                 OrderDetail addedOrder = orderDetailsRepository.save(orderDetailsToSave);
                 orderResponse = new OrderResponse();
-                orderResponse.setOrder(addedOrder.getOrder());
+                orderResponse.setOrder(new OrderRequest(addedOrder.getOrder().getQuantity(), addedOrder.getOrder().getEntryDate(), addedOrder.getOrder().getInstrumentId(), addedOrder.getOrder().getPrice()));
                 orderResponse.setOrderType(addedOrder.getOrderType());
                 orderResponse.setOrderStatus(addedOrder.getOrderStatus());
                 orderResponse.setOrderDetailsId(addedOrder.getOrderDetailsId());
@@ -125,7 +130,7 @@ public class OrderBookServiceImpl implements OrderBookService {
     }
 
     @Override
-    public ExecuteOrderResponse addExecutionAndProcessOrder(ExecuteOrderRequest executionRequest, int instrumentId) {
+    public ExecuteOrderResponse addExecutionAndProcessOrder(ExecuteOrderRequest executionRequest, Long instrumentId) {
         ExecuteOrderResponse executedOrderResponse;
         Optional<OrderBook> orderBookHolder = orderBookRepository.findById(instrumentId);
         if (!orderBookHolder.isPresent()) {
@@ -150,7 +155,21 @@ public class OrderBookServiceImpl implements OrderBookService {
                 List<OrderDetail> validOrders = helper.getValidOrders(orderDetailsList, execution);
                 validOrders = helper.getExecutedOrderDetails(validOrders, execution);
                 executedOrderResponse = new ExecuteOrderResponse();
-                executedOrderResponse.setOrderDetails(validOrders);
+
+                List<OrderResponse> orderResponses = new ArrayList<>();
+                validOrders.stream().forEach(vo -> {
+                    OrderResponse or = new OrderResponse();
+                    or.setOrderDetailsId(vo.getOrderDetailsId());
+                    or.setOrderStatus(vo.getOrderStatus());
+                    or.setOrderType(vo.getOrderType());
+                    or.setAllocatedQuantity(vo.getAllocatedQuantity());
+                    or.setExecutionPrice(vo.getExecutionPrice());
+                    OrderRequest orderRequest = new OrderRequest(vo.getOrder().getQuantity(), vo.getOrder().getEntryDate(), vo.getOrder().getInstrumentId(), vo.getOrder().getPrice());
+                    or.setOrder(orderRequest);
+                    orderResponses.add(or);
+                });
+                executedOrderResponse.setOrderResponses(orderResponses);
+
                 List<OrderDetail> allOrders = new ArrayList<>(unExecutedOrders);
                 allOrders.addAll(validOrders);
                 orderDetailsRepository.saveAll(allOrders);

@@ -6,6 +6,7 @@ import com.cs.orderbookmanagement.models.OrderType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -19,11 +20,11 @@ public class OrderBookHelper {
         Iterator<OrderDetail> iterator = orderDetails.iterator();
         while (iterator.hasNext()) {
             OrderDetail orderDetail = iterator.next();
-            if (orderDetail.getOrder().getPrice() >= 0.0) {
+            if (orderDetail.getOrder().getPrice().doubleValue() >= 0.0) {
                 orderDetail.setOrderType(OrderType.LIMIT_ORDER);
             }
             if (orderDetail.getOrderType().equals(OrderType.LIMIT_ORDER)) {
-                if (orderDetail.getOrder().getPrice() >= execution.getExecutionPrice()) {
+                if (orderDetail.getOrder().getPrice().doubleValue() >= execution.getExecutionPrice().doubleValue()) {
                     orderDetail.setOrderStatus(OrderBookConstants.VALID);
                     validOrderDetails.add(orderDetail);
                     iterator.remove();
@@ -61,7 +62,7 @@ public class OrderBookHelper {
                 Execution price for all the allocated quantity -> allocated quantity * X = Y
                 validOrderDetail.setExecutionPrice(Y);
                 */
-                validOrderDetail.setExecutionPrice(validOrderDetail.getAllocatedQuantity() * (execution.getExecutionPrice() / execution.getQuantity()));
+                validOrderDetail.setExecutionPrice(new BigDecimal(validOrderDetail.getAllocatedQuantity() * (execution.getExecutionPrice().intValue() / execution.getQuantity())));
                 //====================================================================================================//
                 /*
                 ASSUMPTION - 3

@@ -15,8 +15,7 @@ public class OBStatusResponse {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Error error;
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    private Integer orderBookId;
+    private Long orderBookId;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String bookStatus;

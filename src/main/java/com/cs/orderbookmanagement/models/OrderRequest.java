@@ -5,20 +5,22 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+
 @Getter
 @Setter
 @JsonIgnoreProperties
 final public class OrderRequest {
 
-    private final double price;
+    private final BigDecimal price;
 
-    private final int quantity;
+    private final Integer quantity;
 
-    private final int instrumentId;
+    private final Long instrumentId;
 
     private final String entryDate;
 
-    public OrderRequest(int quantity, String entryDate, int instrumentId, double price) {
+    public OrderRequest(Integer quantity, String entryDate, Long instrumentId, BigDecimal price) {
         this.price = price;
         this.quantity = quantity;
         this.entryDate = entryDate;
@@ -33,12 +35,6 @@ final public class OrderRequest {
                 ", entryDate=" + entryDate +
                 ", instrumentId=" + instrumentId +
                 '}';
-    }
-
-    public static void main(String[] args) throws Exception {
-        ObjectMapper m = new ObjectMapper();
-        String s = m.writer().withDefaultPrettyPrinter().writeValueAsString(new OrderRequest(1, "", 1, 20));
-        System.out.println(s);
     }
 
 }

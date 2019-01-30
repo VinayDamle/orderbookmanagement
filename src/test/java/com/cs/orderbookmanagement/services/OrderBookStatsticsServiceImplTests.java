@@ -14,10 +14,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -41,7 +43,7 @@ public class OrderBookStatsticsServiceImplTests {
     public void testFindAll() {
         List<OrderDetail> orderDetailsList = getTestOrderDetails();
         OrderBook orderBook = new OrderBook();
-        orderBook.setInstrumentId(1);
+        orderBook.setInstrumentId(1L);
         orderBook.setOrderBookStatus(OrderBookConstants.OPEN);
         when(orderDetailsRepository.findAll()).thenReturn(orderDetailsList);
         List<OrderDetail> fetchedOrderDetailsList = orderDetailsRepository.findAll();
@@ -53,9 +55,9 @@ public class OrderBookStatsticsServiceImplTests {
     public void testOrderDetailsByOrderInstrumentId() {
         List<OrderDetail> orderDetailsList = getTestOrderDetails();
         OrderBook orderBook = new OrderBook();
-        orderBook.setInstrumentId(1);
+        orderBook.setInstrumentId(1L);
         orderBook.setOrderBookStatus(OrderBookConstants.OPEN);
-        when(orderDetailsRepository.findAllOrderDetailsByOrderInstrumentId(anyInt())).thenReturn(orderDetailsList);
+        when(orderDetailsRepository.findAllOrderDetailsByOrderInstrumentId(anyLong())).thenReturn(orderDetailsList);
         List<OrderDetail> fetchedOrderDetailsList = orderDetailsRepository.findAllOrderDetailsByOrderInstrumentId(orderBook.getInstrumentId());
         Assertions.assertThat(fetchedOrderDetailsList).isNotNull();
         Assertions.assertThat(fetchedOrderDetailsList.size()).isEqualTo(3);
@@ -66,15 +68,15 @@ public class OrderBookStatsticsServiceImplTests {
     public List<OrderDetail> getTestOrderDetails() {
         List<OrderDetail> orderDetailsList = new ArrayList<>();
         OrderDetail orderDetails = new OrderDetail();
-        OrderDao order = new OrderDao(10, "", 1, 100);
+        OrderDao order = new OrderDao(10, "", 1L, new BigDecimal(100));
         orderDetails.setOrder(order);
         orderDetailsList.add(orderDetails);
         orderDetails = new OrderDetail();
-        order = new OrderDao(20, "", 1, 200);
+        order = new OrderDao(20, "", 1L, new BigDecimal(200));
         orderDetails.setOrder(order);
         orderDetailsList.add(orderDetails);
         orderDetails = new OrderDetail();
-        order = new OrderDao(30, "", 1, 300);
+        order = new OrderDao(30, "", 1L, new BigDecimal(300));
         orderDetails.setOrder(order);
         orderDetailsList.add(orderDetails);
 

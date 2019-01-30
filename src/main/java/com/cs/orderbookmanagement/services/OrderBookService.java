@@ -5,13 +5,13 @@ import com.cs.orderbookmanagement.models.*;
 
 public interface OrderBookService {
 
-    Integer openOrderBook();
+    Long openOrderBook();
 
-    String closeOrderBook(int instrumentId);
+    String closeOrderBook(Long instrumentId);
 
     //OrderDetail addOrder(OrderRequest order, int instrumentId);
 
-    OrderResponse addOrder(OrderRequest order, int instrumentId);
+    OrderResponse addOrder(OrderRequest order, Long instrumentId);
 
-    ExecuteOrderResponse addExecutionAndProcessOrder(ExecuteOrderRequest execution, int instrumentId);
+    ExecuteOrderResponse addExecutionAndProcessOrder(ExecuteOrderRequest execution, Long instrumentId);
 }

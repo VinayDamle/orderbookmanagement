@@ -31,7 +31,7 @@ public class OrderBookController {
         Error error = null;
         HttpStatus openOrCloseOrderBookHttpStatus = HttpStatus.OK;
         OBStatusResponse orderBookStatusResponse = new OBStatusResponse();
-        Integer orderBookId = orderBookService.openOrderBook();
+        Long orderBookId = orderBookService.openOrderBook();
         if (orderBookId == null) {
             openOrCloseOrderBookHttpStatus = HttpStatus.NOT_FOUND;
             orderBookStatusResponse.setError(new Error(OrderBookConstants.OBMS_0001, OrderBookConstants.INSTRUMENT_ID_NOT_FOUND));
@@ -45,7 +45,7 @@ public class OrderBookController {
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Successfully opened/closed the order book."),
             @ApiResponse(code = 400, message = "Authorization error"),
             @ApiResponse(code = 500, message = "Internal server error")})
-    public ResponseEntity<OBStatusResponse> closeOrderBook(@PathVariable int orderBookId) {
+    public ResponseEntity<OBStatusResponse> closeOrderBook(@PathVariable Long orderBookId) {
         Error error = null;
         OBStatusResponse orderBookStatusResponse = new OBStatusResponse();
         HttpStatus closeOrderBookHttpStatus = HttpStatus.OK;
@@ -61,10 +61,10 @@ public class OrderBookController {
     @PostMapping(value = "/{instrumentId}/order", produces = {"application/json"}, consumes = {"application/json"})
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Successfully added the orders to the order book."),
             @ApiResponse(code = 500, message = "Internal server error.")})
-    public ResponseEntity<OrderResponse> addOrder(@PathVariable int instrumentId, @RequestBody OrderRequest orderRequest) {
-        OrderResponse orderResponse = null;
+    public ResponseEntity<OrderResponse> addOrder(@PathVariable Long instrumentId, @RequestBody OrderRequest orderRequest) {
+        OrderResponse orderResponse;
         HttpStatus addOrderHttpStatus = HttpStatus.OK;
-        if (instrumentId != orderRequest.getInstrumentId()) {
+        if (instrumentId.longValue() != orderRequest.getInstrumentId().longValue()) {
             orderResponse = new OrderResponse();
             addOrderHttpStatus = HttpStatus.BAD_REQUEST;
             orderResponse.setOrder(null);
@@ -82,7 +82,7 @@ public class OrderBookController {
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Successfully executed the orders."),
             @ApiResponse(code = 500, message = "Internal server error.")})
     public ResponseEntity<ExecuteOrderResponse> addExecutionAndExecuteOrder(
-            @PathVariable int instrumentId, @RequestBody ExecuteOrderRequest executionRequest) {
+            @PathVariable Long instrumentId, @RequestBody ExecuteOrderRequest executionRequest) {
         ExecuteOrderResponse executedOrderResponse;
         HttpStatus addExecutionAndExecuteOrderHttpStatus = HttpStatus.OK;
         executedOrderResponse = orderBookService.addExecutionAndProcessOrder(executionRequest, instrumentId);

@@ -1,7 +1,5 @@
 package com.cs.orderbookmanagement.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -9,15 +7,15 @@ import lombok.Setter;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import java.math.BigDecimal;
 
 @Getter
 @Setter
 @Entity
 @NoArgsConstructor
-@JsonIgnoreProperties
 public class Execution {
 
-    private int quantity;
+    private Integer quantity;
 
     private String instrumentName;
 
@@ -25,12 +23,11 @@ public class Execution {
 
     @Id
     @GeneratedValue
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    protected int instrumentId;
+    protected Long instrumentId;
 
-    private double executionPrice;
+    private BigDecimal executionPrice;
 
-    public Execution(double executionPrice, int quantity, int instrumentId) {
+    public Execution(BigDecimal executionPrice, Integer quantity, Long instrumentId) {
         this.quantity = quantity;
         this.instrumentId = instrumentId;
         this.executionPrice = executionPrice;

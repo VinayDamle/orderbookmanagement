@@ -2,28 +2,25 @@ package com.cs.orderbookmanagement.entities;
 
 import com.cs.orderbookmanagement.models.Error;
 import com.cs.orderbookmanagement.models.OrderType;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 @Getter
 @Setter
 @Entity
 @NoArgsConstructor
-@JsonIgnoreProperties
 public class OrderDetail {
 
     @Transient
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Error error;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int orderDetailsId;
+    private Long orderDetailsId;
 
     @OneToOne(cascade = CascadeType.ALL)
     private OrderDao order;
@@ -35,16 +32,13 @@ public class OrderDetail {
     @JoinColumn(name = "instrumentId")
     private OrderBook orderBook;
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String orderStatus;
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    private int allocatedQuantity;
+    private Integer allocatedQuantity;
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    private double executionPrice;
+    private BigDecimal executionPrice;
 
-    public OrderDetail(int instrumentId, OrderDao order, String orderStatus, int allocatedQuantity, OrderType orderType, double executionPrice) {
+    public OrderDetail(Long instrumentId, OrderDao order, String orderStatus, Integer allocatedQuantity, OrderType orderType, BigDecimal executionPrice) {
         this.order = order;
         this.orderType = orderType;
         this.orderStatus = orderStatus;

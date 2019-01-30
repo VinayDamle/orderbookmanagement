@@ -1,32 +1,34 @@
 package com.cs.orderbookmanagement.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import java.math.BigDecimal;
 
 @Getter
 @Setter
 @Entity
 @NoArgsConstructor
-@JsonIgnoreProperties
 public class OrderDao {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int orderId;
+    private Long orderId;
 
-    private double price;
+    private BigDecimal price;
 
-    private int quantity;
+    private Integer quantity;
 
-    private int instrumentId;
+    private Long instrumentId;
 
     private String entryDate;
 
-    public OrderDao(int quantity, String entryDate, int instrumentId, double price) {
+    public OrderDao(Integer quantity, String entryDate, Long instrumentId, BigDecimal price) {
         this.price = price;
         this.quantity = quantity;
         this.entryDate = entryDate;

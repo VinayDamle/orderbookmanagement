@@ -8,7 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
+import java.math.BigDecimal;
 
 @Getter
 @Setter
@@ -19,24 +19,22 @@ public class OrderResponse {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Error error;
 
-    private int orderDetailsId;
+    private Long orderDetailsId;
 
-    private OrderDao order;
+    private OrderRequest order;
 
     private OrderType orderType;
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private OrderBook orderBook;
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String orderStatus;
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    private int allocatedQuantity;
+    private Integer allocatedQuantity;
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    private double executionPrice;
+    private BigDecimal executionPrice;
 
-    public OrderResponse(int instrumentId, OrderDao order, String orderStatus, int allocatedQuantity, OrderType orderType, double executionPrice) {
+    public OrderResponse(Long instrumentId, OrderRequest order, String orderStatus, Integer allocatedQuantity, OrderType orderType, BigDecimal executionPrice) {
         this.order = order;
         this.orderType = orderType;
         this.orderStatus = orderStatus;

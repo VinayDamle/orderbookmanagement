@@ -1,6 +1,7 @@
 package com.cs.orderbookmanagement.services;
 
 import com.cs.orderbookmanagement.entities.OrderDetail;
+import com.cs.orderbookmanagement.models.OrderResponse;
 import com.cs.orderbookmanagement.models.OrderState;
 import com.cs.orderbookmanagement.models.OrderStatstics;
 
@@ -8,14 +9,14 @@ import java.util.List;
 
 public interface StatsticsService {
 
-    List<OrderDetail> getAllOrders();
+    List<OrderResponse> getAllOrders();
 
-    OrderState getOrderStateByOrderId(int orderId);
+    OrderState getOrderStateByOrderId(Long orderId);
 
-    OrderDetail getOrderDetailsByOrderId(int orderId);
+    OrderResponse getOrderDetailsByOrderId(Long orderId);
 
-    List<OrderDetail> getOrderDetailsByInstId(int instrumentId);
+    List<OrderResponse> getOrderDetailsByInstId(Long instrumentId);
 
-    OrderStatstics getOrderStatstics(boolean fetchValidInvalidRecords);
+    OrderStatstics getOrderStatstics(Boolean fetchValidInvalidRecords);
 
 }

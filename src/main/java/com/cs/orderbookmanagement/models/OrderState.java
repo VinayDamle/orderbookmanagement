@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+
 @Getter
 @Setter
 @JsonIgnoreProperties
@@ -13,20 +15,20 @@ public class OrderState {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Error error;
 
-    private int orderId;
+    private Long orderId;
 
-    private double orderPrice;
+    private BigDecimal orderPrice;
 
     private String validityStatus;
 
-    private double executionPrice;
+    private BigDecimal executionPrice;
 
-    private int executionQuantity;
+    private Integer executionQuantity;
 
     public OrderState() {
     }
 
-    public OrderState(int orderId, double orderPrice, int executionQuantity, double executionPrice, String validityStatus) {
+    public OrderState(Long orderId, BigDecimal orderPrice, Integer executionQuantity, BigDecimal executionPrice, String validityStatus) {
         this.orderId = orderId;
         this.orderPrice = orderPrice;
         this.validityStatus = validityStatus;

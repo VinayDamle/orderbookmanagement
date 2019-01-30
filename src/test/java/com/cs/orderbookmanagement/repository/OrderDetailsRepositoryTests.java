@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -22,14 +23,14 @@ public class OrderDetailsRepositoryTests {
     @Test
     public void testSaveOrderBook() {
         OrderDetail orderDetails = getTestOrderDetails();
-        int instrumentId = orderDetails.getOrder().getInstrumentId();
+        Long instrumentId = orderDetails.getOrder().getInstrumentId();
         assertThat(orderDetailsRepository.save(orderDetails).getOrder().getInstrumentId()).isEqualTo(instrumentId);
     }
 
     @Test
     public void testFindAllOrderDetailsByOrderInstrumentId() {
         OrderDetail orderDetails = getTestOrderDetails();
-        int instrumentId = orderDetails.getOrder().getInstrumentId();
+        Long instrumentId = orderDetails.getOrder().getInstrumentId();
         assertThat(orderDetailsRepository.save(orderDetails).getOrder().getInstrumentId()).isEqualTo(instrumentId);
 
         List<OrderDetail> orderDetailsList = orderDetailsRepository.findAllOrderDetailsByOrderInstrumentId(instrumentId);
@@ -39,7 +40,7 @@ public class OrderDetailsRepositoryTests {
 
     public OrderDetail getTestOrderDetails() {
         OrderDetail orderDetails = new OrderDetail();
-        OrderDao order = new OrderDao(10, "", 1, 100);
+        OrderDao order = new OrderDao(10, "", 1L, new BigDecimal(100));
         orderDetails.setOrder(order);
         return orderDetails;
     }

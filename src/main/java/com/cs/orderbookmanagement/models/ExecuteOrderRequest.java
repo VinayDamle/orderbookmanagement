@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 
 @Getter
 @Setter
@@ -12,10 +13,10 @@ import javax.validation.constraints.NotNull;
 public class ExecuteOrderRequest {
 
     @NotNull
-    private int quantity;
+    private Integer quantity;
 
     @NotNull
-    private double price;
+    private BigDecimal price;
 
     @Override
     public String toString() {

@@ -16,7 +16,7 @@ public class OrderBook {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int instrumentId;
+    private Long instrumentId;
 
     private String orderBookStatus;
 
@@ -26,7 +26,7 @@ public class OrderBook {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "orderBook")
     private List<OrderDetail> orderDetails = new ArrayList<>();
 
-    public OrderBook(int instrumentId, String orderBookStatus, Execution execution, List<OrderDetail> orderDetails) {
+    public OrderBook(Long instrumentId, String orderBookStatus, Execution execution, List<OrderDetail> orderDetails) {
         this.instrumentId = instrumentId;
         this.orderBookStatus = orderBookStatus;
         this.execution = execution;

@@ -1,8 +1,8 @@
 package com.cs.orderbookmanagement.utils;
 
-import com.cs.orderbookmanagement.entities.OrderDetail;
 import com.cs.orderbookmanagement.entities.Execution;
 import com.cs.orderbookmanagement.entities.OrderDao;
+import com.cs.orderbookmanagement.entities.OrderDetail;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -10,6 +10,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,12 +23,12 @@ public class OrderBookHelperTests {
     private OrderBookHelper helper;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
 
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown() {
 
     }
 
@@ -36,7 +37,7 @@ public class OrderBookHelperTests {
         List<OrderDetail> orderDetailsList = getTestOrderDetails();
         Execution execution = new Execution();
         execution.setQuantity(30);
-        execution.setExecutionPrice(100.0);
+        execution.setExecutionPrice(new BigDecimal(100.0));
         List<OrderDetail> validOrderDetailsList = helper.getValidOrders(orderDetailsList, execution);
         assertThat(validOrderDetailsList.get(0).getOrderStatus()).isEqualTo(OrderBookConstants.VALID);
         assertThat(validOrderDetailsList.get(1).getOrderStatus()).isEqualTo(OrderBookConstants.VALID);
@@ -51,25 +52,28 @@ public class OrderBookHelperTests {
         orderDetailsList.get(2).setOrderStatus(OrderBookConstants.VALID);
         Execution execution = new Execution();
         execution.setQuantity(30);
-        execution.setExecutionPrice(100.0);
+        execution.setExecutionPrice(new BigDecimal(50.0));
         helper.getExecutedOrderDetails(orderDetailsList, execution);
         assertThat(orderDetailsList.get(0).getAllocatedQuantity()).isEqualTo(5);
         assertThat(orderDetailsList.get(1).getAllocatedQuantity()).isEqualTo(10);
         assertThat(orderDetailsList.get(2).getAllocatedQuantity()).isEqualTo(15);
+        assertThat(orderDetailsList.get(0).getExecutionPrice().intValue()).isEqualTo(5);
+        assertThat(orderDetailsList.get(1).getExecutionPrice().intValue()).isEqualTo(10);
+        assertThat(orderDetailsList.get(2).getExecutionPrice().intValue()).isEqualTo(15);
     }
 
     public List<OrderDetail> getTestOrderDetails() {
         List<OrderDetail> orderDetailsList = new ArrayList<>();
         OrderDetail orderDetails = new OrderDetail();
-        OrderDao order = new OrderDao(10, "", 1, 100);
+        OrderDao order = new OrderDao(10, "", 1L, new BigDecimal(100));
         orderDetails.setOrder(order);
         orderDetailsList.add(orderDetails);
         orderDetails = new OrderDetail();
-        order = new OrderDao(20, "", 1, 200);
+        order = new OrderDao(20, "", 1L, new BigDecimal(200));
         orderDetails.setOrder(order);
         orderDetailsList.add(orderDetails);
         orderDetails = new OrderDetail();
-        order = new OrderDao(30, "", 1, 300);
+        order = new OrderDao(30, "", 1L, new BigDecimal(300));
         orderDetails.setOrder(order);
         orderDetailsList.add(orderDetails);
 
