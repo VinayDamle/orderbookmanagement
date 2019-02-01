@@ -1,7 +1,7 @@
 package com.cs.orderbookmanagement.utils;
 
-import com.cs.orderbookmanagement.entities.OrderDetail;
 import com.cs.orderbookmanagement.entities.Execution;
+import com.cs.orderbookmanagement.entities.OrderDetail;
 import com.cs.orderbookmanagement.models.OrderType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -20,17 +20,17 @@ public class OrderBookHelper {
         Iterator<OrderDetail> iterator = orderDetails.iterator();
         while (iterator.hasNext()) {
             OrderDetail orderDetail = iterator.next();
-            if (orderDetail.getOrder().getPrice().doubleValue() >= 0.0) {
+            if (orderDetail.getOrder().getPrice() == null || orderDetail.getOrder().getPrice().doubleValue() == 0.0) {
+                orderDetail.setOrderType(OrderType.MARKET_ORDER);
+            } else {
                 orderDetail.setOrderType(OrderType.LIMIT_ORDER);
             }
-            if (orderDetail.getOrderType().equals(OrderType.LIMIT_ORDER)) {
-                if (orderDetail.getOrder().getPrice().doubleValue() >= execution.getExecutionPrice().doubleValue()) {
-                    orderDetail.setOrderStatus(OrderBookConstants.VALID);
-                    validOrderDetails.add(orderDetail);
-                    iterator.remove();
-                } else {
-                    orderDetail.setOrderStatus(OrderBookConstants.INVALID);
-                }
+            if (orderDetail.getOrder().getPrice() != null && orderDetail.getOrder().getPrice().doubleValue() >= execution.getExecutionPrice().doubleValue()) {
+                orderDetail.setOrderStatus(OrderBookConstants.VALID);
+                validOrderDetails.add(orderDetail);
+                iterator.remove();
+            } else {
+                orderDetail.setOrderStatus(OrderBookConstants.INVALID);
             }
         }
         return validOrderDetails;

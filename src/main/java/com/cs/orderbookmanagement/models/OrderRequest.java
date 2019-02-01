@@ -1,26 +1,34 @@
 package com.cs.orderbookmanagement.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 @Getter
-@Setter
+@NoArgsConstructor
 @JsonIgnoreProperties
 final public class OrderRequest {
 
-    private final BigDecimal price;
+    private BigDecimal price;
 
-    private final Integer quantity;
+    private Integer quantity;
 
-    private final Long instrumentId;
+    private Long instrumentId;
 
-    private final String entryDate;
+    @JsonFormat(pattern = "dd-MM-yyyy")
+    @JsonSerialize(using = LocalDateSerializer.class)
+    @JsonDeserialize(using = LocalDateDeserializer.class)
+    private LocalDate entryDate;
 
-    public OrderRequest(Integer quantity, String entryDate, Long instrumentId, BigDecimal price) {
+    public OrderRequest(Integer quantity, LocalDate entryDate, Long instrumentId, BigDecimal price) {
         this.price = price;
         this.quantity = quantity;
         this.entryDate = entryDate;

@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -26,9 +27,9 @@ public class OrderDao {
 
     private Long instrumentId;
 
-    private String entryDate;
+    private LocalDate entryDate;
 
-    public OrderDao(Integer quantity, String entryDate, Long instrumentId, BigDecimal price) {
+    public OrderDao(Integer quantity, LocalDate entryDate, Long instrumentId, BigDecimal price) {
         this.price = price;
         this.quantity = quantity;
         this.entryDate = entryDate;

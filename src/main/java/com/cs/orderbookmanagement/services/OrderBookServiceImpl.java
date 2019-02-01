@@ -68,37 +68,9 @@ public class OrderBookServiceImpl implements OrderBookService {
         return status;
     }
 
-    /*@Override
-    public OrderDetail addOrder(OrderRequest order, int instrumentId) {
-        OrderDetail addedOrder;
-        Optional<OrderBook> orderBookHolder = orderBookRepository.findById(instrumentId);
-        if (orderBookHolder.isPresent()) {
-            if (orderBookHolder.get().getOrderBookStatus() != null &&
-                    orderBookHolder.get().getOrderBookStatus().equalsIgnoreCase(OrderBookConstants.CLOSE)) {
-                addedOrder = new OrderDetail(new Error(OrderBookConstants.OBMS_0006, OrderBookConstants.OBMS_ORD_BOOK_CLOSED_INSTID + " " + instrumentId));
-            } else {
-                OrderDao orderDao = new OrderDao();
-                orderDao.setPrice(order.getPrice());
-                orderDao.setQuantity(order.getQuantity());
-                orderDao.setEntryDate(order.getEntryDate());
-                orderDao.setInstrumentId(order.getInstrumentId());
-                String orderType = OrderBookConstants.LIMIT_ORDER;
-                if (order.getPrice() == 0) {
-                    orderType = OrderBookConstants.MARKET_ORDER;
-                }
-                OrderDetail orderDetailsToSave = new OrderDetail(order.getInstrumentId(),
-                        orderDao, null, 0, orderType, 0.0);
-                addedOrder = orderDetailsRepository.save(orderDetailsToSave);
-            }
-        } else {
-            addedOrder = new OrderDetail(new Error(OrderBookConstants.OBMS_0001, OrderBookConstants.INSTRUMENT_ID_NOT_FOUND));
-        }
-        return addedOrder;
-    }*/
-
     @Override
     public OrderResponse addOrder(OrderRequest order, Long instrumentId) {
-        OrderResponse orderResponse = null;
+        OrderResponse orderResponse;
         Optional<OrderBook> orderBookHolder = orderBookRepository.findById(instrumentId);
         if (orderBookHolder.isPresent()) {
             if (orderBookHolder.get().getOrderBookStatus() != null &&
@@ -111,7 +83,7 @@ public class OrderBookServiceImpl implements OrderBookService {
                 orderDao.setEntryDate(order.getEntryDate());
                 orderDao.setInstrumentId(order.getInstrumentId());
                 OrderType orderType = OrderType.LIMIT_ORDER;
-                if (order.getPrice().intValue() == 0) {
+                if (order.getPrice() == null || order.getPrice().intValue() == 0) { // Assuming nor price and 0 price orders are MARKET_ORDER
                     orderType = OrderType.MARKET_ORDER;
                 }
                 OrderDetail orderDetailsToSave = new OrderDetail(order.getInstrumentId(),

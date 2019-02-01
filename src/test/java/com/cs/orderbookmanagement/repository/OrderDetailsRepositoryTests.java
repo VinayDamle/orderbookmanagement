@@ -9,6 +9,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -40,7 +41,7 @@ public class OrderDetailsRepositoryTests {
 
     public OrderDetail getTestOrderDetails() {
         OrderDetail orderDetails = new OrderDetail();
-        OrderDao order = new OrderDao(10, "", 1L, new BigDecimal(100));
+        OrderDao order = new OrderDao(10, LocalDate.now(), 1L, new BigDecimal(100));
         orderDetails.setOrder(order);
         return orderDetails;
     }

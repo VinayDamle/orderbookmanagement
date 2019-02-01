@@ -22,6 +22,7 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -127,7 +128,7 @@ public class OrderBookControllerTests {
     public void testAddOrder() throws Exception {
         instrumentId = 1L;
         OrderResponse orderDetails = new OrderResponse(instrumentId,
-                new OrderRequest(10, "10-10-2019", instrumentId, new BigDecimal(100.0)),
+                new OrderRequest(10, LocalDate.now(), instrumentId, new BigDecimal(100.0)),
                 null, 0, OrderType.LIMIT_ORDER, new BigDecimal(0.0));
         orderDetails.setOrderDetailsId(1L);
         when(service.addOrder(any(OrderRequest.class), anyLong())).thenReturn(orderDetails);
@@ -167,7 +168,7 @@ public class OrderBookControllerTests {
     @Test
     public void testAddExecutionAndExecuteOrder() throws Exception {
         instrumentId = 1L;
-        OrderDao order = new OrderDao(10, "10-10-2019", instrumentId, new BigDecimal(100));
+        OrderDao order = new OrderDao(10, LocalDate.now(), instrumentId, new BigDecimal(100));
         OrderDetail orderDetails = new OrderDetail(instrumentId,
                 order, "Valid", 10,
                 OrderType.LIMIT_ORDER, new BigDecimal(0.0));
@@ -230,7 +231,7 @@ public class OrderBookControllerTests {
     }
 
     private String getOrderBookRequestJsonPayload() {
-        return "{\"price\" : 20.0,\"quantity\" : 1,\"instrumentId\" : 1,\"entryDate\" : \"10/10/2019\"}";
+        return "{\"price\" : 20.0,\"quantity\" : 1,\"instrumentId\" : 1,\"entryDate\" : \"10-10-2019\"}";
     }
 
     private String getOrderBookExecutionRequestJsonPayload() {

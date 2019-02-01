@@ -18,6 +18,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -106,7 +107,7 @@ public class OrderBookServiceImplTests {
         orderDetails.setOrder(orderDao);
 
         when(orderDetailsRepository.save(any(OrderDetail.class))).thenReturn(orderDetails);
-        OrderResponse addedRrderDetails = orderBookService.addOrder(new OrderRequest(10, "10/10/2019", 1L, new BigDecimal(100)), 1L);
+        OrderResponse addedRrderDetails = orderBookService.addOrder(new OrderRequest(10, LocalDate.now(), 1L, new BigDecimal(100)), 1L);
         Assertions.assertThat(addedRrderDetails).isNotNull();
         Assertions.assertThat(addedRrderDetails.getError()).isNull();
     }
@@ -114,7 +115,7 @@ public class OrderBookServiceImplTests {
     @Test
     public void testAddOrderForAnInvalidInstrumentIdThenReturnInstrumentIdNotFound() {
         OrderDetail orderDetails = new OrderDetail();
-        OrderResponse addedRrderDetails = orderBookService.addOrder(new OrderRequest(10, "10/10/2019", 1L, new BigDecimal(100)), 1L);
+        OrderResponse addedRrderDetails = orderBookService.addOrder(new OrderRequest(10, LocalDate.now(), 1L, new BigDecimal(100)), 1L);
         Assertions.assertThat(addedRrderDetails).isNotNull();
         Assertions.assertThat(addedRrderDetails.getError()).isNotNull();
         Assertions.assertThat(addedRrderDetails.getError().getErrorMessage()).isEqualTo(OrderBookConstants.INSTRUMENT_ID_NOT_FOUND);
@@ -162,15 +163,15 @@ public class OrderBookServiceImplTests {
     public List<OrderDetail> getTestOrderDetails() {
         List<OrderDetail> orderDetailsList = new ArrayList<>();
         OrderDetail orderDetails = new OrderDetail();
-        OrderDao order = new OrderDao(10, "", 1L, new BigDecimal(100));
+        OrderDao order = new OrderDao(10, LocalDate.now(), 1L, new BigDecimal(100));
         orderDetails.setOrder(order);
         orderDetailsList.add(orderDetails);
         orderDetails = new OrderDetail();
-        order = new OrderDao(20, "", 1L, new BigDecimal(200));
+        order = new OrderDao(20, LocalDate.now().minusDays(2), 1L, new BigDecimal(200));
         orderDetails.setOrder(order);
         orderDetailsList.add(orderDetails);
         orderDetails = new OrderDetail();
-        order = new OrderDao(30, "", 1L, new BigDecimal(300));
+        order = new OrderDao(30, LocalDate.now().plusDays(2), 1L, new BigDecimal(300));
         orderDetails.setOrder(order);
         orderDetailsList.add(orderDetails);
 

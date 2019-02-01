@@ -11,6 +11,7 @@ import org.mockito.InjectMocks;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,15 +66,15 @@ public class OrderBookHelperTests {
     public List<OrderDetail> getTestOrderDetails() {
         List<OrderDetail> orderDetailsList = new ArrayList<>();
         OrderDetail orderDetails = new OrderDetail();
-        OrderDao order = new OrderDao(10, "", 1L, new BigDecimal(100));
+        OrderDao order = new OrderDao(10, LocalDate.now(), 1L, new BigDecimal(100));
         orderDetails.setOrder(order);
         orderDetailsList.add(orderDetails);
         orderDetails = new OrderDetail();
-        order = new OrderDao(20, "", 1L, new BigDecimal(200));
+        order = new OrderDao(20, LocalDate.now().minusDays(2), 1L, new BigDecimal(200));
         orderDetails.setOrder(order);
         orderDetailsList.add(orderDetails);
         orderDetails = new OrderDetail();
-        order = new OrderDao(30, "", 1L, new BigDecimal(300));
+        order = new OrderDao(30, LocalDate.now().plusDays(2), 1L, new BigDecimal(300));
         orderDetails.setOrder(order);
         orderDetailsList.add(orderDetails);
 

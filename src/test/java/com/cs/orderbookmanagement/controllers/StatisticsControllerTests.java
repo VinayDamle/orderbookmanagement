@@ -19,6 +19,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -187,10 +188,10 @@ public class StatisticsControllerTests {
 
         assertThat(Integer.parseInt(context.read("$.validOrders").toString())).isEqualTo(2);
         assertThat(Integer.parseInt(context.read("$.invalidOrders").toString())).isEqualTo(4);
-        assertThat(context.read("$.biggestOrder.entryDate").toString()).isEqualTo("29-01-2019");
-        assertThat(context.read("$.smallestOrder.entryDate").toString()).isEqualTo("24-01-2019");
-        assertThat(context.read("$.latestOrderEntry.entryDate").toString()).isEqualTo("29-01-2019");
-        assertThat(context.read("$.earliestOrderEntry.entryDate").toString()).isEqualTo("24-01-2019");
+        assertThat(context.read("$.biggestOrder.entryDate").equals(LocalDate.now().plusDays(2)));
+        assertThat(context.read("$.smallestOrder.entryDate").equals(LocalDate.now().minusDays(2)));
+        assertThat(context.read("$.latestOrderEntry.entryDate").equals(LocalDate.now().plusDays(2)));
+        assertThat(context.read("$.earliestOrderEntry.entryDate").equals(LocalDate.now().minusDays(2)));
         assertThat(Integer.parseInt(context.read("$.biggestOrder.quantity").toString())).isEqualTo(30);
         assertThat(Integer.parseInt(context.read("$.smallestOrder.quantity").toString())).isEqualTo(10);
         assertThat(Integer.parseInt(context.read("$.totalNoOfOrders").toString())).isEqualTo(10);
@@ -199,19 +200,19 @@ public class StatisticsControllerTests {
     public List<OrderDetail> getTestOrderDetails() {
         List<OrderDetail> orderDetailsList = new ArrayList<>();
         OrderDetail orderDetails = new OrderDetail();
-        OrderDao order = new OrderDao(10, "24-01-2019", 1L, new BigDecimal(100));
+        OrderDao order = new OrderDao(10, LocalDate.now().minusDays(2), 1L, new BigDecimal(100));
         order.setOrderId(1L);
         orderDetails.setOrder(order);
         orderDetailsList.add(orderDetails);
 
         orderDetails = new OrderDetail();
-        order = new OrderDao(20, "28-01-2019", 1L, new BigDecimal(200));
+        order = new OrderDao(20, LocalDate.now(), 1L, new BigDecimal(200));
         order.setOrderId(2L);
         orderDetails.setOrder(order);
         orderDetailsList.add(orderDetails);
 
         orderDetails = new OrderDetail();
-        order = new OrderDao(30, "29-01-2019", 1L, new BigDecimal(300));
+        order = new OrderDao(30, LocalDate.now().plusDays(2), 1L, new BigDecimal(300));
         order.setOrderId(3L);
         orderDetails.setOrder(order);
         orderDetailsList.add(orderDetails);
