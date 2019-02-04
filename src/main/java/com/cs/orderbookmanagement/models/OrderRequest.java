@@ -6,13 +6,11 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-@Getter
 @NoArgsConstructor
 @JsonIgnoreProperties
 final public class OrderRequest {
@@ -29,10 +27,54 @@ final public class OrderRequest {
     private LocalDate entryDate;
 
     public OrderRequest(Integer quantity, LocalDate entryDate, Long instrumentId, BigDecimal price) {
-        this.price = price;
-        this.quantity = quantity;
-        this.entryDate = entryDate;
-        this.instrumentId = instrumentId;
+        if (quantity != null) {
+            this.quantity = new Integer(quantity);
+        } else {
+            this.quantity = null;
+        }
+        if (instrumentId != null) {
+            this.instrumentId = new Long(instrumentId);
+        } else {
+            this.instrumentId = null;
+        }
+        if (price != null) {
+            this.price = new BigDecimal(price.doubleValue());
+        } else {
+            this.price = null;
+        }
+        if (entryDate != null) {
+            this.entryDate = LocalDate.of(entryDate.getYear(), entryDate.getMonth(), entryDate.getDayOfMonth());
+        } else {
+            this.entryDate = null;
+        }
+    }
+
+    public BigDecimal getPrice() {
+        if (price == null) {
+            return price;
+        }
+        return new BigDecimal(price.doubleValue());
+    }
+
+    public Integer getQuantity() {
+        if (quantity == null) {
+            return quantity;
+        }
+        return new Integer(quantity);
+    }
+
+    public Long getInstrumentId() {
+        if (instrumentId == null) {
+            return instrumentId;
+        }
+        return new Long(instrumentId);
+    }
+
+    public LocalDate getEntryDate() {
+        if (entryDate == null) {
+            return entryDate;
+        }
+        return LocalDate.of(entryDate.getYear(), entryDate.getMonth(), entryDate.getDayOfMonth());
     }
 
     @Override
